@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'preact/hooks';
+import {useState, useEffect } from 'react'
 import React from 'react'
 
 const attackDice = 20;
@@ -46,6 +46,7 @@ export default function MoveCardEdit() {
   const handleDiceClick = (diceNumber) => {
     if(selectedDices.length >= maximumDices) return
     setSelectedDices((prev) => [...prev, diceNumber])
+    console.log(diceNumber);
   }
   
   const handleSelectedDices = () => {
@@ -108,9 +109,9 @@ export default function MoveCardEdit() {
       <div className="w-full h-28 mt-2 flex justify-center items-center">
         {
           addingAttack ? (
-            <div class="w-[400px] m-auto">
+            <div className="w-[400px] m-auto">
               <div className="flex justify-end w-full">
-                <button className="flex justify-center py-1 px-2 rounded-md" onclick={handleCloseDices}>
+                <button className="flex justify-center py-1 px-2 rounded-md" onClick={handleCloseDices}>
                   X
                 </button>
               </div>
@@ -119,7 +120,7 @@ export default function MoveCardEdit() {
                   {diceNumbers.map((diceNumber, index) => (
                     <button 
                       className="bg-white rounded-md py-1 px-3 font-bold border border-slate-800 w-14"
-                      onclick={() => handleDiceClick(diceNumber)}
+                      onClick={() => handleDiceClick(diceNumber)}
                       key={index}
                     >
                       {diceNumber}
@@ -149,7 +150,7 @@ export default function MoveCardEdit() {
           }
         </div>
         <div>
-          <button className={"flex text-green-800 bg-green-300 justify-center py-1 px-2 rounded-md "+ (selectedDices.length < 1 ? "invisible" : "")} onclick={handleSelectedDices}>
+          <button className={"flex text-green-800 bg-green-300 justify-center py-1 px-2 rounded-md "+ (selectedDices.length < 1 ? "invisible" : "")} onClick={handleSelectedDices}>
             Seleccionar
           </button>
         </div>
@@ -169,8 +170,8 @@ export default function MoveCardEdit() {
         {
           selectedAttacks.map((attack, index) => (
             <>
-              <div key={index} class="flex flex-grow w-full items-center py-2 px-2 bg-blue-200 rounded-sm">
-                <div class="flex gap-2 grow">
+              <div key={index} className="flex flex-grow w-full items-center py-2 px-2 bg-blue-200 rounded-sm">
+                <div className="flex gap-2 grow">
                   {
                       attack.map((dice, subIndex) => (
                         <span key={subIndex} className='bg-white text-xs rounded-full flex items-center justify-center px-3'>{dice}</span>
@@ -178,7 +179,7 @@ export default function MoveCardEdit() {
                     }
                 </div>
                 <div>
-                  <button onclick={() => deleteAttack(index)}>
+                  <button onClick={() => deleteAttack(index)}>
                     <span className="text-xs">x</span>
                   </button>
                 </div>

@@ -1,8 +1,7 @@
-import { useReducer, useState } from 'preact/hooks'
 import GlobalLayout from './layouts/GlobalLayout'
 import MoveCardEdit from './components/MoveCardEdit'
 
-export function App() {
+function App() {
 
 
   return (
@@ -16,3 +15,5 @@ export function App() {
     </GlobalLayout>
   )
 }
+
+export default App;
