@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        'japanese-blue': '#d4effa',
+        'japanese-blue': '#d4effE',
         'clickferry': '#004a99'
       }
     },

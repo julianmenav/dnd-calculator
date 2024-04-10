@@ -7,7 +7,12 @@ export function App() {
 
   return (
     <GlobalLayout>
-      <MoveCardEdit />
+      <div className="flex flex-wrap gap-y-8 gap-x-6 mt-9 justify-center">
+        <MoveCardEdit />
+        <MoveCardEdit />
+        <MoveCardEdit />
+        <MoveCardEdit />
+      </div>
     </GlobalLayout>
   )
 }
