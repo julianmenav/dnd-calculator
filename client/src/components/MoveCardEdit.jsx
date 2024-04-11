@@ -18,18 +18,30 @@ export default function MoveCardEdit() {
   useEffect(() => {
   
     if(selectedAttacks.lenth < 1) return;
-
-    let chance = (Math.min(attackDice - (armorClass - bonusAttack - 1), 20)) / 20;
-    console.log("CHANCES", (chance * 100).toFixed(2) + "%");
-
+    
+    
+    
     let averageTotalDamage = 0;
     selectedAttacks.forEach((attack) => {
-      let averageAttackDamage = attack.reduce((agg, dice) => {
+      let averageDicesDamage = attack["attacks"].reduce((agg, dice) => {
         let averageDice = ((dice * (dice + 1)) / 2) / dice;
         return agg + averageDice;
       }, 0);
-      console.log(bonusDamage, averageAttackDamage, bonusDamage + averageAttackDamage);
-      averageTotalDamage += ((parseFloat(averageAttackDamage) + parseFloat(bonusDamage)) * chance);
+      
+      
+      let chanceBonus = 0;
+      if(attack.heavyFeat) chanceBonus -= 5;
+      if(attack.precisionManeuver) chanceBonus += 4.5;
+      
+
+      let damageBonus = 0;
+      if(attack.heavyFeat) damageBonus += 10;
+      if(attack.noBonus) damageBonus -= bonusDamage; 
+
+      let damage = parseFloat(averageDicesDamage) + parseFloat(bonusDamage) + damageBonus;
+      let chance = (Math.min(attackDice - ((armorClass - 1) - ( parseFloat(bonusAttack) + chanceBonus )), 20)) / 20;
+
+      averageTotalDamage += damage * chance;
     });
     
     setAverageDamage(averageTotalDamage.toFixed(2));
@@ -51,8 +63,7 @@ export default function MoveCardEdit() {
   
   const handleSelectedDices = () => {
     if(selectedDices.length < 1) return;
-    console.log(selectedDices, selectedAttacks);
-    setSelectedAttacks((prev) => [...prev, selectedDices]);
+    setSelectedAttacks((prev) => [...prev, { "heavyFeat" : false, "precisionManeuver": false, "noBonus" : false, "attacks" : [...selectedDices]}]);
     setAddingAttack(false);
     setSelectedDices([]);
   }
@@ -60,6 +71,34 @@ export default function MoveCardEdit() {
   const deleteAttack = (index) => {
     let attacks = [...selectedAttacks];
     attacks.splice(index, 1);
+    setSelectedAttacks(attacks);
+  }
+
+  const toggleHeavyWeaponFeat = (index) => {
+    let attack = selectedAttacks[index];
+    let option = !attack["heavyFeat"]
+    attack.heavyFeat = option;
+    let attacks = [...selectedAttacks];
+    attacks.splice(index, 1, attack)
+    setSelectedAttacks(attacks);
+  }
+
+  const togglePrecisionManeuver = (index) => {
+    let attack = selectedAttacks[index];
+    let option = !attack["precisionManeuver"]
+    attack.precisionManeuver = option;
+    let attacks = [...selectedAttacks];
+    attacks.splice(index, 1, attack)
+    setSelectedAttacks(attacks);
+  }
+
+  const toggleNoBonus = (index) => {
+    console.log("a")
+    let attack = selectedAttacks[index];
+    let option = !attack["noBonus"]
+    attack.noBonus = option;
+    let attacks = [...selectedAttacks];
+    attacks.splice(index, 1, attack)
     setSelectedAttacks(attacks);
   }
 
@@ -170,18 +209,33 @@ export default function MoveCardEdit() {
         {
           selectedAttacks.map((attack, index) => (
             <>
-              <div key={index} className="flex flex-grow w-full items-center py-2 px-2 bg-blue-200 rounded-sm">
-                <div className="flex gap-2 grow">
-                  {
-                      attack.map((dice, subIndex) => (
+              <div key={index} className=''>
+                <div className="flex flex-grow w-full items-center py-2 px-2 bg-blue-200 rounded-sm">
+                    <div className="grow flex gap-2">
+                      <button  className={`border border-1 border-gray-600 text-xs p-2 rounded-md ${attack.noBonus ? "bg-red-200" : ""}`} onClick={() => toggleNoBonus(index)}>
+                        <span >Eliminar Bon. Daño</span>
+                      </button>
+                      <button  className={`border border-1 border-gray-600 text-xs p-2 rounded-md ${attack.precisionManeuver ? "bg-red-200" : ""}`} onClick={() => togglePrecisionManeuver(index)}>
+                        <span >Precision</span>
+                      </button>
+                      <button  className={`border border-1 border-gray-600 text-xs p-2 rounded-md ${attack.heavyFeat ? "bg-red-200" : ""}`} onClick={() => toggleHeavyWeaponFeat(index)}>
+                        <span >Armas Pesadas</span>
+                      </button>
+                    </div>
+                    <div>
+                      <button className="text-xs p-2 bg-red-300 rounded-md text-red-700 font-bold " onClick={() => deleteAttack(index)}>
+                        <span >x</span>
+                      </button>
+                    </div>
+                </div>
+                <div className="flex w-full items-center py-2 px-2 bg-blue-200 rounded-sm">
+                  <div className="flex gap-2 grow">
+                    {
+                      attack.attacks.map((dice, subIndex) => (
                         <span key={subIndex} className='bg-white text-xs rounded-full flex items-center justify-center px-3'>{dice}</span>
                       ))
                     }
-                </div>
-                <div>
-                  <button onClick={() => deleteAttack(index)}>
-                    <span className="text-xs">x</span>
-                  </button>
+                  </div>
                 </div>
               </div>
             </>

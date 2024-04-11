@@ -11,6 +11,12 @@ function App() {
         <MoveCardEdit />
         <MoveCardEdit />
         <MoveCardEdit />
+        <MoveCardEdit />
+        <MoveCardEdit />
+        <MoveCardEdit />
+        <MoveCardEdit />
+        <MoveCardEdit />
+        <MoveCardEdit />
       </div>
     </GlobalLayout>
   )
