@@ -11,7 +11,7 @@ export default function AttackList({attacks, toggleProperty, deleteAttack}) {
                 <div className="grow flex gap-2">
                   {
                     attackProperties.map((property, subIndex) => (
-                      <button key={subIndex} className={`border border-1 border-gray-600 text-xs p-2 rounded-md ${attack[property.name] ? "bg-red-200" : ""}`} onClick={() => toggleProperty(property.name, index)}>
+                      <button key={subIndex} className={`border border-1 border-gray-600 text-xs p-2 rounded-md ${attack[property.name] ? "bg-green-200" : ""}`} onClick={() => toggleProperty(property.name, index)}>
                         <span >{property.display}</span>
                       </button>
                     ))
