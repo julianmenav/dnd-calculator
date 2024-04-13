@@ -10,5 +10,9 @@
     {
       "display": "Armas pesadas",
       "name": "heavyFeat"
+    },
+    {
+      "display": "Ventaja",
+      "name": "advantage"
     }
   ]

@@ -7,7 +7,6 @@ import AttackList from './AttackList';
 import MoveStats from './MoveStats';
 import EditDeleteButtons from './EditDeleteButtons';
 
-const attackDice = 20;
 const maximumDices = 10;
 
 export default function MoveCardEdit({initialStats, copyCard, deleteCard, idx}) {
@@ -36,17 +35,29 @@ export default function MoveCardEdit({initialStats, copyCard, deleteCard, idx}) 
       let chanceBonus = 0;
       if(attack.heavyFeat) chanceBonus -= 5;
       if(attack.precisionManeuver) chanceBonus += 4.5;
+      // Bonificador stat + otros bonificadores
+      let attackBonus = parseInt(stats.bonusAttack) + chanceBonus
       
       // Calcular bonus al daño
       let damageBonus = 0;
       if(attack.heavyFeat) damageBonus += 10;
       if(!attack.noBonus) damageBonus += parseFloat(stats.bonusDamage); 
-
       // Daño del ataque. (media dados + bonus daño)
       let damage = parseFloat(averageDicesDamage) + damageBonus;
 
-      // Probabilidad de dar.
-      let chance = (Math.min(attackDice - ((stats.armorClass - 1) - ( parseFloat(stats.bonusAttack) + chanceBonus )), 20)) / 20;
+      /**
+       *  Probabilidad de dar. 
+       *   - Sin ventaja: numero de resultados satisfactorios / numero de resultados totales 
+       *      * Lanzar un 1 SIEMPRE fallará y lanzar un 20 SIEMPRE acertará
+       *   - Con ventaja: Prob.Inversa de fallar ambos dados: 1 - ((resultados que fallan / resultados todales) * (resultados que fallan / resultados totales))
+       *      * Lanzar un 1 con los dos dados SIEMPRE fallará, y con sacar un 20 daremos. 
+       */     
+      let chance = 0;
+      if(!attack.advantage){
+        chance = Math.max(Math.min(20 - stats.armorClass + attackBonus + 1, 19), 1) / 20;
+      } else {
+        chance = 1 - ((Math.max(Math.min((stats.armorClass - attackBonus - 1), 19), 1) / 20)**2);
+      }
 
       averageTotalDamage += damage * chance;
     });
