@@ -1,0 +1,14 @@
+[
+    {
+      "display": "Eliminar Bon. Daño",
+      "name": "noBonus"
+    },
+    {
+      "display": "Precision",
+      "name": "precisionManeuver"
+    },
+    {
+      "display": "Armas pesadas",
+      "name": "heavyFeat"
+    }
+  ]
