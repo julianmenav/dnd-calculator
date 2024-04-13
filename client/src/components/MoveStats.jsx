@@ -10,7 +10,7 @@ export default function MoveStats({handleOnChange, moveName, armorClass, setArmo
         value={moveName}
       />
       <div className="flex justify-around gap-3 text-center">
-        <div className="flex-1 gap-2 p-3 rounded-md bg-cyan-600/30">
+        <div className="flex-1 flex flex-col justify-between gap-2 p-3 rounded-md bg-cyan-600/30">
           <label htmlFor="caInput">CA Enemigo:</label>
           <input
             id="caInput"
@@ -21,8 +21,8 @@ export default function MoveStats({handleOnChange, moveName, armorClass, setArmo
             onChange={(e) => setArmorClass(e.target.value)}
           />
         </div>
-        <div className="flex-1 gap-2 p-3 rounded-md bg-cyan-600/30">
-          <label htmlFor="bonusAttackInput">Bonificador Ataque:</label>
+        <div className="flex-1 flex flex-col justify-between gap-2 p-3 rounded-md bg-cyan-600/30">
+          <label htmlFor="bonusAttackInput">Bon. Ataque:</label>
           <input
             id="bonusAttackInput"
             className=" rounded-sm w-full flex flex-center text-center"
@@ -32,8 +32,8 @@ export default function MoveStats({handleOnChange, moveName, armorClass, setArmo
             onChange={(e) => setBonusAttack(e.target.value)}
           />
         </div>
-        <div className="flex-1 gap-2 p-3 rounded-md bg-cyan-600/30">
-          <label htmlFor="bonusDamageInput">Bonificador Daño:</label>
+        <div className="flex-1 flex flex-col justify-between gap-2 p-3 rounded-md bg-cyan-600/30">
+          <label htmlFor="bonusDamageInput">Bon. Daño:</label>
           <input
             id="bonusDamageInput"
             className=" rounded-sm w-full flex flex-center text-center"

@@ -9,14 +9,14 @@ export default function DiceSelector({addingAttack, setAddingAttack, handleClose
     <div className="w-full h-28 mt-2 flex justify-center items-center">
     {
       addingAttack ? (
-        <div className="w-[400px] m-auto">
+        <div className="w-full m-auto">
           <div className="flex justify-end w-full">
             <button className="flex justify-center py-1 px-2 rounded-md" onClick={handleCloseDices}>
               X
             </button>
           </div>
           <div>
-            <div className={`flex justify-center gap-3 px-10 mt-2 `}>
+            <div className={`flex justify-center gap-1 px-10 mt-2 flex-wrap`}>
               {diceNumbers.map((diceNumber, index) => (
                 <button 
                   className="bg-white rounded-md py-1 px-3 font-bold border border-slate-800 w-14"
@@ -40,7 +40,7 @@ export default function DiceSelector({addingAttack, setAddingAttack, handleClose
     }
   </div>
   <div className="w-full flex gap-1 mt-5">
-    <div className="grow flex gap-3">
+    <div className="grow flex flex-wrap gap-3">
       {
         selectedDices.map((selectedDice, index) => (
           <span key={index} className='bg-blue-300 text-xs rounded-full flex items-center justify-center px-3'>{selectedDice}</span>

@@ -24,7 +24,7 @@ export default function AttackList({attacks, toggleProperty, deleteAttack}) {
                 </div>
             </div>
             <div className="flex w-full items-center py-2 px-2 bg-blue-200 rounded-sm">
-              <div className="flex gap-2 grow">
+              <div className="flex gap-2 flex-wrap">
                 {
                   attack.attacks.map((dice, subIndex) => (
                     <span key={subIndex} className='bg-white text-xs rounded-full flex items-center justify-center px-3'>{dice}</span>

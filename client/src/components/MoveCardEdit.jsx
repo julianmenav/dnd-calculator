@@ -80,7 +80,7 @@ export default function MoveCardEdit({initialStats, copyCard, deleteCard, idx}) 
   };
 
   return (
-    <div className={`w-full relative max-w-[800px] bg-white p-4 rounded-md shadow-md text-gray-600 ${deletedCard ? "hidden" : ""}`}>
+    <div className={`w-full relative max-w-[500px] bg-white p-4 rounded-md shadow-md text-gray-600 ${deletedCard ? "hidden" : ""}`}>
       <EditDeleteButtons copyCard={copyCard} setDeletedCard={setDeletedCard} stats={stats} idx={idx} />
       <MoveStats {...stats} />
       <DiceSelector addingAttack={addingAttack} setAddingAttack={setAddingAttack} handleCloseDices={handleCloseDices} handleDiceClick={handleDiceClick} selectedDices={selectedDices} handleAddAttack={handleAddAttack} />
