@@ -9,7 +9,7 @@ function App() {
   const copyCard = (stats, idx) => {
     setCards([...cards, {initialArmorClass: stats.armorClass, initialBonusAttack: stats.bonusAttack, initialBonusDamage: stats.bonusDamage}])
   }
-
+  
   return (
     <GlobalLayout>
       <div className="flex flex-wrap gap-y-8 gap-x-6 mt-9 justify-center">
