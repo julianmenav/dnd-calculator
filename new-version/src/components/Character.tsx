@@ -14,9 +14,9 @@ export default function CharacterComponent({
 
   return (
     <CharacterProvider value={character}>
-      <div className="card bg-neutral indicator shadow-md">
+      <div className="card card-border bg-base-200 indicator w-full shadow-md">
         <button
-          className="indicator-item indicator-start btn btn-error btn-xs"
+          className="indicator-item indicator-start bg-error text-error-content flex w-14 cursor-pointer items-center justify-center rounded-sm px-1 py-0.5 text-xs"
           onClick={() => removeCharacter(character.id)}
         >
           Delete
@@ -24,17 +24,15 @@ export default function CharacterComponent({
         <div className="card-body flex flex-row justify-between gap-3">
           <div className="flex w-58 flex-col gap-1">
             <div className="grid grid-cols-2 gap-1">
-              <div className="flex gap-1">
-                <input
-                  className="input input-sm"
-                  placeholder="Character Name"
-                  value={character.name}
-                  onChange={(e) =>
-                    updateCharacter(character.id, { name: e.target.value })
-                  }
-                />
-              </div>
-              <label className="input input-sm">
+              <input
+                className="input input-xs"
+                placeholder="Character Name"
+                value={character.name}
+                onChange={(e) =>
+                  updateCharacter(character.id, { name: e.target.value })
+                }
+              />
+              <label className="input input-xs">
                 <span className="label w-1/4">LvL</span>
                 <input
                   className="input w-3/4"
@@ -50,7 +48,7 @@ export default function CharacterComponent({
             </div>
             <hr className="my-2" />
             <div className="grid grid-cols-2 gap-1">
-              <label className="input input-sm">
+              <label className="input input-xs">
                 <span className="label w-1/4">Str</span>
                 <input
                   className="input w-3/4"
@@ -66,7 +64,7 @@ export default function CharacterComponent({
                   }
                 />
               </label>
-              <label className="input input-sm">
+              <label className="input input-xs">
                 <span className="label w-1/4">Dex</span>
                 <input
                   className="input w-3/4"
@@ -82,7 +80,7 @@ export default function CharacterComponent({
                   }
                 />
               </label>
-              <label className="input input-sm">
+              <label className="input input-xs">
                 <span className="label w-1/4">Con</span>
                 <input
                   className="input w-3/4"
@@ -98,7 +96,7 @@ export default function CharacterComponent({
                   }
                 />
               </label>
-              <label className="input input-sm">
+              <label className="input input-xs">
                 <span className="label w-1/4">Int</span>
                 <input
                   className="input w-3/4"
@@ -114,7 +112,7 @@ export default function CharacterComponent({
                   }
                 />
               </label>
-              <label className="input input-sm">
+              <label className="input input-xs">
                 <span className="label w-1/4">Wis</span>
                 <input
                   className="input w-3/4"
@@ -130,7 +128,7 @@ export default function CharacterComponent({
                   }
                 />
               </label>
-              <label className="input input-sm">
+              <label className="input input-xs">
                 <span className="label w-1/4">Cha</span>
                 <input
                   className="input w-3/4"
@@ -149,12 +147,17 @@ export default function CharacterComponent({
             </div>
           </div>
           <div className="flex flex-grow flex-col">
-            <button className="btn" onClick={() => addTurn(character.id)}>
+            <button
+              className="btn btn-success btn-xs w-24"
+              onClick={() => addTurn(character.id)}
+            >
               Add turn
             </button>
-            {character.turns.map((turn) => (
-              <TurnComponent key={turn.id} turn={turn} />
-            ))}
+            <div className="p-2">
+              {character.turns.map((turn) => (
+                <TurnComponent key={turn.id} turn={turn} />
+              ))}
+            </div>
           </div>
         </div>
       </div>

@@ -12,10 +12,16 @@ function Scenario() {
   return (
     <ScenarioProvider value={scenario}>
       <div className="flex w-full flex-col gap-3 p-5 px-12">
-        <div>
-          <div className="flex w-24 flex-col">
+        <div className="flex items-center justify-between">
+          <button
+            className="btn btn-success btn-xs"
+            onClick={() => addCharacter()}
+          >
+            Add Character
+          </button>
+          <div className="flex flex-col">
             <label className="label">
-              <span className="label-text">Enemy AC</span>
+              <span className="label-text">DefaultEnemy AC</span>
             </label>
             <input
               type="number"
@@ -26,17 +32,11 @@ function Scenario() {
               onChange={(e) => updateEnemyAc(Number(e.target.value))}
             />
           </div>
-          <button
-            className="btn btn-primary btn-xs"
-            onClick={() => addCharacter()}
-          >
-            Add Character
-          </button>
-          <div className="flex flex-col gap-3 py-5">
-            {scenario.characters.map((char) => (
-              <CharacterComponent key={char.id} character={char} />
-            ))}
-          </div>
+        </div>
+        <div className="flex flex-col gap-3 py-5">
+          {scenario.characters.map((char) => (
+            <CharacterComponent key={char.id} character={char} />
+          ))}
         </div>
       </div>
     </ScenarioProvider>
