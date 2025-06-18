@@ -4,7 +4,7 @@ import Scenario from './components/Scenario'
 function App() {
   return (
     <>
-      <div className="App">
+      <div className="box-border p-3">
         <h1>D&D Calculator</h1>
         <Scenario />
       </div>
