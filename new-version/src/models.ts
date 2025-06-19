@@ -1,4 +1,5 @@
 export type Dice = 4 | 6 | 8 | 10 | 12 | 20
+export const DICE_SIDES: Dice[] = [4, 6, 8, 10, 12, 20]
 
 export type AbilityType =
   | 'Strength'
@@ -14,8 +15,6 @@ export type Attack = {
   feats: string[]
   attackBonusAbility?: AbilityType
   damageBonusAbility?: AbilityType
-  parentTurnId: string
-  parentCharacterId: string
 }
 
 export type Turn = {

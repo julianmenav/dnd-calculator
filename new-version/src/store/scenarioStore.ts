@@ -1,5 +1,5 @@
 import { persist } from 'zustand/middleware'
-import type { Scenario, Character, Turn, Attack } from '../models'
+import type { Scenario, Character, Turn, Attack, Dice } from '../models'
 import { v4 as uuidv4 } from 'uuid'
 import { create } from 'zustand'
 
@@ -10,7 +10,7 @@ interface ScenarioState {
 
     addCharacter: (character?: Character) => void
     addTurn: (characterId: string, turn?: Turn) => void
-    addAttack: (characterId: string, turnId: string, attack?: Attack) => void
+    addAttack: (characterId: string, turnId: string, dices: Dice[]) => void
 
     updateCharacter: (
       characterId: string,
@@ -80,27 +80,30 @@ export const useScenarioStore = create<ScenarioState>()(
             },
           })),
 
-        addAttack: (characterId: string, turnId: string, attack?: Attack) =>
-          set((state) => ({
-            scenario: {
-              ...state.scenario,
-              characters: state.scenario.characters.map((character) =>
-                character.id === characterId
-                  ? {
-                      ...character,
-                      turns: character.turns.map((turn) =>
-                        turn.id === turnId
-                          ? {
-                              ...turn,
-                              attacks: [...turn.attacks, createAttack(attack)],
-                            }
-                          : turn
-                      ),
-                    }
-                  : character
-              ),
-            },
-          })),
+        addAttack: (characterId: string, turnId: string, dices: Dice[]) =>
+          set((state) => {
+            if (dices.length === 0) return state
+            return {
+              scenario: {
+                ...state.scenario,
+                characters: state.scenario.characters.map((character) =>
+                  character.id === characterId
+                    ? {
+                        ...character,
+                        turns: character.turns.map((turn) =>
+                          turn.id === turnId
+                            ? {
+                                ...turn,
+                                attacks: [...turn.attacks, createAttack(dices)],
+                              }
+                            : turn
+                        ),
+                      }
+                    : character
+                ),
+              },
+            }
+          }),
 
         updateCharacter: (
           characterId: string,
@@ -256,14 +259,12 @@ const createTurn = (turn?: Turn): Turn => {
   }
 }
 
-const createAttack = (attack?: Attack): Attack => {
+const createAttack = (dices: Dice[]): Attack => {
   return {
     id: uuidv4(),
-    dices: attack?.dices || [],
-    feats: attack?.feats || [],
-    attackBonusAbility: attack?.attackBonusAbility,
-    damageBonusAbility: attack?.damageBonusAbility,
-    parentTurnId: attack?.parentTurnId || '',
-    parentCharacterId: attack?.parentCharacterId || '',
+    dices: dices,
+    feats: [],
+    attackBonusAbility: undefined,
+    damageBonusAbility: undefined,
   }
 }

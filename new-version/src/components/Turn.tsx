@@ -4,6 +4,7 @@ import { TurnProvider } from '../context/TurnContext'
 import type { Turn } from '../models'
 import { useScenarioStore } from '../store/scenarioStore'
 import AttackComponent from './Attack'
+import DiceChooser from './DiceChooser'
 
 export default function TurnComponent({ turn }: { turn: Turn }) {
   const { updateTurn, removeTurn } = useScenarioStore((state) => state.actions)
@@ -37,12 +38,12 @@ export default function TurnComponent({ turn }: { turn: Turn }) {
         <div className="card-header flex items-center justify-between p-4">
           <input
             className="input input-xs"
-            placeholder="Character Name"
             value={turn.name}
             onChange={(e) =>
               updateTurn(character.id, turn.id, { name: e.target.value })
             }
           />
+          <DiceChooser />
           <label className="input input-xs">
             <span className="label w-1/4">Enemy Ac</span>
             <input
