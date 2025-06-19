@@ -8,6 +8,17 @@ export type AbilityType =
   | 'Intelligence'
   | 'Wisdom'
   | 'Charisma'
+export const ABILITIES: AbilityType[] = [
+  'Strength',
+  'Dexterity',
+  'Constitution',
+  'Intelligence',
+  'Wisdom',
+  'Charisma',
+]
+
+export type Feat = 'Heavy Weap.' | 'Advantage' | 'Crit' | 'Precision'
+export const FEATS: Feat[] = ['Heavy Weap.', 'Advantage', 'Crit', 'Precision']
 
 export type Attack = {
   id: string

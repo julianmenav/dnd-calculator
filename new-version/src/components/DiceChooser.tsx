@@ -29,6 +29,7 @@ export default function DiceChooser() {
                 key={dice}
                 className="btn btn-xs btn-primary m-1"
                 onClick={() => {
+                  if (dices.length > 10) return
                   setDices((prev) => {
                     const newDices = [...prev, dice]
                     return newDices
@@ -52,10 +53,7 @@ export default function DiceChooser() {
           <div>
             {dices.map((dice, index) => {
               return (
-                <span
-                  key={index}
-                  className="badge badge-secondary badge-xs m-1"
-                >
+                <span key={index} className="badge bg-base-300 badge-xs m-1">
                   d{dice}
                 </span>
               )
