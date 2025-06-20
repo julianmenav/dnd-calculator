@@ -18,7 +18,7 @@ export default function CharacterComponent({
     <CharacterProvider value={character}>
       <div className="card card-border bg-base-100 indicator w-full shadow-md">
         <button
-          className="indicator-item bg-error/40 text-error-content flex h-5 w-5 cursor-pointer items-center justify-center rounded-sm p-1 text-xs"
+          className="indicator-item bg-error/40 hover:bg-error/70 text-error-content flex h-5 w-5 cursor-pointer items-center justify-center rounded-sm p-1 text-xs"
           onClick={() => removeCharacter(character.id)}
         >
           <X />

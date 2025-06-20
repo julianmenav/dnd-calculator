@@ -16,7 +16,7 @@ export default function TurnComponent({ turn }: { turn: Turn }) {
     <TurnProvider value={turn}>
       <div className="card indicator card-border bg-base-200 w-full p-3 shadow-md">
         <button
-          className="indicator-item bg-error/40 text-error-content flex h-5 w-5 cursor-pointer items-center justify-center rounded-sm p-1 text-xs"
+          className="indicator-item bg-error/40 hover:bg-error/70 text-error-content flex h-5 w-5 cursor-pointer items-center justify-center rounded-sm p-1 text-xs"
           onClick={() => removeTurn(character.id, turn.id)}
         >
           <X />

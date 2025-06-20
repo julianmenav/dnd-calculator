@@ -16,7 +16,7 @@ export default function AttackComponent({ attack }: { attack: Attack }) {
   return (
     <div className="card card-bordered bg-base-300 indicator flex h-[150px] w-[300px] flex-row rounded-sm p-2 shadow-sm">
       <button
-        className="indicator-item bg-error/40 text-error-content flex h-4 w-4 cursor-pointer items-center justify-center rounded-sm p-0.5 text-xs"
+        className="indicator-item bg-error/40 hover:bg-error/70 text-error-content flex h-4 w-4 cursor-pointer items-center justify-center rounded-sm p-0.5 text-xs"
         onClick={() => removeAttack(character.id, turn.id, attack.id)}
       >
         <X />
