@@ -17,8 +17,21 @@ export const ABILITIES: AbilityType[] = [
   'Charisma',
 ]
 
-export type Feat = 'Heavy Weap.' | 'Advantage' | 'Crit' | 'Precision'
-export const FEATS: Feat[] = ['Heavy Weap.', 'Advantage', 'Crit', 'Precision']
+export type Feat =
+  | 'Heavy Weap.'
+  | 'Advantage'
+  | 'Crit'
+  | 'Precision'
+  | 'Champion'
+  | 'Piercer'
+export const FEATS: Feat[] = [
+  'Heavy Weap.',
+  'Advantage',
+  'Crit',
+  'Precision',
+  'Champion',
+  'Piercer',
+]
 
 export type Attack = {
   id: string
