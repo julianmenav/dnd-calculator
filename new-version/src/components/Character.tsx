@@ -24,8 +24,8 @@ export default function CharacterComponent({
           <X />
         </button>
         <div className="card-body flex flex-row justify-between gap-3">
-          <div className="flex w-58 flex-col gap-1">
-            <div className="grid grid-cols-2 gap-1">
+          <div className="flex w-24 flex-col gap-1">
+            <div className="flex flex-col gap-1">
               <input
                 className="input input-xs"
                 placeholder="Character Name"
@@ -49,7 +49,7 @@ export default function CharacterComponent({
               </label>
             </div>
             <hr className="my-2" />
-            <div className="grid grid-cols-2 gap-1">
+            <div className="flex flex-col gap-1">
               {ABILITIES.map((ability) => (
                 <label key={ability} className="input input-xs">
                   <span className="label w-1/4">{ability.slice(0, 3)}</span>

@@ -1,6 +1,6 @@
 import { useCharacter } from '../context/CharacterContext'
 import { useTurn } from '../context/TurnContext'
-import type { Attack } from '../models'
+import type { AbilityType, Attack } from '../models'
 import { useScenarioStore } from '../store/scenarioStore'
 import { ABILITIES } from '../models'
 import { FEATS } from '../models'
@@ -32,7 +32,15 @@ export default function AttackComponent({ attack }: { attack: Attack }) {
         <div className="flex w-full flex-row items-start justify-between">
           <div>
             <span className="label text-xs">Attack Bonus</span>
-            <select className="select select-xs appearance-none">
+            <select className="select select-xs appearance-none" onChange={(e) => {
+              const value = e.target.value as AbilityType || undefined
+              const partialUpdate: Partial<Attack> = {
+                attackBonusAbility: value,
+                damageBonusAbility: attack.damageBonusAbility ? attack.damageBonusAbility : value,
+              }
+
+              updateAttack(character.id, turn.id, attack.id, partialUpdate)
+            }}>
               <option value="">None</option>
               {ABILITIES.map((ability) => {
                 return (
@@ -49,14 +57,18 @@ export default function AttackComponent({ attack }: { attack: Attack }) {
           </div>
           <div>
             <span className="label text-xs">Damage Bonus</span>
-            <select className="select select-xs appearance-none">
+            <select className="select select-xs appearance-none" onChange={(e) => {
+              updateAttack(character.id, turn.id, attack.id, {
+                damageBonusAbility: e.target.value as AbilityType || undefined,
+              })
+            }}>
               <option value="">None</option>
               {ABILITIES.map((ability) => {
                 return (
                   <option
                     key={ability}
                     value={ability}
-                    selected={attack.attackBonusAbility === ability}
+                    selected={attack.damageBonusAbility === ability}
                   >
                     {ability}
                   </option>

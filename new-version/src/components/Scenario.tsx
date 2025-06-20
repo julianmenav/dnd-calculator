@@ -12,7 +12,8 @@ function Scenario() {
   return (
     <ScenarioProvider value={scenario}>
       <div className="flex w-full flex-col gap-3 p-5 px-12">
-        <div className="flex items-center justify-between">
+        <div className="w-full flex flex-row justify-between items-center">
+          <h1 className="text-2xl font-bold">D&D Calculator</h1>
           <button
             className="btn btn-success btn-xs"
             onClick={() => addCharacter()}
