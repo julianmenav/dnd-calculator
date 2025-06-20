@@ -1,30 +1,32 @@
 import type { Attack, Character, Feat, Scenario, Turn } from '../models'
 
-// TODO: shouldnt this be for turns?
 export const calculateAttackDamage = (
-  attack: Attack,
   turn: Turn,
   character: Character,
   scenario: Scenario
 ): number => {
-  const attackBonus = getAttackBonus(attack, character)
-  const damageBonus = getDamageBonus(attack, character)
+  const turnDamage = turn.attacks.reduce((total, attack) => {
+    const attackBonus = getAttackBonus(attack, character)
+    const damageBonus = getDamageBonus(attack, character)
 
-  const dicesDamage = getDicesDamage(attack)
-  const hitChance = getHitChance(attack, turn, scenario, attackBonus)
-  const critChance = getCritChanceGivenHitHasLanded(attack, hitChance)
+    const dicesDamage = getDicesDamage(attack)
+    const hitChance = getHitChance(attack, turn, scenario, attackBonus)
+    const critChance = getCritChanceGivenHitLanded(attack, hitChance)
 
-  const finalAverageDicesDamage = getAverageDicesDamage(
-    dicesDamage,
-    hitChance,
-    critChance,
-    attack
-  )
-  const averageDamageBonus = damageBonus * hitChance
+    const finalAverageDicesDamage = getAverageDicesDamage(
+      dicesDamage,
+      hitChance,
+      critChance,
+      attack
+    )
+    const averageDamageBonus = damageBonus * hitChance
 
-  const totalAverageDamage = finalAverageDicesDamage + averageDamageBonus
+    const attackAverageDamage = finalAverageDicesDamage + averageDamageBonus
 
-  return totalAverageDamage
+    return total + attackAverageDamage
+  }, 0)
+
+  return turnDamage
 }
 
 // TODO: Order and group this functions in some way.
@@ -43,11 +45,10 @@ const getHitChance = (
   const numberOfCritOutcomes = attackIncludesFeat(attack, 'Champion') ? 2 : 1 // 20 always hits. 19 also with champion feat.
   // Minimum number of dice outcomes that will land a hit.
   const minHittingOutcomes = numberOfCritOutcomes
-  
-  
-  const numberOfFailingOutcomes = 1 // 1 always fails 
+
+  const numberOfAlwaysFailingOutcomes = 1 // 1 always fails
   // Maximun number of dice outcomes that will land a hit.
-  const maxHittingOutcomes = totalOutcomes - numberOfFailingOutcomes
+  const maxHittingOutcomes = totalOutcomes - numberOfAlwaysFailingOutcomes
 
   /**
    *  Hit probability:
@@ -66,7 +67,7 @@ const getHitChance = (
       ) / totalOutcomes
     )
   } else {
-    const numberOfFailingOutcomes = enemyAc - 1 - attackBonus;
+    const numberOfFailingOutcomes = enemyAc - 1 - attackBonus
     return (
       1 -
       (Math.max(
@@ -85,7 +86,7 @@ const getDicesDamage = (attack: Attack): number => {
 }
 
 // If we know the hit has landed, we can calculate the crit chance using the intersection.
-const getCritChanceGivenHitHasLanded = (
+const getCritChanceGivenHitLanded = (
   attack: Attack,
   hitChance: number
 ): number => {
@@ -112,6 +113,43 @@ const getAverageDicesDamage = (
   return expectedDamageAvg * hitChance
 }
 
+/**
+ *  Bonus to attack roll to increase hitting chance.
+ */
+const getAttackBonus = (attack: Attack, character: Character): number => {
+  // Bonus based on lvl and ability score.
+  let abilityScore = 0
+  if (attack.attackBonusAbility) {
+    abilityScore = character.abilities[attack.attackBonusAbility] ?? 0
+  }
+  let attackBonus = abilityScore + getProfienciencyBonus(character.lvl)
+
+  // Add feats bonuses.
+  if (attackIncludesFeat(attack, 'Precision')) {
+    attackBonus += averageDiceRoll(8) // Precision feat adds the result of a d8 to the attack bonus.
+  }
+  if (attackIncludesFeat(attack, 'Heavy Weap.')) {
+    attackBonus -= 5 // Heavy weapon feat reduces the attack bonus by 5.
+  }
+  return attackBonus
+}
+
+/**
+ *  Bonus to damage roll to increase damage in case of hit.
+ */
+const getDamageBonus = (attack: Attack, character: Character): number => {
+  let abilityScore = 0
+  if (attack.damageBonusAbility) {
+    abilityScore = character.abilities[attack.damageBonusAbility] ?? 0
+  }
+
+  let featBonus = 0
+  if (attackIncludesFeat(attack, 'Heavy Weap.')) featBonus += 10
+  if (attackIncludesFeat(attack, 'Duelist')) featBonus += 2
+
+  return abilityScore + featBonus
+}
+
 const attackIncludesFeat = (attack: Attack, feat: Feat): boolean => {
   return attack.feats.includes(feat)
 }
@@ -126,20 +164,4 @@ const getProfienciencyBonus = (level: number): number => {
   if (level < 13) return 4
   if (level < 17) return 5
   return 6
-}
-
-const getAttackBonus = (attack: Attack, character: Character): number => {
-  let abilityScore = 0
-  if (attack.attackBonusAbility) {
-    abilityScore = character.abilities[attack.attackBonusAbility] ?? 0
-  }
-  return abilityScore + getProfienciencyBonus(character.lvl)
-}
-
-const getDamageBonus = (attack: Attack, character: Character): number => {
-  let abilityScore = 0
-  if (attack.damageBonusAbility) {
-    abilityScore = character.abilities[attack.damageBonusAbility] ?? 0
-  }
-  return abilityScore
 }

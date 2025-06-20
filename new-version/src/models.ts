@@ -24,6 +24,7 @@ export type Feat =
   | 'Precision'
   | 'Champion'
   | 'Piercer'
+  | 'Duelist'
 export const FEATS: Feat[] = [
   'Heavy Weap.',
   'Advantage',
@@ -31,6 +32,7 @@ export const FEATS: Feat[] = [
   'Precision',
   'Champion',
   'Piercer',
+  'Duelist',
 ]
 
 export type Attack = {
