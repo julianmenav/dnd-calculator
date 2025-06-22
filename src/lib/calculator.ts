@@ -58,7 +58,7 @@ const getHitChance = (
    *      * Rolling double 1s ALWAYS misses, and rolling at least one 20 guarantees a hit.
    */
 
-  if (attackIncludesFeat(attack, 'Advantage')) {
+  if (!attackIncludesFeat(attack, 'Advantage')) {
     const numberOfHittingOutcomes = totalOutcomes - enemyAc + attackBonus + 1
     return (
       Math.max(
