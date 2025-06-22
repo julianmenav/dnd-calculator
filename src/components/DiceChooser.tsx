@@ -4,6 +4,7 @@ import { useScenarioStore } from '../store/scenarioStore'
 import { DICE_SIDES } from '../models'
 import { useCharacter } from '../context/CharacterContext'
 import { useTurn } from '../context/TurnContext'
+import Plus from '../icons/Plus'
 
 export default function DiceChooser() {
   const [showDiceChooser, setShowDiceChooser] = useState(false)
@@ -19,7 +20,7 @@ export default function DiceChooser() {
           className="btn btn-success btn-xs w-full"
           onClick={() => setShowDiceChooser(true)}
         >
-          Add Attack
+          <Plus /> Add Attack
         </button>
       ) : (
         <div>

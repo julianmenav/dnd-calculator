@@ -4,6 +4,7 @@ import { useScenarioStore } from '../store/scenarioStore'
 import TurnComponent from './Turn'
 import { ABILITIES } from '../models'
 import X from '../icons/X'
+import Plus from '../icons/Plus'
 
 export default function CharacterComponent({
   character,
@@ -23,7 +24,7 @@ export default function CharacterComponent({
         >
           <X />
         </button>
-        <div className="flex flex-col justify-between gap-3 p-2">
+        <div className="flex flex-col justify-between gap-3 p-2 min-w-[280px]">
           <div className="flex w-full flex-row justify-between gap-1">
             <div className="flex flex-row gap-1">
               <input
@@ -53,7 +54,7 @@ export default function CharacterComponent({
               className="btn btn-success btn-sm"
               onClick={() => addTurn(character.id)}
             >
-              Add turn
+              <Plus /> Add turn
             </button>
           </div>
           <div className="gap-1 flex flex-row flex-wrap justify-around max-w-[900px]">
