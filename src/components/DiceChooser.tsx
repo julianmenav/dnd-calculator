@@ -17,18 +17,18 @@ export default function DiceChooser() {
     <>
       {!showDiceChooser ? (
         <button
-          className="btn btn-success btn-xs w-full"
+          className="btn btn-secondary btn-xs w-full"
           onClick={() => setShowDiceChooser(true)}
         >
           <Plus /> Add Attack
         </button>
       ) : (
         <div>
-          <div>
+          <div className="flex flex-row gap-0.5">
             {DICE_SIDES.map((dice) => (
               <button
                 key={dice}
-                className="btn btn-xs btn-primary m-1"
+                className="btn btn-xs btn-primary"
                 onClick={() => {
                   if (dices.length > 10) return
                   setDices((prev) => {
@@ -41,7 +41,7 @@ export default function DiceChooser() {
               </button>
             ))}
             <button
-              className="btn btn-success btn-xs m-1"
+              className="btn btn-accent btn-xs"
               onClick={() => {
                 addAttack(character.id, turn.id, dices)
                 setDices([])

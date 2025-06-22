@@ -57,7 +57,8 @@ export type Character = {
   name: string
   lvl: number
   abilities: Record<AbilityType, number> // from -5 to +5
-  turns: Turn[]
+  turns: Turn[],
+  compactMode: boolean
 }
 
 export type Scenario = {

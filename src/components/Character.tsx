@@ -5,6 +5,7 @@ import TurnComponent from './Turn'
 import { ABILITIES } from '../models'
 import X from '../icons/X'
 import Plus from '../icons/Plus'
+import Squares from '../icons/Squares'
 
 export default function CharacterComponent({
   character,
@@ -24,9 +25,24 @@ export default function CharacterComponent({
         >
           <X />
         </button>
-        <div className="flex flex-col justify-between gap-3 p-2 min-w-[280px]">
+        <div
+          className={
+            'flex min-w-[280px] flex-col justify-between gap-3 p-2' +
+            (character.compactMode && 'max-w-[300px]')
+          }
+        >
           <div className="flex w-full flex-row justify-between gap-1">
-            <div className="flex flex-row gap-1">
+            <div className="flex flex-row flex-grow gap-1">
+              <button
+                className="btn btn-primary btn-sm"
+                onClick={() =>
+                  updateCharacter(character.id, {
+                    compactMode: !character.compactMode,
+                  })
+                }
+              >
+                <Squares />
+              </button>
               <input
                 className="input input-sm flew-grow"
                 placeholder="Character Name"
@@ -49,35 +65,45 @@ export default function CharacterComponent({
                 />
               </label>
             </div>
-
-            <button
-              className="btn btn-success btn-sm"
-              onClick={() => addTurn(character.id)}
-            >
-              <Plus /> Add turn
-            </button>
+            {!character.compactMode && (
+              <button
+                className="btn btn-secondary btn-sm"
+                onClick={() => addTurn(character.id)}
+              >
+                <Plus /> Add turn
+              </button>
+            )}
           </div>
-          <div className="gap-1 flex flex-row flex-wrap justify-around max-w-[900px]">
-            {ABILITIES.map((ability) => (
-              <label key={ability} className="input input-xs max-w-[130px]">
-                <span className="label w-1/6">{ability.slice(0, 3)}</span>
-                <input
-                  className="input w-5/6"
-                  type="text"
-                  value={character.abilities[ability]}
-                  onChange={(e) =>
-                    updateCharacter(character.id, {
-                      abilities: {
-                        ...character.abilities,
-                        [ability]: Number(e.target.value),
-                      },
-                    })
-                  }
-                />
-              </label>
-            ))}
-          </div>
-          <div className="flex flex-grow flex-row gap-5">
+          {!character.compactMode && (
+            <div className="flex max-w-[900px] flex-row flex-wrap justify-around gap-1">
+              {ABILITIES.map((ability) => (
+                <label key={ability} className="input input-xs max-w-[90px]">
+                  <span className="label w-1/12">{ability.slice(0, 3)}</span>
+                  <input
+                    className="input w-11/12"
+                    type="text"
+                    value={character.abilities[ability]}
+                    onChange={(e) =>
+                      updateCharacter(character.id, {
+                        abilities: {
+                          ...character.abilities,
+                          [ability]: Number(e.target.value),
+                        },
+                      })
+                    }
+                  />
+                </label>
+              ))}
+            </div>
+          )}
+          <div
+            className={
+              'flex flex-grow gap-5' +
+              (character.compactMode
+                ? ' flex-col items-center justify-center'
+                : ' flex-row justify-center')
+            }
+          >
             {character.turns.map((turn) => (
               <TurnComponent key={turn.id} turn={turn} />
             ))}

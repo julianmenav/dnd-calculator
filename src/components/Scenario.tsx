@@ -30,7 +30,7 @@ function Scenario() {
               />
             </div>
             <button
-              className="btn btn-success btn-sm"
+              className="btn btn-accent btn-sm"
               onClick={() => addCharacter()}
             >
               <Plus />
@@ -38,7 +38,7 @@ function Scenario() {
             </button>
           </div>
         </div>
-        <div className="flex flex-row gap-3 py-5 overflow-x-auto px-2">
+        <div className="flex flex-row gap-3 py-5 overflow-x-auto px-2 justify-center">
           {scenario.characters.map((char) => (
             <CharacterComponent key={char.id} character={char} />
           ))}

@@ -247,6 +247,7 @@ const createCharacter = (character?: Character): Character => {
       Charisma: character?.abilities?.Charisma || 0,
     },
     turns: character?.turns || [],
+    compactMode: character?.compactMode || false,
   }
 }
 
