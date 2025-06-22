@@ -16,18 +16,18 @@ export default function CharacterComponent({
 
   return (
     <CharacterProvider value={character}>
-      <div className="card card-border bg-base-100 indicator w-full shadow-md">
+      <div className="card card-border bg-base-100 indicator p-3 shadow-md">
         <button
           className="indicator-item bg-error/40 hover:bg-error/70 text-error-content flex h-5 w-5 cursor-pointer items-center justify-center rounded-sm p-1 text-xs"
           onClick={() => removeCharacter(character.id)}
         >
           <X />
         </button>
-        <div className="card-body flex flex-row justify-between gap-3">
-          <div className="flex w-24 flex-col gap-1">
-            <div className="flex flex-col gap-1">
+        <div className="card-body flex flex-col justify-between gap-3">
+          <div className="flex w-24 flex-row gap-1">
+            <div className="flex flex-row gap-1">
               <input
-                className="input input-xs"
+                className="input input-xs w-full"
                 placeholder="Character Name"
                 value={character.name}
                 onChange={(e) =>
@@ -48,8 +48,7 @@ export default function CharacterComponent({
                 />
               </label>
             </div>
-            <hr className="my-2" />
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-row gap-1">
               {ABILITIES.map((ability) => (
                 <label key={ability} className="input input-xs">
                   <span className="label w-1/4">{ability.slice(0, 3)}</span>
@@ -70,20 +69,18 @@ export default function CharacterComponent({
               ))}
             </div>
           </div>
-          <div className="flex flex-grow flex-col">
-            <button
-              className="btn btn-success btn-xs w-24"
-              onClick={() => addTurn(character.id)}
-            >
-              Add turn
-            </button>
-            <div className="p-2">
-              {character.turns.map((turn) => (
-                <TurnComponent key={turn.id} turn={turn} />
-              ))}
-            </div>
+          <div className="flex flex-grow flex-row gap-5">
+            {character.turns.map((turn) => (
+              <TurnComponent key={turn.id} turn={turn} />
+            ))}
           </div>
         </div>
+        <button
+          className="btn btn-success btn-xs w-full"
+          onClick={() => addTurn(character.id)}
+        >
+          Add turn
+        </button>
       </div>
     </CharacterProvider>
   )

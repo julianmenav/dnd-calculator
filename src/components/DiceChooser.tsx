@@ -13,10 +13,10 @@ export default function DiceChooser() {
   const turn = useTurn()
 
   return (
-    <div>
+    <>
       {!showDiceChooser ? (
         <button
-          className="btn btn-success btn-xs w-24"
+          className="btn btn-success btn-xs w-full"
           onClick={() => setShowDiceChooser(true)}
         >
           Add Attack
@@ -61,6 +61,6 @@ export default function DiceChooser() {
           </div>
         </div>
       )}
-    </div>
+    </>
   )
 }

@@ -78,14 +78,14 @@ export default function AttackComponent({ attack }: { attack: Attack }) {
           </div>
         </div>
 
-        <div className="card card-border mt-2 flex content-start flex-row  flex-wrap h-full gap-0.5 overflow-y-auto p-1 shadow-sm">
+        <div className="card card-border mt-2 grid grid-cols-2 gap-0.5 overflow-y-auto p-1 shadow-sm">
           {FEATS.map((feat) => {
             const isSelected = attack.feats.includes(feat)
             return (
               <button
                 key={feat}
                 className={`btn btn-xs ${
-                  isSelected ? 'btn-primary' : 'btn-neutral'
+                  isSelected ? 'btn-primary' : 'btn-secondary'
                 }`}
                 onClick={() => {
                   updateAttack(character.id, turn.id, attack.id, {

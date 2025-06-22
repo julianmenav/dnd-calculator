@@ -38,7 +38,6 @@ export default function TurnComponent({ turn }: { turn: Turn }) {
               updateTurn(character.id, turn.id, { name: e.target.value })
             }
           />
-          <DiceChooser />
           <label className="input input-xs">
             <span className="label w-1/4">Enemy Ac</span>
             <input
@@ -54,14 +53,16 @@ export default function TurnComponent({ turn }: { turn: Turn }) {
           </label>
         </div>
         <div className="card-body flex items-center gap-2">
-          <p>Avg. Damage: {avgDamage.toFixed(2)}</p>
+          <p className="text-accent text-xl font-normal">Avg. Damage: {avgDamage.toFixed(2)}</p>
+              
+          <div className="flex flex-col gap-3">
+            {turn.attacks.map((attack) => (
+              <AttackComponent key={attack.id} attack={attack} />
+            ))}
+          </div>
+          <DiceChooser />
         </div>
 
-        <div className="flex flex-wrap gap-3">
-          {turn.attacks.map((attack) => (
-            <AttackComponent key={attack.id} attack={attack} />
-          ))}
-        </div>
       </div>
     </TurnProvider>
   )
