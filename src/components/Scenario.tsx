@@ -13,7 +13,7 @@ function Scenario() {
     <ScenarioProvider value={scenario}>
       <div className="flex w-full flex-col gap-3 p-5 px-12">
         <div className="w-full flex flex-row justify-between items-center">
-          <h1 className="text-2xl font-bold">D&D Calculator</h1>
+          <h1 className="text-2xl font-bold text-accent">D&D Calculator</h1>
           <button
             className="btn btn-success btn-xs"
             onClick={() => addCharacter()}
@@ -26,7 +26,7 @@ function Scenario() {
             </label>
             <input
               type="number"
-              className="input input-xs"
+              className="input input-xs bg-secondary text-secondary-content"
               min={0}
               max={30}
               value={scenario.enemyAc}

@@ -6,26 +6,26 @@
   default: true;
   prefersdark: true;
   color-scheme: "dark";
-  --color-base-100: oklch(12% 0.042 264.695);
-  --color-base-200: oklch(20% 0.042 265.755);
-  --color-base-300: oklch(27% 0.041 260.031);
+  --color-base-100: #202537;
+  --color-base-200: #131327;
+  --color-base-300: #2b3043;
   --color-base-content: oklch(96% 0.007 247.896);
-  --color-primary: oklch(55% 0.163 48.998);
+  --color-primary: oklch(66% 0.179 58.318);
   --color-primary-content: oklch(100% 0 0);
-  --color-secondary: oklch(44% 0.043 257.281);
+  --color-secondary: #383d51;
   --color-secondary-content: oklch(98% 0.003 247.858);
-  --color-accent: oklch(59% 0.145 163.225);
-  --color-accent-content: oklch(97% 0.021 166.113);
-  --color-neutral: oklch(37% 0.034 259.733);
+  --color-accent: #00ce84;
+  --color-accent-content: oklch(100% 0 0);
+  --color-neutral: #202537;
   --color-neutral-content: oklch(98% 0.003 247.858);
   --color-info: oklch(70% 0.165 254.624);
   --color-info-content: oklch(28% 0.091 267.935);
-  --color-success: oklch(72% 0.219 149.579);
-  --color-success-content: oklch(27% 0.072 132.109);
+  --color-success: oklch(59% 0.145 163.225);
+  --color-success-content: oklch(98% 0.018 155.826);
   --color-warning: oklch(82% 0.189 84.429);
   --color-warning-content: oklch(14% 0.004 49.25);
   --color-error: oklch(70% 0.191 22.216);
-  --color-error-content: oklch(25% 0.092 26.042);
+  --color-error-content: #fffff;
   --radius-selector: 0.5rem;
   --radius-field: 0.25rem;
   --radius-box: 0.5rem;
@@ -35,3 +35,4 @@
   --depth: 1;
   --noise: 0;
 }
+
