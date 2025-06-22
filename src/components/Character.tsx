@@ -68,6 +68,12 @@ export default function CharacterComponent({
                 </label>
               ))}
             </div>
+            <button
+              className="btn btn-success btn-xs w-full"
+              onClick={() => addTurn(character.id)}
+            >
+              Add turn
+            </button>
           </div>
           <div className="flex flex-grow flex-row gap-5">
             {character.turns.map((turn) => (
@@ -75,12 +81,6 @@ export default function CharacterComponent({
             ))}
           </div>
         </div>
-        <button
-          className="btn btn-success btn-xs w-full"
-          onClick={() => addTurn(character.id)}
-        >
-          Add turn
-        </button>
       </div>
     </CharacterProvider>
   )

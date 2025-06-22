@@ -38,7 +38,7 @@ function Scenario() {
             </button>
           </div>
         </div>
-        <div className="flex flex-row gap-3 py-5 overflow-x-auto">
+        <div className="flex flex-row gap-3 py-5 overflow-x-auto px-2">
           {scenario.characters.map((char) => (
             <CharacterComponent key={char.id} character={char} />
           ))}

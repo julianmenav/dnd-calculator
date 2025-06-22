@@ -30,18 +30,18 @@ export default function TurnComponent({ turn }: { turn: Turn }) {
         >
           <X />
         </button>
-        <div className="card-header flex items-center justify-between p-4">
+        <div className="card-header gap-2 flex flex-col justify-start items-center p-4">
           <input
-            className="input input-xs"
+            className="input input-sm"
             value={turn.name}
             onChange={(e) =>
               updateTurn(character.id, turn.id, { name: e.target.value })
             }
           />
-          <label className="input input-xs">
-            <span className="label w-1/4">Enemy Ac</span>
+          <div className="w-full flex flex-row  items-center justify-between gap-2">
+            <span className="label">Enemy Ac</span>
             <input
-              className="input w-3/4 bg-secondary text-secondary-content"
+              className="input input-sm border-0 bg-secondary text-secondary-content w-24"
               type="text"
               value={turn.enemyAc ?? scenario.enemyAc}
               onChange={(e) =>
@@ -50,19 +50,21 @@ export default function TurnComponent({ turn }: { turn: Turn }) {
                 })
               }
             />
-          </label>
+
+          </div>
         </div>
-        <div className="card-body flex items-center gap-2">
-          <p className="text-accent text-xl font-normal">Avg. Damage: {avgDamage.toFixed(2)}</p>
-              
-          <div className="flex flex-col gap-3">
+        <div className=" flex flex-col items-center justify-start gap-3">
+          <span className="text-accent text-xl font-normal">
+            Avg. Damage: {avgDamage.toFixed(2)}
+          </span>
+
+            <DiceChooser />
+          <div className="flex flex-grow flex-col justify-start gap-3">
             {turn.attacks.map((attack) => (
               <AttackComponent key={attack.id} attack={attack} />
             ))}
           </div>
-          <DiceChooser />
         </div>
-
       </div>
     </TurnProvider>
   )

@@ -14,21 +14,14 @@ export default function AttackComponent({ attack }: { attack: Attack }) {
   const turn = useTurn()
 
   return (
-    <div className="card bg-neutral indicator flex h-[200px] w-[300px] flex-row rounded-sm p-2 shadow-sm">
+    <div className="card bg-neutral indicator flex max-h-[230px] max-w-[250px] flex-row rounded-sm p-2 shadow-sm">
       <button
         className="indicator-item bg-error/40 hover:bg-error/70 text-error-content flex h-4 w-4 cursor-pointer items-center justify-center rounded-sm p-0.5 text-xs"
         onClick={() => removeAttack(character.id, turn.id, attack.id)}
       >
         <X />
       </button>
-      <div className="flex w-1/3 flex-row flex-wrap content-start items-start justify-start gap-2 overflow-auto p-2">
-        {attack.dices.map((dice, index) => (
-          <span className="badge badge-xs badge-primary" key={index}>
-            {dice}
-          </span>
-        ))}
-      </div>
-      <div className="flex w-2/3 flex-col p-1">
+      <div className="flex flex-col p-1">
         <div className="flex w-full flex-row items-start justify-between">
           <div>
             <span className="label text-xs">Attack Bonus</span>
@@ -100,6 +93,13 @@ export default function AttackComponent({ attack }: { attack: Attack }) {
             )
           })}
         </div>
+      <div className="flex w-full flex-row flex-wrap  items-start justify-start gap-2 p-2">
+        {attack.dices.map((dice, index) => (
+          <span className="badge badge-xs badge-primary" key={index}>
+            {dice}
+          </span>
+        ))}
+      </div>        
       </div>
     </div>
   )
