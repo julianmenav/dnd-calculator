@@ -82,7 +82,22 @@ const getHitChance = (
 
 // Average dices damage without counting hit chance.
 const getDicesDamage = (attack: Attack): number => {
-  return attack.dices.reduce((total, dice) => total + averageDiceRoll(dice), 0)
+  let rerolls = 0;
+  if (attackIncludesFeat(attack, 'Piercer')) {
+    rerolls++
+  }
+
+  return attack.dices.reduce((total, dice) => {
+
+    if (attackIncludesFeat(attack, 'GW Fighter')) {
+      return total + averageRollWithGWF(dice)
+    }
+    if (rerolls > 0) {
+      rerolls--
+      return total + averageDiceRollWithSelectiveReroll(dice)
+    }
+    return total + averageDiceRoll(dice)
+  }, 0)
 }
 
 // If we know the hit has landed, we can calculate the crit chance using the intersection.
@@ -128,7 +143,7 @@ const getAttackBonus = (attack: Attack, character: Character): number => {
   if (attackIncludesFeat(attack, 'Precision')) {
     attackBonus += averageDiceRoll(8) // Precision feat adds the result of a d8 to the attack bonus.
   }
-  if (attackIncludesFeat(attack, 'Heavy Weap.')) {
+  if (attackIncludesFeat(attack, 'GW Master')) {
     attackBonus -= 5 // Heavy weapon feat reduces the attack bonus by 5.
   }
   return attackBonus
@@ -144,7 +159,7 @@ const getDamageBonus = (attack: Attack, character: Character): number => {
   }
 
   let featBonus = 0
-  if (attackIncludesFeat(attack, 'Heavy Weap.')) featBonus += 10
+  if (attackIncludesFeat(attack, 'GW Master')) featBonus += 10
   if (attackIncludesFeat(attack, 'Duelist')) featBonus += 2
 
   return abilityScore + featBonus
@@ -156,6 +171,34 @@ const attackIncludesFeat = (attack: Attack, feat: Feat): boolean => {
 
 const averageDiceRoll = (dice: number): number => {
   return (dice + 1) / 2
+}
+
+// This function calculates the average dice roll considering the possibility of rerolling a die if it is worse than the average.
+const averageDiceRollWithSelectiveReroll = (dice: number): number => {
+  const baseAverage = averageDiceRoll(dice)
+
+  let sum = 0
+  for (let i = 1; i <= dice; i++) {
+    const better = dice - i
+    const worse = i - 1
+    const value = better > worse ? baseAverage : i
+    sum += value
+  }
+
+  return sum / dice
+}
+
+// This function calculates the average roll of a die with the GWF feat (rerolls on 1/2 results).
+const averageRollWithGWF = (sides: number): number => {
+  const baseAverage = averageDiceRoll(sides)
+  const rerollAverage = baseAverage
+
+  const rerollChance = 2 / sides
+  const keepChance = 1 - rerollChance
+
+  const keepAverage = (Array.from({ length: sides - 2 }, (_, i) => i + 3).reduce((a, b) => a + b, 0)) / (sides - 2)
+
+  return rerollChance * rerollAverage + keepChance * keepAverage
 }
 
 const getProfienciencyBonus = (level: number): number => {

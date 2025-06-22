@@ -18,7 +18,8 @@ export const ABILITIES: AbilityType[] = [
 ]
 
 export type Feat =
-  | 'Heavy Weap.'
+  | 'GW Master'
+  | 'GW Fighter'
   | 'Advantage'
   | 'Crit'
   | 'Precision'
@@ -26,7 +27,8 @@ export type Feat =
   | 'Piercer'
   | 'Duelist'
 export const FEATS: Feat[] = [
-  'Heavy Weap.',
+  'GW Master',
+  'GW Fighter',
   'Advantage',
   'Crit',
   'Precision',
