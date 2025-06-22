@@ -28,7 +28,7 @@ export default function DiceChooser() {
             {DICE_SIDES.map((dice) => (
               <button
                 key={dice}
-                className="btn btn-xs btn-primary"
+                className="btn btn-xs btn-secondary"
                 onClick={() => {
                   if (dices.length > 10) return
                   setDices((prev) => {

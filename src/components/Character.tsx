@@ -34,7 +34,7 @@ export default function CharacterComponent({
           <div className="flex w-full flex-row justify-between gap-1">
             <div className="flex flex-row flex-grow gap-1">
               <button
-                className="btn btn-primary btn-sm"
+                className="btn btn-secondary btn-sm"
                 onClick={() =>
                   updateCharacter(character.id, {
                     compactMode: !character.compactMode,

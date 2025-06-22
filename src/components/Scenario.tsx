@@ -14,7 +14,7 @@ function Scenario() {
     <ScenarioProvider value={scenario}>
       <div className="flex w-full flex-col gap-3">
         <div className="flex w-full flex-row items-center justify-between p-3">
-          <h1 className="text-accent text-2xl font-bold">D&D Calculator</h1>
+          <h1 className="text-white text-2xl font-bold">D&D Calculator</h1>
           <div className="flex flex-row items-center gap-3">
             <div className="flex gap-2">
               <label className="label">
