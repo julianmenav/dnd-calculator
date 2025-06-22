@@ -41,7 +41,7 @@ export default function TurnComponent({ turn }: { turn: Turn }) {
           <div className="w-full flex flex-row  items-center justify-between gap-2">
             <span className="label">Enemy Ac</span>
             <input
-              className="input input-sm border-0 bg-secondary text-secondary-content w-24"
+              className="input input-xs border-0 bg-secondary text-secondary-content w-24"
               type="text"
               value={turn.enemyAc ?? scenario.enemyAc}
               onChange={(e) =>
@@ -54,7 +54,7 @@ export default function TurnComponent({ turn }: { turn: Turn }) {
           </div>
         </div>
         <div className=" flex flex-col items-center justify-start gap-3">
-          <span className="text-accent text-xl font-normal">
+          <span className="text-primary text-xl font-semibold">
             Avg. Damage: {avgDamage.toFixed(2)}
           </span>
 
