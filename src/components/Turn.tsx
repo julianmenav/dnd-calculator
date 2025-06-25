@@ -40,7 +40,7 @@ export default function TurnComponent({ turn }: { turn: Turn }) {
               updateTurn(character.id, turn.id, { name: e.target.value })
             }
           />
-          <div className="flex w-full flex-row items-center justify-between gap-2">
+          {/* <div className="flex w-full flex-row items-center justify-between gap-2">
             <span className="label">Enemy Ac</span>
             <input
               className="input input-xs bg-secondary text-secondary-content w-24 border-0"
@@ -52,7 +52,7 @@ export default function TurnComponent({ turn }: { turn: Turn }) {
                 })
               }
             />
-          </div>
+          </div> */}
         </div>
         <div className="flex flex-col items-center justify-start gap-3">
           <span className="text-primary text-xl font-semibold mt-4">
