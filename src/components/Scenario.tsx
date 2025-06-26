@@ -37,10 +37,12 @@ function Scenario() {
             </button>
           </div>
         </div>
-        <div className="flex flex-row justify-center gap-3 overflow-x-auto px-2 py-5">
-          {scenario.characters.map((char) => (
-            <CharacterComponent key={char.id} character={char} />
-          ))}
+        <div className="overflow-x-auto px-2 py-5 h-full">
+          <div className="flex flex-row justify-center gap-3 min-w-max h-full">
+            {scenario.characters.map((char) => (
+              <CharacterComponent key={char.id} character={char} />
+            ))}
+          </div>
         </div>
       </div>
     </ScenarioProvider>
