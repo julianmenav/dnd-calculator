@@ -6,6 +6,7 @@ import { ABILITIES } from '../models'
 import X from '../icons/X'
 import Plus from '../icons/Plus'
 import Squares from '../icons/Squares'
+import InputNumber from './InputNumber'
 
 export default function CharacterComponent({
   character,
@@ -32,7 +33,7 @@ export default function CharacterComponent({
           }
         >
           <div className="flex w-full flex-row justify-between gap-1">
-            <div className="flex flex-row flex-grow gap-1">
+            <div className="flex flex-grow flex-row gap-1">
               <button
                 className="btn btn-secondary btn-sm"
                 onClick={() =>
@@ -51,17 +52,17 @@ export default function CharacterComponent({
                   updateCharacter(character.id, { name: e.target.value })
                 }
               />
-              <label className="input input-sm max-w-[95px]">
-                <span className="label w-1/4">LvL</span>
-                <input
-                  className="input input-sm w-3/4"
-                  type="text"
+              <label className="input input-sm max-w-[95px] px-1">
+                <span className="label w-1/4 p-0 m-0">LvL</span>
+                <InputNumber
                   value={character.lvl}
-                  onChange={(e) =>
+                  className="input input-sm w-3/4 px-1"
+                  onChange={(value) =>
                     updateCharacter(character.id, {
-                      lvl: Number(e.target.value),
+                      lvl: value ?? 0,
                     })
                   }
+                  regex={/^$|^\d{1,2}$/}
                 />
               </label>
             </div>
@@ -77,20 +78,20 @@ export default function CharacterComponent({
           {!character.compactMode && (
             <div className="flex max-w-[900px] flex-row flex-wrap justify-around gap-1">
               {ABILITIES.map((ability) => (
-                <label key={ability} className="input input-xs max-w-[90px]">
-                  <span className="label w-1/12">{ability.slice(0, 3)}</span>
-                  <input
-                    className="input w-11/12"
-                    type="text"
+                <label key={ability} className="input input-xs max-w-[90px] px-1">
+                  <span className="label w-1/2 p-0 m-0">{ability.slice(0, 3)}</span>
+                  <InputNumber
                     value={character.abilities[ability]}
-                    onChange={(e) =>
+                    className="w-1/2 px-1"
+                    regex={/^$|^-?$|^-?[0-9]$/}
+                    onChange={(value) => {
                       updateCharacter(character.id, {
                         abilities: {
                           ...character.abilities,
-                          [ability]: Number(e.target.value),
+                          [ability]: value,
                         },
                       })
-                    }
+                    }}
                   />
                 </label>
               ))}

@@ -2,6 +2,7 @@ import { ScenarioProvider } from '../context/ScenarioContext'
 import Plus from '../icons/Plus'
 import { useScenarioStore } from '../store/scenarioStore'
 import CharacterComponent from './Character'
+import InputNumber from './InputNumber'
 
 function Scenario() {
   const scenario = useScenarioStore((state) => state.scenario)
@@ -14,19 +15,17 @@ function Scenario() {
     <ScenarioProvider value={scenario}>
       <div className="flex w-full flex-col gap-3">
         <div className="flex w-full flex-row items-center justify-between p-3">
-          <h1 className="text-white text-2xl font-bold">D&D Calculator</h1>
+          <h1 className="text-2xl font-bold text-white">D&D Calculator</h1>
           <div className="flex flex-row items-center gap-3">
             <div className="flex gap-2">
               <label className="label">
                 <span className="label-text">DefaultEnemy AC</span>
               </label>
-              <input
-                type="number"
-                className="input input-sm border-0 bg-secondary text-secondary-content"
-                min={0}
-                max={30}
+              <InputNumber
+                className="input input-sm bg-secondary text-secondary-content border-0"
                 value={scenario.enemyAc}
-                onChange={(e) => updateEnemyAc(Number(e.target.value))}
+                regex={/^$|^-?$|^-?\d{1,2}$/}
+                onChange={(value) => updateEnemyAc(value ?? 0)}
               />
             </div>
             <button
@@ -38,7 +37,7 @@ function Scenario() {
             </button>
           </div>
         </div>
-        <div className="flex flex-row gap-3 py-5 overflow-x-auto px-2 justify-center">
+        <div className="flex flex-row justify-center gap-3 overflow-x-auto px-2 py-5">
           {scenario.characters.map((char) => (
             <CharacterComponent key={char.id} character={char} />
           ))}
