@@ -5,6 +5,7 @@ import { useScenarioStore } from '../store/scenarioStore'
 import { ABILITIES } from '../models'
 import { FEATS } from '../models'
 import X from '../icons/X'
+import { useState } from 'react'
 
 export default function AttackComponent({ attack }: { attack: Attack }) {
   const { updateAttack, removeAttack } = useScenarioStore(
@@ -12,6 +13,8 @@ export default function AttackComponent({ attack }: { attack: Attack }) {
   )
   const character = useCharacter()
   const turn = useTurn()
+
+  const [showFeats, setShowFeats] = useState(false)
 
   return (
     <div className="card bg-neutral indicator flex max-h-[230px] max-w-[250px] flex-row rounded-sm p-2 shadow-sm">
@@ -25,15 +28,20 @@ export default function AttackComponent({ attack }: { attack: Attack }) {
         <div className="flex w-full flex-row items-start justify-between">
           <div>
             <span className="label text-xs">Attack Bonus</span>
-            <select className="select select-xs appearance-none" onChange={(e) => {
-              const value = e.target.value as AbilityType || undefined
-              const partialUpdate: Partial<Attack> = {
-                attackBonusAbility: value,
-                damageBonusAbility: attack.damageBonusAbility ? attack.damageBonusAbility : value,
-              }
+            <select
+              className="select select-xs appearance-none"
+              onChange={(e) => {
+                const value = (e.target.value as AbilityType) || undefined
+                const partialUpdate: Partial<Attack> = {
+                  attackBonusAbility: value,
+                  damageBonusAbility: attack.damageBonusAbility
+                    ? attack.damageBonusAbility
+                    : value,
+                }
 
-              updateAttack(character.id, turn.id, attack.id, partialUpdate)
-            }}>
+                updateAttack(character.id, turn.id, attack.id, partialUpdate)
+              }}
+            >
               <option value="">None</option>
               {ABILITIES.map((ability) => {
                 return (
@@ -50,11 +58,15 @@ export default function AttackComponent({ attack }: { attack: Attack }) {
           </div>
           <div>
             <span className="label text-xs">Damage Bonus</span>
-            <select className="select select-xs appearance-none" onChange={(e) => {
-              updateAttack(character.id, turn.id, attack.id, {
-                damageBonusAbility: e.target.value as AbilityType || undefined,
-              })
-            }}>
+            <select
+              className="select select-xs appearance-none"
+              onChange={(e) => {
+                updateAttack(character.id, turn.id, attack.id, {
+                  damageBonusAbility:
+                    (e.target.value as AbilityType) || undefined,
+                })
+              }}
+            >
               <option value="">None</option>
               {ABILITIES.map((ability) => {
                 return (
@@ -71,35 +83,51 @@ export default function AttackComponent({ attack }: { attack: Attack }) {
           </div>
         </div>
 
-        <div className="card card-border mt-2 grid grid-cols-2 gap-0.5 overflow-y-auto p-1 shadow-sm">
-          {FEATS.map((feat) => {
-            const isSelected = attack.feats.includes(feat)
-            return (
-              <button
-                key={feat}
-                className={`btn btn-xs ${
-                  isSelected ? 'btn-primary' : 'btn-secondary'
-                }`}
-                onClick={() => {
-                  updateAttack(character.id, turn.id, attack.id, {
-                    feats: isSelected
-                      ? attack.feats.filter((f) => f !== feat)
-                      : [...attack.feats, feat],
-                  })
-                }}
-              >
-                {feat}
-              </button>
-            )
-          })}
+        <div>
+          <button
+            className="btn btn-sm mb-1 w-full"
+            onClick={() => setShowFeats((prev) => !prev)}
+          >
+            Feats{' '}
+            {attack.feats.length > 0 && (
+              <span className="badge badge-xs badge-primary">
+                {attack.feats.length}
+              </span>
+            )}
+          </button>
+
+          {showFeats && (
+            <div className="card card-border grid grid-cols-2 gap-0.5 overflow-y-auto p-1 shadow-sm">
+              {FEATS.map((feat) => {
+                const isSelected = attack.feats.includes(feat)
+                return (
+                  <button
+                    key={feat}
+                    className={`btn btn-xs ${
+                      isSelected ? 'btn-primary' : 'btn-secondary'
+                    }`}
+                    onClick={() => {
+                      updateAttack(character.id, turn.id, attack.id, {
+                        feats: isSelected
+                          ? attack.feats.filter((f) => f !== feat)
+                          : [...attack.feats, feat],
+                      })
+                    }}
+                  >
+                    {feat}
+                  </button>
+                )
+              })}
+            </div>
+          )}
         </div>
-      <div className="flex w-full flex-row flex-wrap  items-start justify-start gap-2 p-2">
-        {attack.dices.map((dice, index) => (
-          <span className="badge badge-xs badge-primary" key={index}>
-            {dice}
-          </span>
-        ))}
-      </div>        
+        <div className="flex w-full flex-row flex-wrap items-start justify-start gap-2 p-2">
+          {attack.dices.map((dice, index) => (
+            <span className="badge badge-xs badge-primary" key={index}>
+              {dice}
+            </span>
+          ))}
+        </div>
       </div>
     </div>
   )
