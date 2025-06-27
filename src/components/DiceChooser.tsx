@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import type { Dice } from '../models'
 import { useScenarioStore } from '../store/scenarioStore'
-import { DICE_SIDES } from '../models'
+import { DICE_SIDES, DICE_COLORS } from '../models'
 import { useCharacter } from '../context/CharacterContext'
 import { useTurn } from '../context/TurnContext'
 import Plus from '../icons/Plus'
 import DiceSelection from './DiceSelection'
+import Confirm from '../icons/Confirm'
 
 export default function DiceChooser() {
   const [showDiceChooser, setShowDiceChooser] = useState(false)
@@ -25,13 +26,13 @@ export default function DiceChooser() {
         </button>
       ) : (
         <div>
-          <div className="flex flex-row gap-0.5">
+          <div className="flex flex-row gap-0.5 rounded-md bg-black/20 p-1">
             {DICE_SIDES.map((dice) => (
               <button
                 key={dice}
-                className="btn btn-xs btn-secondary"
+                className={`btn btn-xs btn-secondary text-base ${DICE_COLORS[dice].background} ${DICE_COLORS[dice].text} hover:opacity-70`}
                 onClick={() => {
-                  if (dices.length > 10) return
+                  if (dices.length > 20) return
                   setDices((prev) => {
                     const newDices = [...prev, dice]
                     return newDices
@@ -42,14 +43,14 @@ export default function DiceChooser() {
               </button>
             ))}
             <button
-              className="btn btn-accent btn-xs"
+              className="btn-success btn btn-xs flex cursor-pointer items-center justify-center rounded-sm p-1 text-xs"
               onClick={() => {
                 addAttack(character.id, turn.id, dices)
                 setDices([])
                 setShowDiceChooser(false)
               }}
             >
-              Confirm
+              <Confirm />
             </button>
           </div>
           <DiceSelection dices={dices} />

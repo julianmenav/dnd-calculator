@@ -1,14 +1,15 @@
 import type { Dice } from '../models'
+import { DICE_COLORS } from '../models'
 
 export default function DiceSelection({ dices }: { dices: Dice[] }) {
 
   const groupedDices = groupDices(dices);
 
   return (
-    <div>
-      {groupedDices.map(({ dice, count }) => {
+    <div className="flex gap-0.5">
+      {groupedDices.map(({ dice, count, bgColor, textColor }) => {
         return count > 0 && (
-          <span key={dice} className="badge bg-primary badge-xs p-2">
+          <span key={dice} className={`badge font-bold p-1 ${bgColor} ${textColor}`}>
             {count}d{dice}
           </span>
         )
@@ -32,5 +33,7 @@ const groupDices = (dices: Dice[]) => {
   return Object.entries(grouped).map(([dice, count]) => ({
     dice: Number(dice),
     count,
+    bgColor: DICE_COLORS[Number(dice) as Dice].background,
+    textColor: DICE_COLORS[Number(dice) as Dice].text,
   }))
 }
