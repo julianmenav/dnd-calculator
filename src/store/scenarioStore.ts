@@ -35,6 +35,9 @@ interface ScenarioState {
       turnId: string,
       attackId: string
     ) => void
+
+    copyCharacter: (characterId: string) => void
+    copyTurn: (characterId: string, turnId: string) => void
   }
 }
 
@@ -221,6 +224,57 @@ export const useScenarioStore = create<ScenarioState>()(
               ),
             },
           })),
+        copyCharacter: (characterId: string) =>
+          set((state) => {
+            const index = state.scenario.characters.findIndex(
+              (character) => character.id === characterId
+            )
+            if (index === -1) return state
+            const characterToCopy = state.scenario.characters[index]
+            const newCharacter = createCharacter(characterToCopy)
+            const newCharacters = [
+              ...state.scenario.characters.slice(0, index + 1),
+              newCharacter,
+              ...state.scenario.characters.slice(index + 1),
+            ]
+            return {
+              scenario: {
+                ...state.scenario,
+                characters: newCharacters,
+              },
+            }
+          }),
+
+        copyTurn: (characterId: string, turnId: string) =>
+          set((state) => {
+            const characterIndex = state.scenario.characters.findIndex(
+              (character) => character.id === characterId
+            )
+            if (characterIndex === -1) return state
+            const character = state.scenario.characters[characterIndex]
+            const turnIndex = character.turns.findIndex(
+              (turn) => turn.id === turnId
+            )
+            if (turnIndex === -1) return state
+            const turnToCopy = character.turns[turnIndex]
+            const newTurn = createTurn(turnToCopy)
+            const newTurns = [
+              ...character.turns.slice(0, turnIndex + 1),
+              newTurn,
+              ...character.turns.slice(turnIndex + 1),
+            ]
+            const newCharacters = [...state.scenario.characters]
+            newCharacters[characterIndex] = {
+              ...character,
+              turns: newTurns,
+            }
+            return {
+              scenario: {
+                ...state.scenario,
+                characters: newCharacters,
+              },
+            }
+          }),
       },
     }),
     {
@@ -254,9 +308,9 @@ const createCharacter = (character?: Character): Character => {
 const createTurn = (turn?: Turn): Turn => {
   return {
     id: uuidv4(),
-    name: '',
+    name: turn?.name || '',
     enemyAc: turn?.enemyAc,
-    attacks: [],
+    attacks: turn?.attacks || [],
   }
 }
 

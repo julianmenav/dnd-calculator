@@ -7,25 +7,33 @@ import X from '../icons/X'
 import Plus from '../icons/Plus'
 import Squares from '../icons/Squares'
 import InputNumber from './InputNumber'
+import Copy from '../icons/Copy'
 
 export default function CharacterComponent({
   character,
 }: {
   character: Character
 }) {
-  const { updateCharacter, removeCharacter, addTurn } = useScenarioStore(
+  const { updateCharacter, copyCharacter, removeCharacter, addTurn } = useScenarioStore(
     (state) => state.actions
   )
 
   return (
     <CharacterProvider value={character}>
       <div className="card card-border bg-base-100 indicator p-3 shadow-md">
-        <button
-          className="indicator-item bg-error/40 hover:bg-error/70 text-error-content flex h-5 w-5 cursor-pointer items-center justify-center rounded-sm p-1 text-xs"
-          onClick={() => removeCharacter(character.id)}
-        >
-          <X />
-        </button>
+        <div className="indicator-item flex gap-1 indicator-end translate-x-0 -translate-y-[50%]">
+          <button className="bg-success/40 hover:bg-success/70 text-success-content flex h-5 w-5 cursor-pointer items-center justify-center rounded-sm p-1 text-xs"
+            onClick={() => copyCharacter(character.id)}
+          >
+            <Copy />
+          </button>
+          <button
+            className="bg-error/40 hover:bg-error/70 text-error-content flex h-5 w-5 cursor-pointer items-center justify-center rounded-sm p-1 text-xs"
+            onClick={() => removeCharacter(character.id)}
+          >
+            <X />
+          </button>
+        </div>
         <div
           className={
             'flex min-w-[280px] flex-col justify-between gap-3 p-2' +

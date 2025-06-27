@@ -8,9 +8,12 @@ import AttackComponent from './Attack'
 import DiceChooser from './DiceChooser'
 import { calculateTurnDamage } from '../lib/calculator'
 import { useEffect, useState } from 'react'
+import Copy from '../icons/Copy'
 
 export default function TurnComponent({ turn }: { turn: Turn }) {
-  const { updateTurn, removeTurn } = useScenarioStore((state) => state.actions)
+  const { updateTurn, copyTurn, removeTurn } = useScenarioStore(
+    (state) => state.actions
+  )
   const character = useCharacter()
   const scenario = useScenario()
 
@@ -25,12 +28,20 @@ export default function TurnComponent({ turn }: { turn: Turn }) {
     <TurnProvider value={turn}>
       <div className="card indicator bg-base-300 w-[280px] p-3 shadow-md">
         {!character.compactMode && (
-          <button
-            className="indicator-item bg-error/40 hover:bg-error/70 text-error-content flex h-5 w-5 cursor-pointer items-center justify-center rounded-sm p-1 text-xs"
-            onClick={() => removeTurn(character.id, turn.id)}
-          >
-            <X />
-          </button>
+          <div className="indicator-item indicator-end flex translate-x-0 -translate-y-[50%] gap-1">
+            <button
+              onClick={() => copyTurn(character.id, turn.id)}
+              className="bg-success/40 hover:bg-success/70 text-success-content flex h-5 w-5 cursor-pointer items-center justify-center rounded-sm p-1 text-xs"
+            >
+              <Copy />
+            </button>
+            <button
+              className="bg-error/40 hover:bg-error/70 text-error-content flex h-5 w-5 cursor-pointer items-center justify-center rounded-sm p-1 text-xs"
+              onClick={() => removeTurn(character.id, turn.id)}
+            >
+              <X />
+            </button>
+          </div>
         )}
         <div className="flex flex-col items-center justify-start gap-2">
           <input
@@ -55,7 +66,7 @@ export default function TurnComponent({ turn }: { turn: Turn }) {
           </div> */}
         </div>
         <div className="flex flex-col items-center justify-start gap-3">
-          <span className="text-primary text-xl font-semibold mt-4">
+          <span className="text-primary mt-4 text-xl font-semibold">
             Avg. Damage: {avgDamage.toFixed(2)}
           </span>
           {!character.compactMode && (
