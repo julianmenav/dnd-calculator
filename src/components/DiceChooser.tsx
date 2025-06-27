@@ -5,6 +5,7 @@ import { DICE_SIDES } from '../models'
 import { useCharacter } from '../context/CharacterContext'
 import { useTurn } from '../context/TurnContext'
 import Plus from '../icons/Plus'
+import DiceSelection from './DiceSelection'
 
 export default function DiceChooser() {
   const [showDiceChooser, setShowDiceChooser] = useState(false)
@@ -51,15 +52,7 @@ export default function DiceChooser() {
               Confirm
             </button>
           </div>
-          <div>
-            {dices.map((dice, index) => {
-              return (
-                <span key={index} className="badge bg-base-300 badge-xs m-1">
-                  d{dice}
-                </span>
-              )
-            })}
-          </div>
+          <DiceSelection dices={dices} />
         </div>
       )}
     </>

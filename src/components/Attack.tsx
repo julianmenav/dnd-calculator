@@ -6,6 +6,7 @@ import { ABILITIES } from '../models'
 import { FEATS } from '../models'
 import X from '../icons/X'
 import { useState } from 'react'
+import DiceSelection from './DiceSelection'
 
 export default function AttackComponent({ attack }: { attack: Attack }) {
   const { updateAttack, removeAttack } = useScenarioStore(
@@ -121,13 +122,7 @@ export default function AttackComponent({ attack }: { attack: Attack }) {
             </div>
           )}
         </div>
-        <div className="flex w-full flex-row flex-wrap items-start justify-start gap-2 p-2">
-          {attack.dices.map((dice, index) => (
-            <span className="badge badge-xs badge-primary" key={index}>
-              {dice}
-            </span>
-          ))}
-        </div>
+        <DiceSelection dices={attack.dices} />
       </div>
     </div>
   )
