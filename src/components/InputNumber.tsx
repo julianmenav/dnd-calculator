@@ -20,21 +20,17 @@ export default function InputNumber({
       value={localValue}
       onChange={(e) => {
         const raw = e.target.value
-        console.log('raw', raw)
-        if (regex?.test(raw)) {
-          setLocalValue(raw)
-        }
+        if (!regex?.test(raw)) return
+        setLocalValue(raw)
 
         const trimmed = raw.trim()
         if (trimmed == '') {
           onChange?.(null)
-          console.log('cambiando a 0')
         }
 
         const value = parseInt(trimmed, 10)
         if (!isNaN(value)) {
           onChange?.(value)
-          console.log('cambiando a ' + value)
         }
       }}
     />
