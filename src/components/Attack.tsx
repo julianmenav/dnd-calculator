@@ -86,7 +86,7 @@ export default function AttackComponent({ attack }: { attack: Attack }) {
 
         <div>
           <button
-            className="btn btn-sm mb-1 w-full"
+            className="btn btn-xs my-1 w-full btn-secondary "
             onClick={() => setShowFeats((prev) => !prev)}
           >
             Feats{' '}
