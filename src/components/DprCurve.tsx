@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import { useAnalysis } from '../context/AnalysisContext'
+import { useScenario } from '../context/ScenarioContext'
 import { AC_MAX, AC_MIN, AC_RANGE, type TurnRow } from '../lib/analysis'
 import { buildHex, sectionLabel, turnDash } from '../lib/ui'
 import { CROSSOVER_LIMIT } from './Crossovers'
@@ -27,6 +28,7 @@ const niceCeiling = (value: number) => {
 
 export default function DprCurve() {
   const analysis = useAnalysis()
+  const scenario = useScenario()
   const svg = useRef<SVGSVGElement>(null)
   const [hovered, setHovered] = useState<number | null>(null)
 
@@ -85,19 +87,36 @@ export default function DprCurve() {
           )
         })}
 
-        {AC_RANGE.map((ac, index) => (
-          <text
-            key={ac}
-            x={xFor(index)}
-            y={BOTTOM + 18}
-            textAnchor="middle"
-            fill="#4a5265"
-            fontFamily="'JetBrains Mono', monospace"
-            fontSize="10"
-          >
-            {ac}
-          </text>
-        ))}
+        {/* Where the scenario is currently pointed. */}
+        {scenario.enemyAc >= AC_MIN && scenario.enemyAc <= AC_MAX && (
+          <line
+            x1={xForAc(scenario.enemyAc)}
+            y1={TOP}
+            x2={xForAc(scenario.enemyAc)}
+            y2={BOTTOM}
+            stroke="#ef9d32"
+            strokeDasharray="4 4"
+            opacity="0.5"
+          />
+        )}
+
+        {AC_RANGE.map((ac, index) => {
+          const current = ac === scenario.enemyAc
+          return (
+            <text
+              key={ac}
+              x={xFor(index)}
+              y={BOTTOM + 18}
+              textAnchor="middle"
+              fill={current ? '#ef9d32' : '#4a5265'}
+              fontFamily="'JetBrains Mono', monospace"
+              fontSize="10"
+              fontWeight={current ? 700 : 400}
+            >
+              {ac}
+            </text>
+          )
+        })}
         <text
           x={(LEFT + RIGHT) / 2}
           y={HEIGHT - 2}
