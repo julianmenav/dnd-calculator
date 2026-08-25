@@ -10,6 +10,7 @@ import { calculateTurnBreakdown } from '../lib/calculator'
 import { useMemo } from 'react'
 import Copy from '../icons/Copy'
 import InputNumber from './InputNumber'
+import DamageSources from './DamageSources'
 import { cn } from '../lib/utils'
 import { field, iconBtnDangerSm, iconBtnSm, microLabel } from '../lib/ui'
 
@@ -140,6 +141,8 @@ export default function TurnComponent({ turn }: { turn: Turn }) {
             <Stat label="Atks" value={String(breakdown.attacks.length)} />
           </div>
         )}
+
+        {!character.compactMode && <DamageSources breakdown={breakdown} />}
 
         {!character.compactMode && (
           <div className="flex flex-grow flex-col gap-3">

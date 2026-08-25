@@ -35,6 +35,13 @@
   --color-build-5: #00a5b3;
   --color-build-6: #b63132;
 
+  /* damage sources — one steel hue in four steps, so a stack never
+     competes with build identity. Same step means the same source. */
+  --color-src-dice: #3e6995;
+  --color-src-crit: #618dbb;
+  --color-src-ability: #8cb2d9;
+  --color-src-feat: #bfd7f1;
+
   /* dice — your hue assignment, restepped for the dark ground */
   --color-d4: #2ea55c;
   --color-d4-ink: #8fd8a3;
