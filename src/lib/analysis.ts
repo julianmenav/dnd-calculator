@@ -20,6 +20,8 @@ export type TurnRow = {
   breakdown: TurnBreakdown
   /** Average damage at each AC in AC_RANGE. */
   curve: number[]
+  /** The AC this turn is actually being scored against right now. */
+  effectiveAc: number
   /** 1-based, by damage at the current AC. */
   rank: number
 }
@@ -59,6 +61,7 @@ export const analyseScenario = (scenario: Scenario): ScenarioAnalysis => {
         turnName: turn.name,
         turnIndex,
         breakdown: calculateTurnBreakdown(turn, character, scenario),
+        effectiveAc: turn.enemyAc ?? scenario.enemyAc,
         /**
          * Sweep the turn's own AC, not the scenario's, so a turn that pins an
          * override still answers "what would this do against AC x" rather than

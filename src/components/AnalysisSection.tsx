@@ -1,4 +1,5 @@
 import { useAnalysis } from '../context/AnalysisContext'
+import DprCurve from './DprCurve'
 import RankingPanel from './RankingPanel'
 
 export default function AnalysisSection() {
@@ -8,7 +9,14 @@ export default function AnalysisSection() {
 
   return (
     <section className="border-rule bg-chrome/40 flex shrink-0 flex-col gap-3 border-t px-4 py-4">
-      <RankingPanel />
+      <div className="flex flex-wrap items-start gap-3">
+        <div className="min-w-[420px] flex-[2]">
+          <DprCurve />
+        </div>
+        <div className="min-w-[380px] flex-1">
+          <RankingPanel />
+        </div>
+      </div>
     </section>
   )
 }
