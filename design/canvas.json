@@ -1,0 +1,77 @@
+{
+  "artboards": [
+    {
+      "file": "Main.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 1600,
+      "h": 1070,
+      "title": "Scenario — build columns"
+    },
+    {
+      "file": "TurnDetail.dc.html",
+      "x": 1720,
+      "y": 0,
+      "w": 840,
+      "h": 1020,
+      "title": "Turn editor"
+    },
+    {
+      "file": "Analysis.dc.html",
+      "x": 0,
+      "y": 1190,
+      "w": 900,
+      "h": 1080,
+      "title": "Analysis"
+    },
+    {
+      "file": "Mobile.dc.html",
+      "x": 1000,
+      "y": 1190,
+      "w": 390,
+      "h": 844,
+      "title": "Phone"
+    },
+    {
+      "file": "Kit.dc.html",
+      "x": 1490,
+      "y": 1190,
+      "w": 1120,
+      "h": 1030,
+      "title": "Design tokens"
+    }
+  ],
+  "annotations": [
+    {
+      "id": "direction",
+      "x": 0,
+      "y": -180,
+      "w": 420,
+      "text": "DARK TACTICAL CONSOLE\n\nSpace Grotesk + JetBrains Mono, tabular numerals, hairline rules, tight radii. Colour is reserved for data: amber marks the target AC and the leading turn, every build owns one hue, and turns inside a build separate by line style rather than a new hue."
+    },
+    {
+      "id": "numbers",
+      "x": 470,
+      "y": -180,
+      "w": 460,
+      "text": "EVERY NUMBER IS REAL\n\nI ported src/lib/calculator.ts and ran six sample turns across AC 10-25, so the curves, deltas and source splits are your own maths — not invented sample data. The GW Master break-even points (AC 17.8 and AC 20.2) fall straight out of it.\n\nCharacter names and ability spreads are the only invented part."
+    },
+    {
+      "id": "new-views",
+      "x": 980,
+      "y": -180,
+      "w": 480,
+      "text": "FOUR NEW ANALYSIS VIEWS\n\nDPR-vs-AC curve, damage-source stack (dice / crit / ability / feat), hit and crit surfaced per turn, and Δ against a pinned baseline turn. The data model is untouched — all four are derived from what the store already holds, plus one new UI-only field: which turn is the baseline."
+    },
+    {
+      "id": "handoff",
+      "x": 1490,
+      "y": 2320,
+      "w": 480,
+      "text": "HANDOFF\n\nTokens are literal hex, ready to drop into a Tailwind v4 @theme block with daisyUI removed. The build palette and the damage-source ramp were both checked against the dark surface for colourblind separation and contrast rather than picked by eye."
+    }
+  ],
+  "launch": {
+    "view": "canvas"
+  }
+}

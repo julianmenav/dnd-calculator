@@ -1,8 +1,10 @@
 import { ScenarioProvider } from '../context/ScenarioContext'
+import D20 from '../icons/D20'
 import Plus from '../icons/Plus'
 import { useScenarioStore } from '../store/scenarioStore'
 import CharacterComponent from './Character'
 import InputNumber from './InputNumber'
+import { btnPrimary, microLabel } from '../lib/ui'
 
 function Scenario() {
   const scenario = useScenarioStore((state) => state.scenario)
@@ -13,34 +15,47 @@ function Scenario() {
 
   return (
     <ScenarioProvider value={scenario}>
-      <div className="flex w-full flex-col gap-3">
-        <div className="flex w-full flex-row items-center justify-between p-3">
-          <h1 className="text-2xl font-bold text-white">D&D Calculator</h1>
-          <div className="flex flex-row items-center gap-3">
-            <div className="flex gap-2">
-              <label className="label">
-                <span className="label-text">DefaultEnemy AC</span>
-              </label>
+      <div className="flex min-h-screen w-full flex-col">
+        <header className="border-rule bg-chrome flex h-[58px] shrink-0 items-center justify-between gap-4 border-b px-4">
+          <div className="flex items-center gap-2.5">
+            <D20 className="text-accent h-[26px] w-[26px]" />
+            <div className="flex flex-col gap-[3px]">
+              <h1 className="text-ink text-sm leading-none font-bold tracking-[0.16em]">
+                D&D CALCULATOR
+              </h1>
+              <span className="text-ink-3 text-[9px] leading-none tracking-[0.14em] uppercase">
+                average damage · build comparison
+              </span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2.5">
+            <label className="border-edge bg-raised/60 rounded-field flex items-center gap-2.5 border py-1 pr-1 pl-2.5">
+              <span className={microLabel}>Default enemy AC</span>
               <InputNumber
-                className="input input-sm bg-secondary text-secondary-content border-0"
+                className="text-accent h-[26px] w-12 border-transparent bg-transparent text-center text-[15px] font-bold hover:border-transparent"
                 value={scenario.enemyAc}
                 regex={/^$|^-?$|^-?\d{1,2}$/}
                 onChange={(value) => updateEnemyAc(value ?? 0)}
               />
-            </div>
-            <button
-              className="btn btn-accent btn-sm"
-              onClick={() => addCharacter()}
-            >
+            </label>
+
+            <button className={btnPrimary} onClick={() => addCharacter()}>
               <Plus />
-              Add Character
+              Add character
             </button>
           </div>
-        </div>
-        <div className="h-full rotate-180 overflow-x-auto px-22 py-5 [direction:rtl]">
+        </header>
+
+        {/* rotate trick keeps the horizontal scrollbar above the columns */}
+        <div className="h-full rotate-180 overflow-x-auto px-4 py-4 [direction:rtl]">
           <div className="flex h-full min-w-max rotate-180 flex-row justify-center gap-3 [direction:ltr]">
-            {scenario.characters.map((char) => (
-              <CharacterComponent key={char.id} character={char} />
+            {scenario.characters.map((char, index) => (
+              <CharacterComponent
+                key={char.id}
+                character={char}
+                index={index}
+              />
             ))}
           </div>
         </div>

@@ -9,6 +9,8 @@ import DiceChooser from './DiceChooser'
 import { calculateTurnDamage } from '../lib/calculator'
 import { useEffect, useState } from 'react'
 import Copy from '../icons/Copy'
+import { cn } from '../lib/utils'
+import { field, iconBtnDangerSm, iconBtnSm, microLabel } from '../lib/ui'
 
 export default function TurnComponent({ turn }: { turn: Turn }) {
   const { updateTurn, copyTurn, removeTurn } = useScenarioStore(
@@ -26,61 +28,79 @@ export default function TurnComponent({ turn }: { turn: Turn }) {
 
   return (
     <TurnProvider value={turn}>
-      <div className="card indicator bg-base-300 w-[280px] p-3 shadow-md">
-        {!character.compactMode && (
-          <div className="indicator-item indicator-end flex translate-x-0 -translate-y-[50%] gap-1">
-            <button
-              onClick={() => copyTurn(character.id, turn.id)}
-              className="bg-success/40 hover:bg-success/70 text-success-content flex h-5 w-5 cursor-pointer items-center justify-center rounded-sm p-1 text-xs"
-            >
-              <Copy />
-            </button>
-            <button
-              className="bg-error/40 hover:bg-error/70 text-error-content flex h-5 w-5 cursor-pointer items-center justify-center rounded-sm p-1 text-xs"
-              onClick={() => removeTurn(character.id, turn.id)}
-            >
-              <X />
-            </button>
-          </div>
+      <article
+        className={cn(
+          'border-line bg-card rounded-card flex flex-col gap-3 border p-3',
+          character.compactMode ? 'w-full' : 'w-[280px] shrink-0'
         )}
-        <div className="flex flex-col items-center justify-start gap-2">
+      >
+        <div className="flex items-center gap-2">
           <input
-            className="input input-sm"
+            className={cn(field, 'min-w-0 flex-grow font-semibold')}
+            placeholder="Turn name"
             value={turn.name}
             onChange={(e) =>
               updateTurn(character.id, turn.id, { name: e.target.value })
             }
           />
-          {/* <div className="flex w-full flex-row items-center justify-between gap-2">
-            <span className="label">Enemy Ac</span>
-            <input
-              className="input input-xs bg-secondary text-secondary-content w-24 border-0"
-              type="text"
-              value={turn.enemyAc ?? scenario.enemyAc}
-              onChange={(e) =>
-                updateTurn(character.id, turn.id, {
-                  enemyAc: e.target.value ? Number(e.target.value) : undefined,
-                })
-              }
-            />
-          </div> */}
-        </div>
-        <div className="flex flex-col items-center justify-start gap-3">
-          <span className="text-primary mt-4 text-xl font-semibold">
-            Avg. Damage: {avgDamage.toFixed(2)}
-          </span>
+
           {!character.compactMode && (
             <>
-              <DiceChooser />
-              <div className="flex flex-grow flex-col justify-start gap-3">
+              <button
+                className={iconBtnSm}
+                title="Duplicate turn"
+                onClick={() => copyTurn(character.id, turn.id)}
+              >
+                <Copy />
+              </button>
+              <button
+                className={iconBtnDangerSm}
+                title="Remove turn"
+                onClick={() => removeTurn(character.id, turn.id)}
+              >
+                <X />
+              </button>
+            </>
+          )}
+        </div>
+
+        {/* <label className="border-line bg-panel rounded-field flex items-center gap-2 border px-2 py-1">
+          <span className={microLabel}>Enemy AC</span>
+          <input
+            className="text-ink w-full bg-transparent text-right font-mono text-[12px] outline-none"
+            type="text"
+            value={turn.enemyAc ?? scenario.enemyAc}
+            onChange={(e) =>
+              updateTurn(character.id, turn.id, {
+                enemyAc: e.target.value ? Number(e.target.value) : undefined,
+              })
+            }
+          />
+        </label> */}
+
+        <div className="flex items-end gap-2">
+          <span className="text-ink font-mono text-[34px] leading-[0.85] font-bold tracking-[-0.03em] tabular-nums">
+            {avgDamage.toFixed(2)}
+          </span>
+          <span className={cn(microLabel, 'pb-[3px] tracking-[0.14em]')}>
+            avg dmg
+          </span>
+        </div>
+
+        {!character.compactMode && (
+          <div className="flex flex-grow flex-col gap-3">
+            <DiceChooser />
+
+            {turn.attacks.length > 0 && (
+              <div className="flex flex-grow flex-col gap-2">
                 {turn.attacks.map((attack) => (
                   <AttackComponent key={attack.id} attack={attack} />
                 ))}
               </div>
-            </>
-          )}
-        </div>
-      </div>
+            )}
+          </div>
+        )}
+      </article>
     </TurnProvider>
   )
 }
