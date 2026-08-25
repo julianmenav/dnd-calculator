@@ -1,6 +1,7 @@
 import { useAnalysis } from '../context/AnalysisContext'
 import DprCurve from './DprCurve'
 import RankingPanel from './RankingPanel'
+import Crossovers from './Crossovers'
 
 export default function AnalysisSection() {
   const analysis = useAnalysis()
@@ -17,6 +18,8 @@ export default function AnalysisSection() {
           <RankingPanel />
         </div>
       </div>
+
+      <Crossovers />
     </section>
   )
 }

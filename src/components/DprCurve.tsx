@@ -2,6 +2,7 @@ import { useRef, useState } from 'react'
 import { useAnalysis } from '../context/AnalysisContext'
 import { AC_MAX, AC_MIN, AC_RANGE, type TurnRow } from '../lib/analysis'
 import { buildHex, sectionLabel, turnDash } from '../lib/ui'
+import { CROSSOVER_LIMIT } from './Crossovers'
 
 const WIDTH = 820
 const HEIGHT = 300
@@ -12,6 +13,8 @@ const BOTTOM = 268
 
 const STEP = (RIGHT - LEFT) / (AC_RANGE.length - 1)
 const xFor = (acIndex: number) => LEFT + acIndex * STEP
+/** Same scale, but for a crossing that lands between two whole ACs. */
+const xForAc = (ac: number) => LEFT + (ac - AC_MIN) * STEP
 
 /** Round the axis top up to something with readable labels. */
 const niceCeiling = (value: number) => {
@@ -139,6 +142,32 @@ export default function DprCurve() {
             />
           )
         })}
+
+        {/* Break-even points, ringed rather than filled so they read as
+            annotation and not as another series. */}
+        {analysis.crossovers.slice(0, CROSSOVER_LIMIT).map((crossover, i) => (
+          <g key={`${crossover.fallsBehind}-${i}`}>
+            <circle
+              cx={xForAc(crossover.ac)}
+              cy={yFor(crossover.damage)}
+              r="6.5"
+              fill="none"
+              stroke="#98a1b5"
+              strokeWidth="1.4"
+            />
+            <text
+              x={xForAc(crossover.ac)}
+              y={yFor(crossover.damage) - 11}
+              textAnchor="middle"
+              fill="#98a1b5"
+              fontFamily="'JetBrains Mono', monospace"
+              fontSize="9"
+              fontWeight="500"
+            >
+              {crossover.ac.toFixed(1)}
+            </text>
+          </g>
+        ))}
 
         <DirectLabels rows={analysis.rows} yFor={yFor} />
 

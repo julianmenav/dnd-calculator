@@ -32,6 +32,8 @@ export type Crossover = {
   fallsBehind: string
   overtakenBy: string
   ac: number
+  /** Damage both turns land on at the crossing. */
+  damage: number
 }
 
 export type ScenarioAnalysis = {
@@ -136,6 +138,8 @@ const findCrossovers = (rows: TurnRow[]): Crossover[] => {
             fallsBehind: before > 0 ? a.turnName : b.turnName,
             overtakenBy: before > 0 ? b.turnName : a.turnName,
             ac: AC_RANGE[step] + fraction,
+            damage:
+              a.curve[step] + fraction * (a.curve[step + 1] - a.curve[step]),
           })
         }
       }
