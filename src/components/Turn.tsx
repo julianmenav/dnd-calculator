@@ -10,8 +10,10 @@ import DiceChooser from './DiceChooser'
 import { calculateTurnBreakdown } from '../lib/calculator'
 import { useMemo } from 'react'
 import Copy from '../icons/Copy'
+import Baseline from '../icons/Baseline'
 import InputNumber from './InputNumber'
 import DamageSources from './DamageSources'
+import Delta from './Delta'
 import { cn } from '../lib/utils'
 import {
   buildAccent,
@@ -22,9 +24,8 @@ import {
 } from '../lib/ui'
 
 export default function TurnComponent({ turn }: { turn: Turn }) {
-  const { updateTurn, copyTurn, removeTurn } = useScenarioStore(
-    (state) => state.actions
-  )
+  const { updateTurn, copyTurn, removeTurn, toggleBaseline } =
+    useScenarioStore((state) => state.actions)
   const character = useCharacter()
   const scenario = useScenario()
 
@@ -41,6 +42,17 @@ export default function TurnComponent({ turn }: { turn: Turn }) {
   const ranked = analysis.turnCount > 1 && row !== undefined
   const shareOfBest =
     analysis.best > 0 ? (breakdown.total / analysis.best) * 100 : 0
+
+  const baselineTurnId = useScenarioStore((state) => state.baselineTurnId)
+  const isBaseline = baselineTurnId === turn.id
+  // A baseline pointing at a deleted turn is simply no baseline.
+  const baselineTotal = baselineTurnId
+    ? analysis.byTurnId[baselineTurnId]?.breakdown.total
+    : undefined
+  const baselineShare =
+    baselineTotal !== undefined && analysis.best > 0
+      ? (baselineTotal / analysis.best) * 100
+      : undefined
 
   return (
     <TurnProvider value={turn}>
@@ -76,6 +88,20 @@ export default function TurnComponent({ turn }: { turn: Turn }) {
 
           {!character.compactMode && (
             <>
+              <button
+                className={cn(
+                  iconBtnSm,
+                  isBaseline && 'border-accent text-accent'
+                )}
+                title={
+                  isBaseline
+                    ? 'Stop measuring against this turn'
+                    : 'Measure every turn against this one'
+                }
+                onClick={() => toggleBaseline(turn.id)}
+              >
+                <Baseline className="h-[11px] w-[11px]" />
+              </button>
               <button
                 className={iconBtnSm}
                 title="Duplicate turn"
@@ -150,11 +176,30 @@ export default function TurnComponent({ turn }: { turn: Turn }) {
           <span className={cn(microLabel, 'pb-[3px] tracking-[0.14em]')}>
             avg dmg
           </span>
+
+          {isBaseline ? (
+            <span
+              className={cn(
+                microLabel,
+                'border-edge rounded-field ml-auto border border-dashed px-1.5 py-1 tracking-[0.12em]'
+              )}
+            >
+              baseline
+            </span>
+          ) : (
+            baselineTotal !== undefined && (
+              <Delta
+                className="ml-auto"
+                value={breakdown.total}
+                baseline={baselineTotal}
+              />
+            )
+          )}
         </div>
 
         {ranked && (
           <div
-            className="bg-panel rounded-chip h-1.5 w-full"
+            className="bg-panel rounded-chip relative h-1.5 w-full"
             title={`${shareOfBest.toFixed(0)}% of the best turn in the scenario`}
           >
             <div
@@ -164,6 +209,13 @@ export default function TurnComponent({ turn }: { turn: Turn }) {
               )}
               style={{ width: `${shareOfBest}%` }}
             />
+            {baselineShare !== undefined && (
+              <span
+                className="bg-ink-2 absolute top-[-3px] h-3 w-px"
+                style={{ left: `${baselineShare}%` }}
+                title="Baseline"
+              />
+            )}
           </div>
         )}
 
