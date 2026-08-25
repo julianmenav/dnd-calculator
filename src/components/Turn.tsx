@@ -6,8 +6,8 @@ import type { Turn } from '../models'
 import { useScenarioStore } from '../store/scenarioStore'
 import AttackComponent from './Attack'
 import DiceChooser from './DiceChooser'
-import { calculateTurnDamage } from '../lib/calculator'
-import { useEffect, useState } from 'react'
+import { calculateTurnBreakdown } from '../lib/calculator'
+import { useMemo } from 'react'
 import Copy from '../icons/Copy'
 import { cn } from '../lib/utils'
 import { field, iconBtnDangerSm, iconBtnSm, microLabel } from '../lib/ui'
@@ -19,12 +19,10 @@ export default function TurnComponent({ turn }: { turn: Turn }) {
   const character = useCharacter()
   const scenario = useScenario()
 
-  const [avgDamage, setAvgDamage] = useState<number>(0)
-
-  useEffect(() => {
-    const damage = calculateTurnDamage(turn, character, scenario)
-    setAvgDamage(damage)
-  }, [turn, character, scenario])
+  const breakdown = useMemo(
+    () => calculateTurnBreakdown(turn, character, scenario),
+    [turn, character, scenario]
+  )
 
   return (
     <TurnProvider value={turn}>
@@ -80,7 +78,7 @@ export default function TurnComponent({ turn }: { turn: Turn }) {
 
         <div className="flex items-end gap-2">
           <span className="text-ink font-mono text-[34px] leading-[0.85] font-bold tracking-[-0.03em] tabular-nums">
-            {avgDamage.toFixed(2)}
+            {breakdown.total.toFixed(2)}
           </span>
           <span className={cn(microLabel, 'pb-[3px] tracking-[0.14em]')}>
             avg dmg

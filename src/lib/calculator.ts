@@ -2,33 +2,97 @@ import type { Attack, Character, Feat, Scenario, Turn } from '../models'
 
 const totalOutcomes = 20 // A d20 attack roll.
 
-export const calculateTurnDamage = (
+/**
+ * Where a single attack's average damage comes from. The four damage
+ * components are disjoint and sum to `total`, so they can be stacked.
+ */
+export type AttackBreakdown = {
+  attackBonus: number
+  /** Chance this attack lands at all. */
+  hitChance: number
+  /** Absolute chance of a crit, not conditioned on the hit landing. */
+  critChance: number
+  /** Weapon and bonus dice, at their normal (non-crit) value. */
+  dice: number
+  /** The extra dice damage crits are expected to add on top. */
+  crit: number
+  /** Ability modifier applied on a hit. */
+  ability: number
+  /** Flat feat damage (GW Master, Duelist) applied on a hit. */
+  feat: number
+  total: number
+}
+
+export type TurnBreakdown = {
+  total: number
+  dice: number
+  crit: number
+  ability: number
+  feat: number
+  attacks: AttackBreakdown[]
+}
+
+export const calculateTurnBreakdown = (
   turn: Turn,
   character: Character,
   scenario: Scenario
-): number => {
-  const turnDamage = turn.attacks.reduce((total, attack) => {
-    const attackBonus = getAttackBonus(attack, character)
-    const damageBonus = getDamageBonus(attack, character)
+): TurnBreakdown => {
+  const attacks = turn.attacks.map((attack) =>
+    calculateAttackBreakdown(attack, turn, character, scenario)
+  )
 
-    const dicesDamage = getDicesDamage(attack)
-    const hitChance = getHitChance(attack, turn, scenario, attackBonus)
-    const critChance = getCritChanceGivenHitLanded(attack, hitChance)
+  return attacks.reduce(
+    (turnTotal, attack) => ({
+      ...turnTotal,
+      total: turnTotal.total + attack.total,
+      dice: turnTotal.dice + attack.dice,
+      crit: turnTotal.crit + attack.crit,
+      ability: turnTotal.ability + attack.ability,
+      feat: turnTotal.feat + attack.feat,
+    }),
+    { total: 0, dice: 0, crit: 0, ability: 0, feat: 0, attacks }
+  )
+}
 
-    const finalAverageDicesDamage = getAverageDicesDamage(
-      dicesDamage,
-      hitChance,
-      critChance,
-      attack
-    )
-    const averageDamageBonus = damageBonus * hitChance
+const calculateAttackBreakdown = (
+  attack: Attack,
+  turn: Turn,
+  character: Character,
+  scenario: Scenario
+): AttackBreakdown => {
+  const attackBonus = getAttackBonus(attack, character)
 
-    const attackAverageDamage = finalAverageDicesDamage + averageDamageBonus
+  const dicesDamage = getDicesDamage(attack)
+  const hitChance = getHitChance(attack, turn, scenario, attackBonus)
+  const critChanceGivenHitLanded = getCritChanceGivenHitLanded(
+    attack,
+    hitChance
+  )
 
-    return total + attackAverageDamage
-  }, 0)
+  /**
+   * A crit keeps the normal dice and adds (multiplier - 1) more sets of them,
+   * which is what lets the normal roll and the crit uplift be reported apart
+   * while still summing to the same expected damage.
+   */
+  const critMultiplier = getCritMultiplier(attack)
+  const dice = dicesDamage * hitChance
+  const crit =
+    dicesDamage * (critMultiplier - 1) * critChanceGivenHitLanded * hitChance
 
-  return turnDamage
+  // Flat bonuses ride on the hit, and are not multiplied by a crit.
+  const ability = getAbilityDamageBonus(attack, character) * hitChance
+  const feat = getFeatDamageBonus(attack) * hitChance
+
+  return {
+    attackBonus,
+    hitChance,
+    critChance: critChanceGivenHitLanded * hitChance,
+    dice,
+    crit,
+    ability,
+    feat,
+    total: dice + crit + ability + feat,
+  }
 }
 
 // TODO: Order and group this functions in some way.
@@ -129,23 +193,9 @@ const getCritChanceGivenHitLanded = (
   return getCritChance(attack) / hitChance
 }
 
-// Average dices damage considering hit chance and crit chance.
-const getAverageDicesDamage = (
-  dicesDamage: number,
-  hitChance: number,
-  critChance: number,
-  attack: Attack
-): number => {
-  const critMultiplier = attackIncludesFeat(attack, 'Piercer') ? 3 : 2
-
-  // Expected damage if landed.
-  const expectedNormalDamageAvg = dicesDamage * (1 - critChance)
-  const expectedCritDamageAvg = dicesDamage * critMultiplier * critChance
-  const expectedDamageAvg = expectedNormalDamageAvg + expectedCritDamageAvg
-
-  // So... expected damage considering hit chance is...
-  return expectedDamageAvg * hitChance
-}
+// How many times the damage dice are counted on a crit.
+const getCritMultiplier = (attack: Attack): number =>
+  attackIncludesFeat(attack, 'Piercer') ? 3 : 2
 
 /**
  *  Bonus to attack roll to increase hitting chance.
@@ -169,19 +219,25 @@ const getAttackBonus = (attack: Attack, character: Character): number => {
 }
 
 /**
- *  Bonus to damage roll to increase damage in case of hit.
+ *  Ability modifier added to the damage roll on a hit.
  */
-const getDamageBonus = (attack: Attack, character: Character): number => {
-  let abilityScore = 0
-  if (attack.damageBonusAbility) {
-    abilityScore = character.abilities[attack.damageBonusAbility] ?? 0
-  }
+const getAbilityDamageBonus = (
+  attack: Attack,
+  character: Character
+): number => {
+  if (!attack.damageBonusAbility) return 0
+  return character.abilities[attack.damageBonusAbility] ?? 0
+}
 
+/**
+ *  Flat damage granted by feats on a hit.
+ */
+const getFeatDamageBonus = (attack: Attack): number => {
   let featBonus = 0
   if (attackIncludesFeat(attack, 'GW Master')) featBonus += 10
   if (attackIncludesFeat(attack, 'Duelist')) featBonus += 2
 
-  return abilityScore + featBonus
+  return featBonus
 }
 
 const attackIncludesFeat = (attack: Attack, feat: Feat): boolean => {
