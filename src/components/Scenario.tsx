@@ -1,10 +1,11 @@
 import { ScenarioProvider } from '../context/ScenarioContext'
 import D20 from '../icons/D20'
 import Plus from '../icons/Plus'
+import Minus from '../icons/Minus'
 import { useScenarioStore } from '../store/scenarioStore'
 import CharacterComponent from './Character'
 import InputNumber from './InputNumber'
-import { btnPrimary, microLabel } from '../lib/ui'
+import { btnPrimary, iconBtn, microLabel } from '../lib/ui'
 
 function Scenario() {
   const scenario = useScenarioStore((state) => state.scenario)
@@ -12,6 +13,10 @@ function Scenario() {
   const { addCharacter, updateEnemyAc } = useScenarioStore(
     (state) => state.actions
   )
+
+  // Same bounds the AC field's own regex allows, so typing and stepping agree.
+  const stepAc = (delta: number) =>
+    updateEnemyAc(Math.min(99, Math.max(0, scenario.enemyAc + delta)))
 
   return (
     <ScenarioProvider value={scenario}>
@@ -30,15 +35,31 @@ function Scenario() {
           </div>
 
           <div className="flex items-center gap-2.5">
-            <label className="border-edge bg-raised/60 rounded-field flex items-center gap-2.5 border py-1 pr-1 pl-2.5">
+            <div className="border-edge bg-raised/60 rounded-field flex items-center gap-2.5 border py-1 pr-1 pl-2.5">
               <span className={microLabel}>Default enemy AC</span>
-              <InputNumber
-                className="text-accent h-[26px] w-12 border-transparent bg-transparent text-center text-[15px] font-bold hover:border-transparent"
-                value={scenario.enemyAc}
-                regex={/^$|^-?$|^-?\d{1,2}$/}
-                onChange={(value) => updateEnemyAc(value ?? 0)}
-              />
-            </label>
+              <div className="flex items-center gap-0.5">
+                <button
+                  className={iconBtn}
+                  title="Lower the target AC"
+                  onClick={() => stepAc(-1)}
+                >
+                  <Minus />
+                </button>
+                <InputNumber
+                  className="text-accent h-[26px] w-11 border-transparent bg-transparent text-center text-[15px] font-bold hover:border-transparent"
+                  value={scenario.enemyAc}
+                  regex={/^$|^-?$|^-?\d{1,2}$/}
+                  onChange={(value) => updateEnemyAc(value ?? 0)}
+                />
+                <button
+                  className={iconBtn}
+                  title="Raise the target AC"
+                  onClick={() => stepAc(1)}
+                >
+                  <Plus />
+                </button>
+              </div>
+            </div>
 
             <button className={btnPrimary} onClick={() => addCharacter()}>
               <Plus />
