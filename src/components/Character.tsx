@@ -8,89 +8,108 @@ import Plus from '../icons/Plus'
 import Squares from '../icons/Squares'
 import InputNumber from './InputNumber'
 import Copy from '../icons/Copy'
+import { cn } from '../lib/utils'
+import {
+  btnDashed,
+  buildAccent,
+  field,
+  iconBtn,
+  iconBtnDanger,
+  microLabel,
+} from '../lib/ui'
 
 export default function CharacterComponent({
   character,
+  index,
 }: {
   character: Character
+  index: number
 }) {
-  const { updateCharacter, copyCharacter, removeCharacter, addTurn } = useScenarioStore(
-    (state) => state.actions
-  )
+  const { updateCharacter, copyCharacter, removeCharacter, addTurn } =
+    useScenarioStore((state) => state.actions)
+
+  const accent = buildAccent(index)
 
   return (
     <CharacterProvider value={character}>
-      <div className="card card-border bg-base-100 indicator p-3 shadow-md">
-        <div className="indicator-item flex gap-1 indicator-end translate-x-0 -translate-y-[50%]">
-          <button className="bg-success/40 hover:bg-success/70 text-success-content flex h-5 w-5 cursor-pointer items-center justify-center rounded-sm p-1 text-xs"
-            onClick={() => copyCharacter(character.id)}
-          >
-            <Copy />
-          </button>
-          <button
-            className="bg-error/40 hover:bg-error/70 text-error-content flex h-5 w-5 cursor-pointer items-center justify-center rounded-sm p-1 text-xs"
-            onClick={() => removeCharacter(character.id)}
-          >
-            <X />
-          </button>
-        </div>
-        <div
-          className={
-            'flex min-w-[280px] flex-col justify-between gap-3 p-2' +
-            (character.compactMode && 'max-w-[300px]')
-          }
-        >
-          <div className="flex w-full flex-row justify-between gap-1">
-            <div className="flex flex-grow flex-row gap-1">
-              <button
-                className="btn btn-secondary btn-sm"
-                onClick={() =>
-                  updateCharacter(character.id, {
-                    compactMode: !character.compactMode,
-                  })
+      <section
+        className={cn(
+          'border-rule bg-panel rounded-panel flex flex-col overflow-hidden border',
+          character.compactMode ? 'w-[300px]' : 'min-w-[280px]'
+        )}
+      >
+        <div className={cn('h-[3px] shrink-0', accent)} />
+
+        <div className="border-rule flex flex-col gap-2.5 border-b p-3">
+          <div className="flex items-center gap-2">
+            <span className={cn('h-2 w-2 shrink-0 rounded-full', accent)} />
+
+            <input
+              className={cn(field, 'min-w-0 flex-grow font-semibold')}
+              placeholder="Character name"
+              value={character.name}
+              onChange={(e) =>
+                updateCharacter(character.id, { name: e.target.value })
+              }
+            />
+
+            <label className="border-line bg-panel rounded-field flex h-8 shrink-0 items-center gap-1 border pr-1 pl-2">
+              <span className={microLabel}>LvL</span>
+              <InputNumber
+                className="text-ink h-6 w-8 border-transparent bg-transparent text-center font-semibold hover:border-transparent"
+                value={character.lvl}
+                onChange={(value) =>
+                  updateCharacter(character.id, { lvl: value ?? 0 })
                 }
-              >
-                <Squares />
-              </button>
-              <input
-                className="input input-sm flew-grow"
-                placeholder="Character Name"
-                value={character.name}
-                onChange={(e) =>
-                  updateCharacter(character.id, { name: e.target.value })
-                }
+                regex={/^$|^\d{1,2}$/}
               />
-              <label className="input input-sm max-w-[95px] px-1">
-                <span className="label w-1/4 p-0 m-0">LvL</span>
-                <InputNumber
-                  value={character.lvl}
-                  className="input input-sm w-3/4 px-1"
-                  onChange={(value) =>
-                    updateCharacter(character.id, {
-                      lvl: value ?? 0,
-                    })
-                  }
-                  regex={/^$|^\d{1,2}$/}
-                />
-              </label>
-            </div>
-            {!character.compactMode && (
-              <button
-                className="btn btn-secondary btn-sm"
-                onClick={() => addTurn(character.id)}
-              >
-                <Plus /> Add turn
-              </button>
-            )}
+            </label>
+
+            <button
+              className={cn(
+                iconBtn,
+                character.compactMode &&
+                  'border-accent bg-accent/12 text-accent hover:border-accent hover:text-accent'
+              )}
+              title={character.compactMode ? 'Expand' : 'Compact'}
+              onClick={() =>
+                updateCharacter(character.id, {
+                  compactMode: !character.compactMode,
+                })
+              }
+            >
+              <Squares />
+            </button>
+
+            <button
+              className={iconBtn}
+              title="Duplicate character"
+              onClick={() => copyCharacter(character.id)}
+            >
+              <Copy />
+            </button>
+
+            <button
+              className={iconBtnDanger}
+              title="Remove character"
+              onClick={() => removeCharacter(character.id)}
+            >
+              <X />
+            </button>
           </div>
+
           {!character.compactMode && (
-            <div className="flex max-w-[900px] flex-row flex-wrap justify-around gap-1">
+            <div className="grid max-w-[430px] grid-cols-6 gap-1">
               {ABILITIES.map((ability) => (
-                <label key={ability} className="input input-xs max-w-[90px] px-1">
-                  <span className="label w-1/2 p-0 m-0">{ability.slice(0, 3)}</span>
+                <label
+                  key={ability}
+                  className="border-rule bg-card rounded-field flex flex-col items-center gap-1 border py-1"
+                  title={ability}
+                >
+                  <span className={microLabel}>{ability.slice(0, 3)}</span>
                   <InputNumber
+                    className="text-ink h-5 w-full border-transparent bg-transparent px-0 text-center text-[13px] font-bold hover:border-transparent"
                     value={character.abilities[ability]}
-                    className="w-1/2 px-1"
                     regex={/^$|^-?$|^-?[0-9]$/}
                     onChange={(value) => {
                       updateCharacter(character.id, {
@@ -105,20 +124,33 @@ export default function CharacterComponent({
               ))}
             </div>
           )}
+        </div>
+
+        <div className="flex flex-grow flex-col gap-3 p-3">
           <div
-            className={
-              'flex flex-grow gap-5' +
-              (character.compactMode
-                ? ' flex-col items-center justify-center'
-                : ' flex-row justify-center')
-            }
+            className={cn(
+              'flex flex-grow gap-3',
+              character.compactMode
+                ? 'flex-col items-stretch'
+                : 'flex-row justify-center'
+            )}
           >
             {character.turns.map((turn) => (
               <TurnComponent key={turn.id} turn={turn} />
             ))}
           </div>
+
+          {!character.compactMode && (
+            <button
+              className={cn(btnDashed, 'w-full')}
+              onClick={() => addTurn(character.id)}
+            >
+              <Plus />
+              Add turn
+            </button>
+          )}
         </div>
-      </div>
+      </section>
     </CharacterProvider>
   )
 }

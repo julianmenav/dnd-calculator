@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { cn } from '../lib/utils'
+import { fieldSm } from '../lib/ui'
 
 export default function InputNumber({
   value,
@@ -15,8 +17,9 @@ export default function InputNumber({
 
   return (
     <input
-      className={`input ${className}`}
+      className={cn(fieldSm, 'font-mono', className)}
       type="text"
+      inputMode="numeric"
       value={localValue}
       onChange={(e) => {
         const raw = e.target.value

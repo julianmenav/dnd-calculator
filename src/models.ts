@@ -1,12 +1,13 @@
 export type Dice = 4 | 6 | 8 | 10 | 12 | 20
 export const DICE_SIDES: Dice[] = [4, 6, 8, 10, 12, 20]
-export const DICE_COLORS: Record<Dice, Record<string, string>> = {
-  4: { background: 'bg-green-800', text: 'text-white' },
-  6: { background: 'bg-orange-500', text: 'text-white' },
-  8: { background: 'bg-blue-800', text: 'text-white' },
-  10: { background: 'bg-red-700', text: 'text-white' },
-  12: { background: 'bg-purple-800', text: 'text-white' },
-  20: { background: 'bg-yellow-600', text: 'text-white' },
+/** Tinted chip: fill / border / label, one entry per die. Always paired with a text label. */
+export const DICE_COLORS: Record<Dice, string> = {
+  4: 'bg-d4/15 border-d4/45 text-d4-ink',
+  6: 'bg-d6/15 border-d6/45 text-d6-ink',
+  8: 'bg-d8/15 border-d8/45 text-d8-ink',
+  10: 'bg-d10/15 border-d10/45 text-d10-ink',
+  12: 'bg-d12/15 border-d12/45 text-d12-ink',
+  20: 'bg-d20/15 border-d20/45 text-d20-ink',
 }
 
 export type AbilityType =

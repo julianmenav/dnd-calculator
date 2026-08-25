@@ -8,6 +8,8 @@ import Plus from '../icons/Plus'
 import DiceSelection from './DiceSelection'
 import Confirm from '../icons/Confirm'
 import X from '../icons/X'
+import { cn } from '../lib/utils'
+import { btnDashed, microLabel } from '../lib/ui'
 
 export default function DiceChooser() {
   const [showDiceChooser, setShowDiceChooser] = useState(false)
@@ -16,60 +18,70 @@ export default function DiceChooser() {
   const character = useCharacter()
   const turn = useTurn()
 
+  if (!showDiceChooser) {
+    return (
+      <button
+        className={cn(btnDashed, 'w-full')}
+        onClick={() => setShowDiceChooser(true)}
+      >
+        <Plus />
+        Add attack
+      </button>
+    )
+  }
+
   return (
-    <>
-      {!showDiceChooser ? (
+    <div className="border-accent bg-panel rounded-field flex w-full flex-col gap-2 border p-2">
+      <div className="flex items-center gap-2">
+        <span className={microLabel}>New attack</span>
+        <div className="bg-rule ml-auto h-px flex-grow" />
         <button
-          className="btn btn-secondary btn-xs w-full"
-          onClick={() => setShowDiceChooser(true)}
+          className="bg-gain text-accent-ink rounded-field inline-flex h-6 w-6 cursor-pointer items-center justify-center border-0 p-0 transition-opacity hover:opacity-85"
+          title="Add attack"
+          onClick={() => {
+            addAttack(character.id, turn.id, dices)
+            setDices([])
+            setShowDiceChooser(false)
+          }}
         >
-          <Plus /> Add Attack
+          <Confirm />
         </button>
-      ) : (
-        <div className="w-full">
-          <div className="flex w-full flex-row justify-between gap-0.5 rounded-md bg-black/20 p-1">
-            <div className="flex flex-row items-center gap-0.5">
-              {DICE_SIDES.filter((dice) => dice !== 20).map((dice) => (
-                <button
-                  key={dice}
-                  className={`btn btn-xs btn-secondary text-base ${DICE_COLORS[dice].background} ${DICE_COLORS[dice].text} hover:opacity-70`}
-                  onClick={() => {
-                    if (dices.length > 20) return
-                    setDices((prev) => {
-                      const newDices = [...prev, dice]
-                      return newDices
-                    })
-                  }}
-                >
-                  {dice}
-                </button>
-              ))}
-            </div>
-            <div className="flex flex-row items-center gap-0.5">
-              <button
-                className="btn-success btn btn-xs flex cursor-pointer items-center justify-center rounded-sm p-1 text-xs"
-                onClick={() => {
-                  addAttack(character.id, turn.id, dices)
-                  setDices([])
-                  setShowDiceChooser(false)
-                }}
-              >
-                <Confirm />
-              </button>
-              <button
-                className="btn-error btn btn-xs flex cursor-pointer items-center justify-center rounded-sm p-1 text-xs"
-                onClick={() => {
-                  setDices([])
-                  setShowDiceChooser(false)
-                }}
-              >
-                <X />
-              </button>
-            </div>
-          </div>
+        <button
+          className="border-loss/30 bg-loss/10 text-loss rounded-field inline-flex h-6 w-6 cursor-pointer items-center justify-center border p-0 transition-colors hover:bg-loss/20"
+          title="Cancel"
+          onClick={() => {
+            setDices([])
+            setShowDiceChooser(false)
+          }}
+        >
+          <X />
+        </button>
+      </div>
+
+      <div className="flex gap-1">
+        {DICE_SIDES.filter((dice) => dice !== 20).map((dice) => (
+          <button
+            key={dice}
+            className={cn(
+              'rounded-field flex h-8 flex-1 cursor-pointer items-center justify-center border font-mono text-[13px] font-bold transition-opacity hover:opacity-70',
+              DICE_COLORS[dice]
+            )}
+            onClick={() => {
+              if (dices.length > 20) return
+              setDices((prev) => [...prev, dice])
+            }}
+          >
+            d{dice}
+          </button>
+        ))}
+      </div>
+
+      {dices.length > 0 && (
+        <div className="border-rule flex items-center gap-2 border-t pt-2">
+          <span className={microLabel}>Picked</span>
           <DiceSelection dices={dices} />
         </div>
       )}
-    </>
+    </div>
   )
 }

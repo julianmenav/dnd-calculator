@@ -1,38 +1,99 @@
 @import 'tailwindcss';
-@plugin 'daisyui';
 
-@plugin "daisyui/theme" {
-  name: "darkcontrast";
-  default: true;
-  prefersdark: true;
-  color-scheme: "dark";
-  --color-base-100: #202537;
-  --color-base-200: #131327;
-  --color-base-300: #2b3043;
-  --color-base-content: oklch(96% 0.007 247.896);
-  --color-primary: oklch(66% 0.179 58.318);
-  --color-primary-content: oklch(100% 0 0);
-  --color-secondary: #383d51;
-  --color-secondary-content: oklch(98% 0.003 247.858);
-  --color-accent: oklch(44% 0.119 151.328);
-  --color-accent-content: oklch(100% 0 0);
-  --color-neutral: #202537;
-  --color-neutral-content: oklch(98% 0.003 247.858);
-  --color-info: oklch(70% 0.165 254.624);
-  --color-info-content: oklch(28% 0.091 267.935);
-  --color-success: oklch(59% 0.145 163.225);
-  --color-success-content: oklch(98% 0.018 155.826);
-  --color-warning: oklch(82% 0.189 84.429);
-  --color-warning-content: oklch(14% 0.004 49.25);
-  --color-error: oklch(70% 0.191 22.216);
-  --color-error-content: #fffff;
-  --radius-selector: 0.5rem;
-  --radius-field: 0.25rem;
-  --radius-box: 0.5rem;
-  --size-selector: 0.25rem;
-  --size-field: 0.25rem;
-  --border: 1px;
-  --depth: 1;
-  --noise: 0;
+@theme {
+  --font-sans: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+
+  /* surfaces — cool near-blacks, lightest is the innermost card */
+  --color-ground: #0a0c12;
+  --color-chrome: #0f121a;
+  --color-panel: #12151f;
+  --color-card: #171b27;
+  --color-raised: #1c2130;
+  --color-rule: #1f2532;
+  --color-line: #232a38;
+  --color-edge: #2b3243;
+
+  /* ink */
+  --color-ink: #e9ecf3;
+  --color-ink-2: #98a1b5;
+  --color-ink-3: #616a7e;
+  --color-ink-4: #4a5265;
+  --color-ink-5: #3d4353;
+
+  /* accent + status */
+  --color-accent: #ef9d32;
+  --color-accent-ink: #14100a;
+  --color-gain: #4fbf6e;
+  --color-loss: #e85854;
+
+  /* build identity — one hue per character, CVD-checked on #12151f */
+  --color-build-1: #cd7e00;
+  --color-build-2: #3d81d4;
+  --color-build-3: #2ea55c;
+  --color-build-4: #b24393;
+  --color-build-5: #00a5b3;
+  --color-build-6: #b63132;
+
+  /* dice — your hue assignment, restepped for the dark ground */
+  --color-d4: #2ea55c;
+  --color-d4-ink: #8fd8a3;
+  --color-d6: #cd7e00;
+  --color-d6-ink: #f0b877;
+  --color-d8: #3d81d4;
+  --color-d8-ink: #8fc1ff;
+  --color-d10: #c13c3b;
+  --color-d10-ink: #ffa098;
+  --color-d12: #9e56bc;
+  --color-d12-ink: #d7a9ec;
+  --color-d20: #c2a200;
+  --color-d20-ink: #e5cd72;
+
+  --radius-chip: 2px;
+  --radius-field: 3px;
+  --radius-card: 5px;
+  --radius-panel: 6px;
 }
 
+@layer base {
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    margin: 0;
+    background: var(--color-ground);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-wrap: pretty;
+  }
+
+  /* every figure in this app is meant to be compared down a column */
+  input,
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  ::selection {
+    background: --alpha(var(--color-accent) / 28%);
+  }
+
+  ::-webkit-scrollbar {
+    height: 10px;
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--color-ground);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-edge);
+    border-radius: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-ink-5);
+  }
+}
