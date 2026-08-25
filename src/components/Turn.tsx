@@ -123,6 +123,24 @@ export default function TurnComponent({ turn }: { turn: Turn }) {
           </span>
         </div>
 
+        {!character.compactMode && breakdown.attacks.length > 0 && (
+          <div className="border-line bg-line rounded-field grid grid-cols-4 gap-px overflow-hidden border">
+            <Stat
+              label="Hit"
+              value={spread(breakdown.attacks.map((a) => a.hitChance), percent)}
+            />
+            <Stat
+              label="Crit"
+              value={spread(breakdown.attacks.map((a) => a.critChance), percent)}
+            />
+            <Stat
+              label="Atk"
+              value={spread(breakdown.attacks.map((a) => a.attackBonus), signed)}
+            />
+            <Stat label="Atks" value={String(breakdown.attacks.length)} />
+          </div>
+        )}
+
         {!character.compactMode && (
           <div className="flex flex-grow flex-col gap-3">
             <DiceChooser />
@@ -139,4 +157,31 @@ export default function TurnComponent({ turn }: { turn: Turn }) {
       </article>
     </TurnProvider>
   )
+}
+
+function Stat({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="bg-panel flex flex-col gap-1 px-2 py-1.5">
+      <span className={cn(microLabel, 'tracking-[0.12em]')}>{label}</span>
+      <span className="text-ink font-mono text-[11px] leading-none tabular-nums">
+        {value}
+      </span>
+    </div>
+  )
+}
+
+const percent = (value: number) => `${(value * 100).toFixed(1)}%`
+const signed = (value: number) =>
+  `${value < 0 ? '−' : '+'}${Math.abs(Math.round(value * 10) / 10)}`
+
+/**
+ * Attacks in a turn rarely agree — one carries Precision, the rest do not —
+ * so a single figure would be a lie. Collapse to one value when they match
+ * and to a range when they do not, rounding the range so it still fits.
+ */
+const spread = (values: number[], format: (value: number) => string) => {
+  const low = Math.min(...values)
+  const high = Math.max(...values)
+  if (low === high) return format(low)
+  return `${format(low).replace(/\.\d+/, '')}–${format(high).replace(/\.\d+/, '')}`
 }
