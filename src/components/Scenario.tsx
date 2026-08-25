@@ -9,6 +9,7 @@ import { useScenarioStore } from '../store/scenarioStore'
 import CharacterComponent from './Character'
 import InputNumber from './InputNumber'
 import ScenarioSummary from './ScenarioSummary'
+import AnalysisSection from './AnalysisSection'
 import { btnPrimary, iconBtn, microLabel } from '../lib/ui'
 
 function Scenario() {
@@ -94,6 +95,8 @@ function Scenario() {
               ))}
             </div>
           </div>
+
+          <AnalysisSection />
         </div>
       </AnalysisProvider>
     </ScenarioProvider>
