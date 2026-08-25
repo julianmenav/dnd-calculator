@@ -1,5 +1,7 @@
 import type { Attack, Character, Feat, Scenario, Turn } from '../models'
 
+const totalOutcomes = 20 // A d20 attack roll.
+
 export const calculateTurnDamage = (
   turn: Turn,
   character: Character,
@@ -39,10 +41,8 @@ const getHitChance = (
   const enemyAc = turn.enemyAc ?? scenario.enemyAc
   if (enemyAc === undefined) return 1
 
-  const totalOutcomes = 20
+  const numberOfCritOutcomes = getNumberOfCritOutcomes(attack)
 
-  // TODO: All related to champion feat should improve at higher levels.
-  const numberOfCritOutcomes = attackIncludesFeat(attack, 'Champion') ? 2 : 1 // 20 always hits. 19 also with champion feat.
   // Minimum number of dice outcomes that will land a hit.
   const minHittingOutcomes = numberOfCritOutcomes
 
@@ -67,12 +67,16 @@ const getHitChance = (
       ) / totalOutcomes
     )
   } else {
+    // A single die fails at most on everything below a crit, and at least on a 1.
+    const maxFailingOutcomes = totalOutcomes - numberOfCritOutcomes
+    const minFailingOutcomes = numberOfAlwaysFailingOutcomes
+
     const numberOfFailingOutcomes = enemyAc - 1 - attackBonus
     return (
       1 -
       (Math.max(
-        Math.min(numberOfFailingOutcomes, maxHittingOutcomes),
-        minHittingOutcomes
+        Math.min(numberOfFailingOutcomes, maxFailingOutcomes),
+        minFailingOutcomes
       ) /
         totalOutcomes) **
         2
@@ -100,14 +104,29 @@ const getDicesDamage = (attack: Attack): number => {
   }, 0)
 }
 
+// TODO: All related to champion feat should improve at higher levels.
+// 20 always crits. 19 also with champion feat.
+const getNumberOfCritOutcomes = (attack: Attack): number =>
+  attackIncludesFeat(attack, 'Champion') ? 2 : 1
+
+const getCritChance = (attack: Attack): number => {
+  const singleRollCritChance = getNumberOfCritOutcomes(attack) / totalOutcomes
+
+  // With advantage either die can land the crit, so it is the inverse
+  // probability of neither of them rolling a crit outcome.
+  if (attackIncludesFeat(attack, 'Advantage')) {
+    return 1 - (1 - singleRollCritChance) ** 2
+  }
+  return singleRollCritChance
+}
+
 // If we know the hit has landed, we can calculate the crit chance using the intersection.
 const getCritChanceGivenHitLanded = (
   attack: Attack,
   hitChance: number
 ): number => {
   if (attackIncludesFeat(attack, 'Crit')) return 1
-  const critChance = attackIncludesFeat(attack, 'Champion') ? 2 / 20 : 1 / 20
-  return critChance / hitChance
+  return getCritChance(attack) / hitChance
 }
 
 // Average dices damage considering hit chance and crit chance.
