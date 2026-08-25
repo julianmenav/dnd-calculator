@@ -173,7 +173,12 @@ export default function TurnComponent({ turn }: { turn: Turn }) {
           <span className="text-ink font-mono text-[34px] leading-[0.85] font-bold tracking-[-0.03em] tabular-nums">
             {breakdown.total.toFixed(2)}
           </span>
-          <span className={cn(microLabel, 'pb-[3px] tracking-[0.14em]')}>
+          <span
+            className={cn(
+              microLabel,
+              'pb-[3px] tracking-[0.14em] whitespace-nowrap'
+            )}
+          >
             avg dmg
           </span>
 
@@ -189,6 +194,7 @@ export default function TurnComponent({ turn }: { turn: Turn }) {
           ) : (
             baselineTotal !== undefined && (
               <Delta
+                compact
                 className="ml-auto"
                 value={breakdown.total}
                 baseline={baselineTotal}
