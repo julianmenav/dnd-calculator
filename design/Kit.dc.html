@@ -1,0 +1,291 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+  <style>
+    body {
+      margin: 0;
+      background: #0A0C12;
+      font-family: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-wrap: pretty;
+    }
+    a { color: #EF9D32; text-decoration: none; }
+    a:hover { color: #F5B45E; }
+  </style>
+</helmet>
+
+<div style="width: 1120px; height: 1030px; display: flex; flex-direction: column; background: #0A0C12; color: #E9ECF3; overflow: hidden;">
+
+  <header style="flex: 0 0 56px; display: flex; align-items: center; gap: 12px; padding: 0 16px; background: #0F121A; border-bottom: 1px solid #1F2532;">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#EF9D32" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 2 3 7v10l9 5 9-5V7z" /><path d="M3 7l9 5 9-5" /><path d="M12 12v10" /><path d="M12 2 7 12l5 10 5-10z" /><path d="M7 12h10" />
+    </svg>
+    <span style="font: 700 13px/1 'Space Grotesk', sans-serif; letter-spacing: 0.16em; color: #E9ECF3;">DESIGN TOKENS</span>
+    <span style="font: 400 11px/1 'Space Grotesk', sans-serif; color: #616A7E;">Space Grotesk + JetBrains Mono · oklch-derived · dark only</span>
+    <span style="margin-left: auto; font: 400 10px/1 'Space Grotesk', sans-serif; letter-spacing: 0.1em; text-transform: uppercase; color: #4A5265;">series palette validated for CVD on #12151F</span>
+  </header>
+
+  <div style="flex: 1; display: flex; gap: 16px; padding: 16px; min-height: 0;">
+
+    <!-- ═══ COLUMN 1 ═══ -->
+    <div style="flex: 1; display: flex; flex-direction: column; gap: 14px; min-width: 0;">
+
+      <section style="background: #12151F; border: 1px solid #1F2532; border-radius: 6px; padding: 12px;">
+        <span style="display: block; font: 600 10px/1 'Space Grotesk', sans-serif; letter-spacing: 0.18em; text-transform: uppercase; color: #98A1B5; margin-bottom: 10px;">Surfaces</span>
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <div style="display: flex; align-items: center; gap: 10px;"><span style="width: 44px; height: 26px; border-radius: 3px; background: #0A0C12; border: 1px solid #1F2532; flex: 0 0 44px;"></span><span style="flex: 1; font: 500 11px/1 'Space Grotesk', sans-serif; color: #E9ECF3;">ground</span><span style="font: 400 10px/1 'JetBrains Mono', monospace; color: #616A7E;">#0A0C12</span></div>
+          <div style="display: flex; align-items: center; gap: 10px;"><span style="width: 44px; height: 26px; border-radius: 3px; background: #0F121A; border: 1px solid #1F2532; flex: 0 0 44px;"></span><span style="flex: 1; font: 500 11px/1 'Space Grotesk', sans-serif; color: #E9ECF3;">chrome</span><span style="font: 400 10px/1 'JetBrains Mono', monospace; color: #616A7E;">#0F121A</span></div>
+          <div style="display: flex; align-items: center; gap: 10px;"><span style="width: 44px; height: 26px; border-radius: 3px; background: #12151F; border: 1px solid #1F2532; flex: 0 0 44px;"></span><span style="flex: 1; font: 500 11px/1 'Space Grotesk', sans-serif; color: #E9ECF3;">panel</span><span style="font: 400 10px/1 'JetBrains Mono', monospace; color: #616A7E;">#12151F</span></div>
+          <div style="display: flex; align-items: center; gap: 10px;"><span style="width: 44px; height: 26px; border-radius: 3px; background: #171B27; border: 1px solid #1F2532; flex: 0 0 44px;"></span><span style="flex: 1; font: 500 11px/1 'Space Grotesk', sans-serif; color: #E9ECF3;">card</span><span style="font: 400 10px/1 'JetBrains Mono', monospace; color: #616A7E;">#171B27</span></div>
+          <div style="display: flex; align-items: center; gap: 10px;"><span style="width: 44px; height: 26px; border-radius: 3px; background: #1C2130; border: 1px solid #1F2532; flex: 0 0 44px;"></span><span style="flex: 1; font: 500 11px/1 'Space Grotesk', sans-serif; color: #E9ECF3;">raised</span><span style="font: 400 10px/1 'JetBrains Mono', monospace; color: #616A7E;">#1C2130</span></div>
+          <div style="display: flex; align-items: center; gap: 10px;"><span style="width: 44px; height: 26px; border-radius: 3px; background: #1F2532; flex: 0 0 44px;"></span><span style="flex: 1; font: 500 11px/1 'Space Grotesk', sans-serif; color: #E9ECF3;">rule</span><span style="font: 400 10px/1 'JetBrains Mono', monospace; color: #616A7E;">#1F2532</span></div>
+          <div style="display: flex; align-items: center; gap: 10px;"><span style="width: 44px; height: 26px; border-radius: 3px; background: #2B3243; flex: 0 0 44px;"></span><span style="flex: 1; font: 500 11px/1 'Space Grotesk', sans-serif; color: #E9ECF3;">border</span><span style="font: 400 10px/1 'JetBrains Mono', monospace; color: #616A7E;">#2B3243</span></div>
+        </div>
+      </section>
+
+      <section style="background: #12151F; border: 1px solid #1F2532; border-radius: 6px; padding: 12px;">
+        <span style="display: block; font: 600 10px/1 'Space Grotesk', sans-serif; letter-spacing: 0.18em; text-transform: uppercase; color: #98A1B5; margin-bottom: 10px;">Ink</span>
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <div style="display: flex; align-items: center; gap: 10px;"><span style="width: 44px; height: 26px; border-radius: 3px; background: #E9ECF3; flex: 0 0 44px;"></span><span style="flex: 1; font: 500 11px/1 'Space Grotesk', sans-serif; color: #E9ECF3;">primary — values, names</span><span style="font: 400 10px/1 'JetBrains Mono', monospace; color: #616A7E;">#E9ECF3</span></div>
+          <div style="display: flex; align-items: center; gap: 10px;"><span style="width: 44px; height: 26px; border-radius: 3px; background: #98A1B5; flex: 0 0 44px;"></span><span style="flex: 1; font: 500 11px/1 'Space Grotesk', sans-serif; color: #98A1B5;">secondary — supporting data</span><span style="font: 400 10px/1 'JetBrains Mono', monospace; color: #616A7E;">#98A1B5</span></div>
+          <div style="display: flex; align-items: center; gap: 10px;"><span style="width: 44px; height: 26px; border-radius: 3px; background: #616A7E; flex: 0 0 44px;"></span><span style="flex: 1; font: 500 11px/1 'Space Grotesk', sans-serif; color: #616A7E;">muted — micro labels</span><span style="font: 400 10px/1 'JetBrains Mono', monospace; color: #616A7E;">#616A7E</span></div>
+          <div style="display: flex; align-items: center; gap: 10px;"><span style="width: 44px; height: 26px; border-radius: 3px; background: #4A5265; flex: 0 0 44px;"></span><span style="flex: 1; font: 500 11px/1 'Space Grotesk', sans-serif; color: #4A5265;">faint — axis ticks</span><span style="font: 400 10px/1 'JetBrains Mono', monospace; color: #616A7E;">#4A5265</span></div>
+          <div style="display: flex; align-items: center; gap: 10px;"><span style="width: 44px; height: 26px; border-radius: 3px; background: #3D4353; flex: 0 0 44px;"></span><span style="flex: 1; font: 500 11px/1 'Space Grotesk', sans-serif; color: #3D4353;">disabled — empty cells</span><span style="font: 400 10px/1 'JetBrains Mono', monospace; color: #616A7E;">#3D4353</span></div>
+        </div>
+      </section>
+
+      <section style="background: #12151F; border: 1px solid #1F2532; border-radius: 6px; padding: 12px;">
+        <span style="display: block; font: 600 10px/1 'Space Grotesk', sans-serif; letter-spacing: 0.18em; text-transform: uppercase; color: #98A1B5; margin-bottom: 10px;">Accent &amp; status</span>
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <div style="display: flex; align-items: center; gap: 10px;"><span style="width: 44px; height: 26px; border-radius: 3px; background: #EF9D32; flex: 0 0 44px;"></span><span style="flex: 1; font: 500 11px/1 'Space Grotesk', sans-serif; color: #E9ECF3;">accent — actions, target AC</span><span style="font: 400 10px/1 'JetBrains Mono', monospace; color: #616A7E;">#EF9D32</span></div>
+          <div style="display: flex; align-items: center; gap: 10px;"><span style="width: 44px; height: 26px; border-radius: 3px; background: #4FBF6E; flex: 0 0 44px;"></span><span style="flex: 1; font: 500 11px/1 'Space Grotesk', sans-serif; color: #E9ECF3;">gain — positive Δ</span><span style="font: 400 10px/1 'JetBrains Mono', monospace; color: #616A7E;">#4FBF6E</span></div>
+          <div style="display: flex; align-items: center; gap: 10px;"><span style="width: 44px; height: 26px; border-radius: 3px; background: #E85854; flex: 0 0 44px;"></span><span style="flex: 1; font: 500 11px/1 'Space Grotesk', sans-serif; color: #E9ECF3;">loss — negative Δ, low hit</span><span style="font: 400 10px/1 'JetBrains Mono', monospace; color: #616A7E;">#E85854</span></div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px; background: #171B27; border: 1px solid #1F2532; border-radius: 3px; padding: 7px 9px; margin-top: 9px;">
+          <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="#4A5265" stroke-width="1.4" stroke-linecap="round"><circle cx="7" cy="7" r="5.6"/><path d="M7 4.2v3.4M7 9.6v.2"/></svg>
+          <span style="font: 400 10px/1.35 'Space Grotesk', sans-serif; color: #616A7E;">Gain/loss never travel alone — always paired with a sign or arrow glyph.</span>
+        </div>
+      </section>
+
+      <section style="flex: 1; background: #12151F; border: 1px solid #1F2532; border-radius: 6px; padding: 12px; min-height: 0;">
+        <span style="display: block; font: 600 10px/1 'Space Grotesk', sans-serif; letter-spacing: 0.18em; text-transform: uppercase; color: #98A1B5; margin-bottom: 10px;">Geometry</span>
+        <div style="display: flex; flex-direction: column; gap: 7px;">
+          <div style="display: flex; align-items: center; gap: 10px;"><span style="width: 30px; height: 22px; background: #232A38; border-radius: 2px; flex: 0 0 30px;"></span><span style="flex: 1; font: 400 10px/1 'Space Grotesk', sans-serif; color: #98A1B5;">2px — chips, stack segments</span></div>
+          <div style="display: flex; align-items: center; gap: 10px;"><span style="width: 30px; height: 22px; background: #232A38; border-radius: 3px; flex: 0 0 30px;"></span><span style="flex: 1; font: 400 10px/1 'Space Grotesk', sans-serif; color: #98A1B5;">3px — inputs, buttons, cells</span></div>
+          <div style="display: flex; align-items: center; gap: 10px;"><span style="width: 30px; height: 22px; background: #232A38; border-radius: 5px; flex: 0 0 30px;"></span><span style="flex: 1; font: 400 10px/1 'Space Grotesk', sans-serif; color: #98A1B5;">5px — turn cards</span></div>
+          <div style="display: flex; align-items: center; gap: 10px;"><span style="width: 30px; height: 22px; background: #232A38; border-radius: 6px; flex: 0 0 30px;"></span><span style="flex: 1; font: 400 10px/1 'Space Grotesk', sans-serif; color: #98A1B5;">6px — panels, columns</span></div>
+          <div style="height: 1px; background: #1F2532; margin: 3px 0;"></div>
+          <span style="font: 400 10px/1.5 'Space Grotesk', sans-serif; color: #616A7E;">Spacing steps 4 / 6 / 9 / 12 / 14 px. Every border is 1px. No shadows except a 1px inset ring on the leading turn. Column identity is a 3px top bar, row identity a 2px left bar.</span>
+        </div>
+      </section>
+    </div>
+
+    <!-- ═══ COLUMN 2 ═══ -->
+    <div style="flex: 1; display: flex; flex-direction: column; gap: 14px; min-width: 0;">
+
+      <section style="background: #12151F; border: 1px solid #1F2532; border-radius: 6px; padding: 12px;">
+        <span style="display: block; font: 600 10px/1 'Space Grotesk', sans-serif; letter-spacing: 0.18em; text-transform: uppercase; color: #98A1B5; margin-bottom: 4px;">Build identity</span>
+        <span style="display: block; font: 400 10px/1.4 'Space Grotesk', sans-serif; color: #616A7E; margin-bottom: 10px;">Hue belongs to the character. Turns inside a character separate by line style, never by a new hue.</span>
+        <div style="display: flex; flex-direction: column; gap: 7px;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="width: 44px; height: 26px; border-radius: 3px; background: #CD7E00; flex: 0 0 44px;"></span>
+            <span style="flex: 1; font: 500 11px/1 'Space Grotesk', sans-serif; color: #E9ECF3;">build 1</span>
+            <svg width="34" height="8"><line x1="0" y1="4" x2="34" y2="4" stroke="#CD7E00" stroke-width="2.6" stroke-linecap="round"/></svg>
+            <svg width="34" height="8"><line x1="0" y1="4" x2="34" y2="4" stroke="#CD7E00" stroke-width="2" stroke-dasharray="6 5" stroke-linecap="round"/></svg>
+            <span style="font: 400 10px/1 'JetBrains Mono', monospace; color: #616A7E;">#CD7E00</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="width: 44px; height: 26px; border-radius: 3px; background: #3D81D4; flex: 0 0 44px;"></span>
+            <span style="flex: 1; font: 500 11px/1 'Space Grotesk', sans-serif; color: #E9ECF3;">build 2</span>
+            <svg width="34" height="8"><line x1="0" y1="4" x2="34" y2="4" stroke="#3D81D4" stroke-width="2.6" stroke-linecap="round"/></svg>
+            <svg width="34" height="8"><line x1="0" y1="4" x2="34" y2="4" stroke="#3D81D4" stroke-width="2" stroke-dasharray="6 5" stroke-linecap="round"/></svg>
+            <span style="font: 400 10px/1 'JetBrains Mono', monospace; color: #616A7E;">#3D81D4</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="width: 44px; height: 26px; border-radius: 3px; background: #2EA55C; flex: 0 0 44px;"></span>
+            <span style="flex: 1; font: 500 11px/1 'Space Grotesk', sans-serif; color: #E9ECF3;">build 3</span>
+            <svg width="34" height="8"><line x1="0" y1="4" x2="34" y2="4" stroke="#2EA55C" stroke-width="2.6" stroke-linecap="round"/></svg>
+            <svg width="34" height="8"><line x1="0" y1="4" x2="34" y2="4" stroke="#2EA55C" stroke-width="2" stroke-dasharray="6 5" stroke-linecap="round"/></svg>
+            <span style="font: 400 10px/1 'JetBrains Mono', monospace; color: #616A7E;">#2EA55C</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="width: 44px; height: 26px; border-radius: 3px; background: #B24393; flex: 0 0 44px;"></span>
+            <span style="flex: 1; font: 500 11px/1 'Space Grotesk', sans-serif; color: #98A1B5;">build 4</span>
+            <span style="font: 400 10px/1 'JetBrains Mono', monospace; color: #616A7E;">#B24393</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="width: 44px; height: 26px; border-radius: 3px; background: #00A5B3; flex: 0 0 44px;"></span>
+            <span style="flex: 1; font: 500 11px/1 'Space Grotesk', sans-serif; color: #98A1B5;">build 5</span>
+            <span style="font: 400 10px/1 'JetBrains Mono', monospace; color: #616A7E;">#00A5B3</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="width: 44px; height: 26px; border-radius: 3px; background: #B63132; flex: 0 0 44px;"></span>
+            <span style="flex: 1; font: 500 11px/1 'Space Grotesk', sans-serif; color: #98A1B5;">build 6</span>
+            <span style="font: 400 10px/1 'JetBrains Mono', monospace; color: #616A7E;">#B63132</span>
+          </div>
+        </div>
+      </section>
+
+      <section style="background: #12151F; border: 1px solid #1F2532; border-radius: 6px; padding: 12px;">
+        <span style="display: block; font: 600 10px/1 'Space Grotesk', sans-serif; letter-spacing: 0.18em; text-transform: uppercase; color: #98A1B5; margin-bottom: 4px;">Damage sources</span>
+        <span style="display: block; font: 400 10px/1.4 'Space Grotesk', sans-serif; color: #616A7E; margin-bottom: 10px;">One steel hue in four steps, so a stack never competes with build identity. Same step = same source, in every stack.</span>
+        <div style="display: flex; height: 14px; gap: 2px; margin-bottom: 9px;">
+          <div style="flex: 35; background: #3E6995; border-radius: 2px;"></div>
+          <div style="flex: 5; background: #618DBB; border-radius: 2px;"></div>
+          <div style="flex: 21; background: #8CB2D9; border-radius: 2px;"></div>
+          <div style="flex: 39; background: #BFD7F1; border-radius: 2px;"></div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 5px;">
+          <div style="display: flex; align-items: center; gap: 9px;"><span style="width: 24px; height: 14px; border-radius: 2px; background: #3E6995; flex: 0 0 24px;"></span><span style="flex: 1; font: 400 10px/1 'Space Grotesk', sans-serif; color: #98A1B5;">dice — weapon + bonus dice</span><span style="font: 400 10px/1 'JetBrains Mono', monospace; color: #616A7E;">#3E6995</span></div>
+          <div style="display: flex; align-items: center; gap: 9px;"><span style="width: 24px; height: 14px; border-radius: 2px; background: #618DBB; flex: 0 0 24px;"></span><span style="flex: 1; font: 400 10px/1 'Space Grotesk', sans-serif; color: #98A1B5;">crit — expected crit uplift</span><span style="font: 400 10px/1 'JetBrains Mono', monospace; color: #616A7E;">#618DBB</span></div>
+          <div style="display: flex; align-items: center; gap: 9px;"><span style="width: 24px; height: 14px; border-radius: 2px; background: #8CB2D9; flex: 0 0 24px;"></span><span style="flex: 1; font: 400 10px/1 'Space Grotesk', sans-serif; color: #98A1B5;">ability — modifier on hit</span><span style="font: 400 10px/1 'JetBrains Mono', monospace; color: #616A7E;">#8CB2D9</span></div>
+          <div style="display: flex; align-items: center; gap: 9px;"><span style="width: 24px; height: 14px; border-radius: 2px; background: #BFD7F1; flex: 0 0 24px;"></span><span style="flex: 1; font: 400 10px/1 'Space Grotesk', sans-serif; color: #98A1B5;">feat — GWM, Duelist flat damage</span><span style="font: 400 10px/1 'JetBrains Mono', monospace; color: #616A7E;">#BFD7F1</span></div>
+        </div>
+      </section>
+
+      <section style="background: #12151F; border: 1px solid #1F2532; border-radius: 6px; padding: 12px;">
+        <span style="display: block; font: 600 10px/1 'Space Grotesk', sans-serif; letter-spacing: 0.18em; text-transform: uppercase; color: #98A1B5; margin-bottom: 10px;">Dice</span>
+        <div style="display: flex; gap: 6px; margin-bottom: 10px;">
+          <span style="display: inline-flex; align-items: center; background: rgba(46,165,92,0.14); border: 1px solid rgba(46,165,92,0.45); border-radius: 3px; padding: 5px 8px; font: 700 12px/1 'JetBrains Mono', monospace; color: #8FD8A3;">2d4</span>
+          <span style="display: inline-flex; align-items: center; background: rgba(205,126,0,0.14); border: 1px solid rgba(205,126,0,0.45); border-radius: 3px; padding: 5px 8px; font: 700 12px/1 'JetBrains Mono', monospace; color: #F0B877;">2d6</span>
+          <span style="display: inline-flex; align-items: center; background: rgba(61,129,212,0.14); border: 1px solid rgba(61,129,212,0.45); border-radius: 3px; padding: 5px 8px; font: 700 12px/1 'JetBrains Mono', monospace; color: #8FC1FF;">1d8</span>
+          <span style="display: inline-flex; align-items: center; background: rgba(193,60,59,0.14); border: 1px solid rgba(193,60,59,0.45); border-radius: 3px; padding: 5px 8px; font: 700 12px/1 'JetBrains Mono', monospace; color: #FFA098;">1d10</span>
+          <span style="display: inline-flex; align-items: center; background: rgba(158,86,188,0.14); border: 1px solid rgba(158,86,188,0.45); border-radius: 3px; padding: 5px 8px; font: 700 12px/1 'JetBrains Mono', monospace; color: #D7A9EC;">1d12</span>
+          <span style="display: inline-flex; align-items: center; background: rgba(194,162,0,0.14); border: 1px solid rgba(194,162,0,0.45); border-radius: 3px; padding: 5px 8px; font: 700 12px/1 'JetBrains Mono', monospace; color: #E5CD72;">1d20</span>
+        </div>
+        <span style="display: block; font: 400 10px/1.45 'Space Grotesk', sans-serif; color: #616A7E;">Your existing hue assignment, restepped for the dark ground: tinted fill at 14%, border at 45%, label at L 0.82. Chips are always labelled, so the hue is decoration, not the encoding. d20 stays a token but off the damage chooser.</span>
+      </section>
+
+      <section style="flex: 1; background: #12151F; border: 1px solid #1F2532; border-radius: 6px; padding: 12px; min-height: 0;">
+        <span style="display: block; font: 600 10px/1 'Space Grotesk', sans-serif; letter-spacing: 0.18em; text-transform: uppercase; color: #98A1B5; margin-bottom: 10px;">Chart marks</span>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="display: flex; align-items: center; gap: 10px;"><svg width="52" height="10"><line x1="0" y1="5" x2="52" y2="5" stroke="#CD7E00" stroke-width="2.6" stroke-linecap="round"/></svg><span style="flex: 1; font: 400 10px/1 'Space Grotesk', sans-serif; color: #98A1B5;">leading turn</span><span style="font: 400 10px/1 'JetBrains Mono', monospace; color: #616A7E;">2.6px</span></div>
+          <div style="display: flex; align-items: center; gap: 10px;"><svg width="52" height="10"><line x1="0" y1="5" x2="52" y2="5" stroke="#98A1B5" stroke-width="2" stroke-linecap="round"/></svg><span style="flex: 1; font: 400 10px/1 'Space Grotesk', sans-serif; color: #98A1B5;">turn 1 of a build</span><span style="font: 400 10px/1 'JetBrains Mono', monospace; color: #616A7E;">2px solid</span></div>
+          <div style="display: flex; align-items: center; gap: 10px;"><svg width="52" height="10"><line x1="0" y1="5" x2="52" y2="5" stroke="#98A1B5" stroke-width="2" stroke-dasharray="6 5" stroke-linecap="round"/></svg><span style="flex: 1; font: 400 10px/1 'Space Grotesk', sans-serif; color: #98A1B5;">turn 2 of a build</span><span style="font: 400 10px/1 'JetBrains Mono', monospace; color: #616A7E;">6 5 dash</span></div>
+          <div style="display: flex; align-items: center; gap: 10px;"><svg width="52" height="10"><line x1="0" y1="5" x2="52" y2="5" stroke="#EF9D32" stroke-width="1" stroke-dasharray="4 4"/></svg><span style="flex: 1; font: 400 10px/1 'Space Grotesk', sans-serif; color: #98A1B5;">target AC rule</span><span style="font: 400 10px/1 'JetBrains Mono', monospace; color: #616A7E;">1px</span></div>
+          <div style="display: flex; align-items: center; gap: 10px;"><svg width="52" height="10"><line x1="0" y1="5" x2="52" y2="5" stroke="#1A1F2C" stroke-width="1"/></svg><span style="flex: 1; font: 400 10px/1 'Space Grotesk', sans-serif; color: #98A1B5;">gridline</span><span style="font: 400 10px/1 'JetBrains Mono', monospace; color: #616A7E;">#1A1F2C</span></div>
+          <div style="display: flex; align-items: center; gap: 10px;"><svg width="52" height="12"><circle cx="26" cy="6" r="4.2" fill="#CD7E00" stroke="#12151F" stroke-width="2"/></svg><span style="flex: 1; font: 400 10px/1 'Space Grotesk', sans-serif; color: #98A1B5;">value marker</span><span style="font: 400 10px/1 'JetBrains Mono', monospace; color: #616A7E;">r 4 + 2px ring</span></div>
+          <div style="display: flex; align-items: center; gap: 10px;"><svg width="52" height="14"><circle cx="26" cy="7" r="6" fill="none" stroke="#98A1B5" stroke-width="1.4"/></svg><span style="flex: 1; font: 400 10px/1 'Space Grotesk', sans-serif; color: #98A1B5;">break-even ring</span><span style="font: 400 10px/1 'JetBrains Mono', monospace; color: #616A7E;">annotated</span></div>
+          <span style="font: 400 10px/1.45 'Space Grotesk', sans-serif; color: #616A7E;">The phone chart scales every stroke and dash by 0.8 — it is the same spec at a smaller size, not a second one.</span>
+        </div>
+      </section>
+    </div>
+
+    <!-- ═══ COLUMN 3 ═══ -->
+    <div style="flex: 1; display: flex; flex-direction: column; gap: 14px; min-width: 0;">
+
+      <section style="background: #12151F; border: 1px solid #1F2532; border-radius: 6px; padding: 12px;">
+        <span style="display: block; font: 600 10px/1 'Space Grotesk', sans-serif; letter-spacing: 0.18em; text-transform: uppercase; color: #98A1B5; margin-bottom: 11px;">Type</span>
+        <div style="display: flex; flex-direction: column; gap: 11px;">
+          <div style="display: flex; align-items: baseline; gap: 10px;">
+            <span style="font: 700 34px/0.85 'JetBrains Mono', monospace; letter-spacing: -0.03em; color: #E9ECF3;">35.83</span>
+            <span style="font: 400 9px/1.4 'Space Grotesk', sans-serif; color: #616A7E;">Mono 700 · 34/29 · −3%<br>the DPR number</span>
+          </div>
+          <div style="height: 1px; background: #1F2532;"></div>
+          <div style="display: flex; align-items: baseline; gap: 10px;">
+            <span style="flex: 1; font: 700 15px/1 'Space Grotesk', sans-serif; color: #E9ECF3;">Grognak</span>
+            <span style="font: 400 9px/1.4 'Space Grotesk', sans-serif; color: #616A7E; text-align: right;">Grotesk 700 · 15<br>build name</span>
+          </div>
+          <div style="display: flex; align-items: baseline; gap: 10px;">
+            <span style="flex: 1; font: 600 14px/1 'Space Grotesk', sans-serif; color: #E9ECF3;">Reckless GWM</span>
+            <span style="font: 400 9px/1.4 'Space Grotesk', sans-serif; color: #616A7E; text-align: right;">Grotesk 600 · 14<br>turn name</span>
+          </div>
+          <div style="display: flex; align-items: baseline; gap: 10px;">
+            <span style="flex: 1; font: 500 12px/1 'Space Grotesk', sans-serif; color: #E9ECF3;">Great Weapon Master</span>
+            <span style="font: 400 9px/1.4 'Space Grotesk', sans-serif; color: #616A7E; text-align: right;">Grotesk 500 · 12<br>UI text</span>
+          </div>
+          <div style="display: flex; align-items: baseline; gap: 10px;">
+            <span style="flex: 1; font: 500 11px/1 'JetBrains Mono', monospace; font-variant-numeric: tabular-nums; color: #98A1B5;">75.0%  +4  12.50</span>
+            <span style="font: 400 9px/1.4 'Space Grotesk', sans-serif; color: #616A7E; text-align: right;">Mono 500 · 11<br>table data, tabular</span>
+          </div>
+          <div style="display: flex; align-items: baseline; gap: 10px;">
+            <span style="flex: 1; font: 500 8px/1 'Space Grotesk', sans-serif; letter-spacing: 0.16em; text-transform: uppercase; color: #616A7E;">Damage sources</span>
+            <span style="font: 400 9px/1.4 'Space Grotesk', sans-serif; color: #616A7E; text-align: right;">Grotesk 500 · 8/16%<br>micro label</span>
+          </div>
+        </div>
+      </section>
+
+      <section style="background: #12151F; border: 1px solid #1F2532; border-radius: 6px; padding: 12px;">
+        <span style="display: block; font: 600 10px/1 'Space Grotesk', sans-serif; letter-spacing: 0.18em; text-transform: uppercase; color: #98A1B5; margin-bottom: 11px;">Controls</span>
+        <div style="display: flex; flex-direction: column; gap: 9px;">
+          <div style="display: flex; gap: 7px;">
+            <button style="display: flex; align-items: center; gap: 6px; height: 32px; padding: 0 13px; background: #EF9D32; border: 0; border-radius: 4px; color: #14100A; font: 600 12px/1 'Space Grotesk', sans-serif; cursor: pointer;">
+              <svg width="12" height="12" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M7 2.5v9M2.5 7h9"/></svg>Primary</button>
+            <button style="display: flex; align-items: center; height: 32px; padding: 0 13px; background: #161A26; border: 1px solid #2B3243; border-radius: 4px; color: #98A1B5; font: 500 12px/1 'Space Grotesk', sans-serif; cursor: pointer;">Ghost</button>
+            <button style="display: flex; align-items: center; height: 32px; padding: 0 13px; background: rgba(232,88,84,0.08); border: 1px solid rgba(232,88,84,0.28); border-radius: 4px; color: #E85854; font: 500 12px/1 'Space Grotesk', sans-serif; cursor: pointer;">Danger</button>
+          </div>
+
+          <div style="display: flex; gap: 7px;">
+            <div style="flex: 1; display: flex; align-items: center; height: 32px; padding: 0 10px; background: #12151F; border: 1px solid #232A38; border-radius: 4px;"><span style="font: 400 12px/1 'Space Grotesk', sans-serif; color: #4A5265;">Character name</span></div>
+            <div style="flex: 1; display: flex; align-items: center; height: 32px; padding: 0 10px; background: #12151F; border: 1px solid #EF9D32; border-radius: 4px; box-shadow: 0 0 0 3px rgba(239,157,50,0.1);"><span style="font: 500 12px/1 'Space Grotesk', sans-serif; color: #E9ECF3;">Focused</span><span style="width: 1px; height: 14px; background: #EF9D32; margin-left: 1px;"></span></div>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 9px;">
+            <div style="display: flex; align-items: center; gap: 8px; background: #161A26; border: 1px solid #2B3243; border-radius: 4px; padding: 4px 4px 4px 10px;">
+              <span style="font: 500 9px/1 'Space Grotesk', sans-serif; letter-spacing: 0.14em; text-transform: uppercase; color: #98A1B5;">AC</span>
+              <button style="width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; background: #1C2130; border: 1px solid #2B3243; border-radius: 3px; color: #98A1B5; cursor: pointer; padding: 0;"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 5h6"/></svg></button>
+              <span style="font: 700 16px/1 'JetBrains Mono', monospace; color: #EF9D32; min-width: 26px; text-align: center;">15</span>
+              <button style="width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; background: #1C2130; border: 1px solid #2B3243; border-radius: 3px; color: #98A1B5; cursor: pointer; padding: 0;"><svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5 2v6M2 5h6"/></svg></button>
+            </div>
+            <span style="display: flex; align-items: center; width: 34px; height: 19px; padding: 2px; background: #EF9D32; border-radius: 10px; justify-content: flex-end;"><span style="width: 15px; height: 15px; border-radius: 50%; background: #14100A;"></span></span>
+            <span style="display: flex; align-items: center; width: 34px; height: 19px; padding: 2px; background: #232A38; border-radius: 10px;"><span style="width: 15px; height: 15px; border-radius: 50%; background: #4A5265;"></span></span>
+          </div>
+
+          <div style="display: flex; gap: 5px;">
+            <button style="display: flex; align-items: center; gap: 6px; height: 30px; padding: 0 9px; background: rgba(239,157,50,0.12); border: 1px solid #EF9D32; border-radius: 3px; cursor: pointer;">
+              <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="#EF9D32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6.3 4.7 9 10 3.3"/></svg>
+              <span style="font: 600 11px/1 'Space Grotesk', sans-serif; color: #EF9D32;">Feat on</span>
+            </button>
+            <button style="display: flex; align-items: center; gap: 6px; height: 30px; padding: 0 9px; background: #171B27; border: 1px solid #2B3243; border-radius: 3px; cursor: pointer;">
+              <span style="width: 11px; height: 11px; border: 1px solid #3D4353; border-radius: 2px;"></span>
+              <span style="font: 500 11px/1 'Space Grotesk', sans-serif; color: #98A1B5;">Feat off</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section style="flex: 1; background: #12151F; border: 1px solid #1F2532; border-radius: 6px; padding: 12px; min-height: 0;">
+        <span style="display: block; font: 600 10px/1 'Space Grotesk', sans-serif; letter-spacing: 0.18em; text-transform: uppercase; color: #98A1B5; margin-bottom: 11px;">Indicators</span>
+        <div style="display: flex; flex-direction: column; gap: 9px;">
+          <div style="display: flex; align-items: center; gap: 7px; flex-wrap: wrap;">
+            <span style="display: flex; align-items: center; justify-content: center; width: 17px; height: 17px; border-radius: 3px; background: #EF9D32; color: #14100A; font: 700 10px/1 'JetBrains Mono', monospace;">1</span>
+            <span style="display: flex; align-items: center; justify-content: center; width: 17px; height: 17px; border-radius: 3px; background: #232A38; color: #98A1B5; font: 700 10px/1 'JetBrains Mono', monospace;">4</span>
+            <span style="display: flex; align-items: center; gap: 4px; background: rgba(79,191,110,0.12); border: 1px solid rgba(79,191,110,0.32); border-radius: 3px; padding: 4px 6px;">
+              <svg width="7" height="7" viewBox="0 0 8 8" fill="#4FBF6E"><path d="M4 0.6 7.4 7H0.6z"/></svg><span style="font: 500 10px/1 'JetBrains Mono', monospace; color: #4FBF6E;">+10.00</span>
+            </span>
+            <span style="display: flex; align-items: center; gap: 4px; background: rgba(232,88,84,0.1); border: 1px solid rgba(232,88,84,0.3); border-radius: 3px; padding: 4px 6px;">
+              <svg width="7" height="7" viewBox="0 0 8 8" fill="#E85854"><path d="M4 7.4 0.6 1h6.8z"/></svg><span style="font: 500 10px/1 'JetBrains Mono', monospace; color: #E85854;">−1.63</span>
+            </span>
+            <span style="font: 500 10px/1 'Space Grotesk', sans-serif; letter-spacing: 0.12em; text-transform: uppercase; color: #616A7E; border: 1px dashed #2B3243; border-radius: 3px; padding: 5px 7px;">baseline</span>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: #232A38; border: 1px solid #232A38; border-radius: 3px; overflow: hidden;">
+            <div style="display: flex; flex-direction: column; gap: 3px; padding: 6px 8px; background: #171B27;"><span style="font: 500 8px/1 'Space Grotesk', sans-serif; letter-spacing: 0.12em; color: #616A7E;">HIT</span><span style="font: 500 11px/1 'JetBrains Mono', monospace; color: #E9ECF3;">75.0%</span></div>
+            <div style="display: flex; flex-direction: column; gap: 3px; padding: 6px 8px; background: #171B27;"><span style="font: 500 8px/1 'Space Grotesk', sans-serif; letter-spacing: 0.12em; color: #616A7E;">CRIT</span><span style="font: 500 11px/1 'JetBrains Mono', monospace; color: #E9ECF3;">5.00%</span></div>
+            <div style="display: flex; flex-direction: column; gap: 3px; padding: 6px 8px; background: #171B27;"><span style="font: 500 8px/1 'Space Grotesk', sans-serif; letter-spacing: 0.12em; color: #616A7E;">ATK</span><span style="font: 500 11px/1 'JetBrains Mono', monospace; color: #E9ECF3;">+4</span></div>
+          </div>
+
+          <div style="position: relative; height: 6px; background: #171B27; border-radius: 3px;">
+            <div style="width: 79.3%; height: 6px; background: #CD7E00; border-radius: 3px;"></div>
+            <div style="position: absolute; left: 72.1%; top: -3px; width: 1px; height: 12px; background: #98A1B5;"></div>
+          </div>
+          <span style="font: 400 10px/1.45 'Space Grotesk', sans-serif; color: #616A7E;">Bars share one scale across the whole scenario, so lengths compare between columns. The pale tick is the baseline turn.</span>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{"$preview":{"width":1120,"height":1030}}'>
+class Component extends DCLogic {}
+</script>
+</body>
+</html>
