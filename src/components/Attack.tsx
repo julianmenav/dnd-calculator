@@ -3,7 +3,7 @@ import { useTurn } from '../context/TurnContext'
 import type { AbilityType, Attack } from '../models'
 import { useScenarioStore } from '../store/scenarioStore'
 import { ABILITIES } from '../models'
-import { FEATS } from '../models'
+import { FEATS, FEAT_EFFECTS } from '../models'
 import X from '../icons/X'
 import Chevron from '../icons/Chevron'
 import { useState } from 'react'
@@ -114,7 +114,7 @@ export default function AttackComponent({ attack }: { attack: Attack }) {
                 <button
                   key={feat}
                   className={cn(
-                    'rounded-chip cursor-pointer border px-1.5 py-1.5 text-[10px] leading-none font-medium transition-colors',
+                    'rounded-chip flex cursor-pointer flex-col items-start gap-1 border px-1.5 py-1.5 transition-colors',
                     isSelected
                       ? 'border-accent bg-accent/12 text-accent'
                       : 'border-edge bg-raised text-ink-2 hover:border-ink-4 hover:text-ink'
@@ -127,7 +127,17 @@ export default function AttackComponent({ attack }: { attack: Attack }) {
                     })
                   }}
                 >
-                  {feat}
+                  <span className="text-[10px] leading-none font-medium">
+                    {feat}
+                  </span>
+                  <span
+                    className={cn(
+                      'font-mono text-[8px] leading-none',
+                      isSelected ? 'text-accent/70' : 'text-ink-4'
+                    )}
+                  >
+                    {FEAT_EFFECTS[feat]}
+                  </span>
                 </button>
               )
             })}
