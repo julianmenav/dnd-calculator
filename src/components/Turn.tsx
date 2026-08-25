@@ -1,4 +1,5 @@
 import { useCharacter } from '../context/CharacterContext'
+import { useAnalysis } from '../context/AnalysisContext'
 import { useScenario } from '../context/ScenarioContext'
 import { TurnProvider } from '../context/TurnContext'
 import X from '../icons/X'
@@ -12,7 +13,13 @@ import Copy from '../icons/Copy'
 import InputNumber from './InputNumber'
 import DamageSources from './DamageSources'
 import { cn } from '../lib/utils'
-import { field, iconBtnDangerSm, iconBtnSm, microLabel } from '../lib/ui'
+import {
+  buildAccent,
+  field,
+  iconBtnDangerSm,
+  iconBtnSm,
+  microLabel,
+} from '../lib/ui'
 
 export default function TurnComponent({ turn }: { turn: Turn }) {
   const { updateTurn, copyTurn, removeTurn } = useScenarioStore(
@@ -28,6 +35,13 @@ export default function TurnComponent({ turn }: { turn: Turn }) {
 
   const overridesAc = turn.enemyAc !== undefined
 
+  const analysis = useAnalysis()
+  const row = analysis.byTurnId[turn.id]
+  // A rank of 1 out of 1 says nothing.
+  const ranked = analysis.turnCount > 1 && row !== undefined
+  const shareOfBest =
+    analysis.best > 0 ? (breakdown.total / analysis.best) * 100 : 0
+
   return (
     <TurnProvider value={turn}>
       <article
@@ -37,6 +51,20 @@ export default function TurnComponent({ turn }: { turn: Turn }) {
         )}
       >
         <div className="flex items-center gap-2">
+          {ranked && (
+            <span
+              className={cn(
+                'rounded-field flex h-[22px] w-[22px] shrink-0 items-center justify-center font-mono text-[10px] font-bold',
+                row.rank === 1
+                  ? 'bg-accent text-accent-ink'
+                  : 'bg-line text-ink-2'
+              )}
+              title={`Rank ${row.rank} of ${analysis.turnCount}`}
+            >
+              {row.rank}
+            </span>
+          )}
+
           <input
             className={cn(field, 'min-w-0 flex-grow font-semibold')}
             placeholder="Turn name"
@@ -123,6 +151,21 @@ export default function TurnComponent({ turn }: { turn: Turn }) {
             avg dmg
           </span>
         </div>
+
+        {ranked && (
+          <div
+            className="bg-panel rounded-chip h-1.5 w-full"
+            title={`${shareOfBest.toFixed(0)}% of the best turn in the scenario`}
+          >
+            <div
+              className={cn(
+                'rounded-chip h-1.5',
+                buildAccent(row.characterIndex)
+              )}
+              style={{ width: `${shareOfBest}%` }}
+            />
+          </div>
+        )}
 
         {!character.compactMode && breakdown.attacks.length > 0 && (
           <div className="border-line bg-line rounded-field grid grid-cols-4 gap-px overflow-hidden border">
