@@ -8,10 +8,17 @@ import X from '../icons/X'
 import Chevron from '../icons/Chevron'
 import { useState } from 'react'
 import DiceSelection from './DiceSelection'
+import type { AttackBreakdown } from '../lib/calculator'
 import { cn } from '../lib/utils'
 import { iconBtnDangerSm, microLabel, selectField } from '../lib/ui'
 
-export default function AttackComponent({ attack }: { attack: Attack }) {
+export default function AttackComponent({
+  attack,
+  breakdown,
+}: {
+  attack: Attack
+  breakdown: AttackBreakdown
+}) {
   const { updateAttack, removeAttack } = useScenarioStore(
     (state) => state.actions
   )
@@ -145,7 +152,15 @@ export default function AttackComponent({ attack }: { attack: Attack }) {
         )}
       </div>
 
-      <DiceSelection dices={attack.dices} />
+      <div className="flex items-center gap-2">
+        <DiceSelection dices={attack.dices} />
+        <span className="text-ink-3 ml-auto shrink-0 font-mono text-[9px] leading-none tabular-nums">
+          hit {(breakdown.hitChance * 100).toFixed(1)}%
+        </span>
+        <span className="text-ink shrink-0 font-mono text-[13px] leading-none font-bold tabular-nums">
+          {breakdown.total.toFixed(2)}
+        </span>
+      </div>
     </div>
   )
 }

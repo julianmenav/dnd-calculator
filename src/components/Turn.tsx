@@ -150,8 +150,12 @@ export default function TurnComponent({ turn }: { turn: Turn }) {
 
             {turn.attacks.length > 0 && (
               <div className="flex flex-grow flex-col gap-2">
-                {turn.attacks.map((attack) => (
-                  <AttackComponent key={attack.id} attack={attack} />
+                {turn.attacks.map((attack, index) => (
+                  <AttackComponent
+                    key={attack.id}
+                    attack={attack}
+                    breakdown={breakdown.attacks[index]}
+                  />
                 ))}
               </div>
             )}
