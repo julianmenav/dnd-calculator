@@ -46,6 +46,18 @@ export const FEATS: Feat[] = [
   'Duelist',
 ]
 
+/** What each toggle does to the maths, in the calculator's own terms. */
+export const FEAT_EFFECTS: Record<Feat, string> = {
+  'GW Master': '−5 hit · +10 dmg',
+  'GW Fighter': 'reroll 1–2',
+  Advantage: 'roll twice',
+  Crit: 'always crits',
+  Precision: '+d8 to hit',
+  Champion: 'crit on 19+',
+  Piercer: 'reroll a die · ×3 crit',
+  Duelist: '+2 dmg',
+}
+
 export type Attack = {
   id: string
   dices: Dice[]

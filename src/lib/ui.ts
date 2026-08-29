@@ -58,3 +58,24 @@ export const BUILD_ACCENTS = [
 
 export const buildAccent = (index: number) =>
   BUILD_ACCENTS[index % BUILD_ACCENTS.length]
+
+/** The same six hues as literals, for SVG strokes. */
+export const BUILD_HEX = [
+  '#cd7e00',
+  '#3d81d4',
+  '#2ea55c',
+  '#b24393',
+  '#00a5b3',
+  '#b63132',
+] as const
+
+export const buildHex = (index: number) => BUILD_HEX[index % BUILD_HEX.length]
+
+/**
+ * Turns inside a character share its hue and separate by line style, so a
+ * six-line chart still only asks the eye to tell three colours apart.
+ */
+const TURN_DASHES = ['', '6 5', '2 3', '10 4', '1 3'] as const
+
+export const turnDash = (index: number) =>
+  TURN_DASHES[index % TURN_DASHES.length]

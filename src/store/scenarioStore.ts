@@ -5,8 +5,16 @@ import { create } from 'zustand'
 
 interface ScenarioState {
   scenario: Scenario
+  /**
+   * The turn every other turn is measured against. A way of looking at the
+   * scenario rather than part of it, so it is deliberately left out of
+   * `partialize` and does not survive a reload.
+   */
+  baselineTurnId: string | null
   actions: {
     updateEnemyAc: (newAc: number) => void
+
+    toggleBaseline: (turnId: string) => void
 
     addCharacter: (character?: Character) => void
     addTurn: (characterId: string, turn?: Turn) => void
@@ -48,7 +56,13 @@ export const useScenarioStore = create<ScenarioState>()(
         enemyAc: 10,
         characters: [],
       },
+      baselineTurnId: null,
       actions: {
+        toggleBaseline: (turnId: string) =>
+          set((state) => ({
+            baselineTurnId: state.baselineTurnId === turnId ? null : turnId,
+          })),
+
         updateEnemyAc: (newAc: number) =>
           set((state) => ({
             scenario: {

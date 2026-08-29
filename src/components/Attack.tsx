@@ -3,15 +3,22 @@ import { useTurn } from '../context/TurnContext'
 import type { AbilityType, Attack } from '../models'
 import { useScenarioStore } from '../store/scenarioStore'
 import { ABILITIES } from '../models'
-import { FEATS } from '../models'
+import { FEATS, FEAT_EFFECTS } from '../models'
 import X from '../icons/X'
 import Chevron from '../icons/Chevron'
 import { useState } from 'react'
 import DiceSelection from './DiceSelection'
+import type { AttackBreakdown } from '../lib/calculator'
 import { cn } from '../lib/utils'
 import { iconBtnDangerSm, microLabel, selectField } from '../lib/ui'
 
-export default function AttackComponent({ attack }: { attack: Attack }) {
+export default function AttackComponent({
+  attack,
+  breakdown,
+}: {
+  attack: Attack
+  breakdown: AttackBreakdown
+}) {
   const { updateAttack, removeAttack } = useScenarioStore(
     (state) => state.actions
   )
@@ -114,7 +121,7 @@ export default function AttackComponent({ attack }: { attack: Attack }) {
                 <button
                   key={feat}
                   className={cn(
-                    'rounded-chip cursor-pointer border px-1.5 py-1.5 text-[10px] leading-none font-medium transition-colors',
+                    'rounded-chip flex cursor-pointer flex-col items-start gap-1 border px-1.5 py-1.5 transition-colors',
                     isSelected
                       ? 'border-accent bg-accent/12 text-accent'
                       : 'border-edge bg-raised text-ink-2 hover:border-ink-4 hover:text-ink'
@@ -127,7 +134,17 @@ export default function AttackComponent({ attack }: { attack: Attack }) {
                     })
                   }}
                 >
-                  {feat}
+                  <span className="text-[10px] leading-none font-medium">
+                    {feat}
+                  </span>
+                  <span
+                    className={cn(
+                      'font-mono text-[8px] leading-none',
+                      isSelected ? 'text-accent/70' : 'text-ink-4'
+                    )}
+                  >
+                    {FEAT_EFFECTS[feat]}
+                  </span>
                 </button>
               )
             })}
@@ -135,7 +152,15 @@ export default function AttackComponent({ attack }: { attack: Attack }) {
         )}
       </div>
 
-      <DiceSelection dices={attack.dices} />
+      <div className="flex items-center gap-2">
+        <DiceSelection dices={attack.dices} />
+        <span className="text-ink-3 ml-auto shrink-0 font-mono text-[9px] leading-none tabular-nums">
+          hit {(breakdown.hitChance * 100).toFixed(1)}%
+        </span>
+        <span className="text-ink shrink-0 font-mono text-[13px] leading-none font-bold tabular-nums">
+          {breakdown.total.toFixed(2)}
+        </span>
+      </div>
     </div>
   )
 }
