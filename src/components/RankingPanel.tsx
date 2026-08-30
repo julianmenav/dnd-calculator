@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { useAnalysis } from '../context/AnalysisContext'
 import { useScenario } from '../context/ScenarioContext'
 import { useScenarioStore } from '../store/scenarioStore'
@@ -5,6 +6,7 @@ import { buildHex, sectionLabel, turnDash } from '../lib/ui'
 import { cn } from '../lib/utils'
 
 export default function RankingPanel() {
+  const { t } = useTranslation()
   const analysis = useAnalysis()
   const scenario = useScenario()
   const baselineTurnId = useScenarioStore((state) => state.baselineTurnId)
@@ -16,10 +18,10 @@ export default function RankingPanel() {
   return (
     <div className="border-rule bg-panel rounded-panel flex flex-col gap-2 p-3">
       <div className="flex items-baseline justify-between gap-3">
-        <span className={sectionLabel}>Ranking</span>
+        <span className={sectionLabel}>{t('analysis.ranking')}</span>
         <span className="text-ink-4 font-mono text-[10px]">
-          AC {scenario.enemyAc}
-          {baselineTotal !== undefined && ' · vs baseline'}
+          {t('analysis.rankingAc', { ac: scenario.enemyAc })}
+          {baselineTotal !== undefined && t('analysis.vsBaseline')}
         </span>
       </div>
 
@@ -63,11 +65,11 @@ export default function RankingPanel() {
               </svg>
 
               <span className="text-ink min-w-0 flex-1 truncate text-[11px] font-medium">
-                {row.turnName || 'Unnamed turn'}
+                {row.turnName || t('turn.unnamed')}
               </span>
 
               <span className="text-ink-4 w-16 shrink-0 truncate text-[10px]">
-                {row.characterName || 'Unnamed'}
+                {row.characterName || t('character.unnamed')}
               </span>
 
               <div className="bg-ground rounded-chip h-1 w-12 shrink-0">
@@ -86,7 +88,9 @@ export default function RankingPanel() {
 
               <span className="w-12 shrink-0 text-right font-mono text-[10px] tabular-nums">
                 {isBaseline ? (
-                  <span className="text-ink-3 tracking-[0.06em]">BASE</span>
+                  <span className="text-ink-3 tracking-[0.06em]">
+                    {t('analysis.base')}
+                  </span>
                 ) : difference === undefined ? (
                   <span className="text-ink-5">—</span>
                 ) : (

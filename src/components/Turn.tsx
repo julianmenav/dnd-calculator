@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { useCharacter } from '../context/CharacterContext'
 import { useAnalysis } from '../context/AnalysisContext'
 import { useScenario } from '../context/ScenarioContext'
@@ -24,6 +25,7 @@ import {
 } from '../lib/ui'
 
 export default function TurnComponent({ turn }: { turn: Turn }) {
+  const { t } = useTranslation()
   const { updateTurn, copyTurn, removeTurn, toggleBaseline } =
     useScenarioStore((state) => state.actions)
   const character = useCharacter()
@@ -71,7 +73,10 @@ export default function TurnComponent({ turn }: { turn: Turn }) {
                   ? 'bg-accent text-accent-ink'
                   : 'bg-line text-ink-2'
               )}
-              title={`Rank ${row.rank} of ${analysis.turnCount}`}
+              title={t('turn.rankOf', {
+                rank: row.rank,
+                total: analysis.turnCount,
+              })}
             >
               {row.rank}
             </span>
@@ -79,7 +84,7 @@ export default function TurnComponent({ turn }: { turn: Turn }) {
 
           <input
             className={cn(field, 'min-w-0 flex-grow font-semibold')}
-            placeholder="Turn name"
+            placeholder={t('turn.namePlaceholder')}
             value={turn.name}
             onChange={(e) =>
               updateTurn(character.id, turn.id, { name: e.target.value })
@@ -94,9 +99,7 @@ export default function TurnComponent({ turn }: { turn: Turn }) {
                   isBaseline && 'border-accent text-accent'
                 )}
                 title={
-                  isBaseline
-                    ? 'Stop measuring against this turn'
-                    : 'Measure every turn against this one'
+                  isBaseline ? t('turn.baselineUnset') : t('turn.baselineSet')
                 }
                 onClick={() => toggleBaseline(turn.id)}
               >
@@ -104,14 +107,14 @@ export default function TurnComponent({ turn }: { turn: Turn }) {
               </button>
               <button
                 className={iconBtnSm}
-                title="Duplicate turn"
+                title={t('turn.duplicate')}
                 onClick={() => copyTurn(character.id, turn.id)}
               >
                 <Copy />
               </button>
               <button
                 className={iconBtnDangerSm}
-                title="Remove turn"
+                title={t('turn.remove')}
                 onClick={() => removeTurn(character.id, turn.id)}
               >
                 <X />
@@ -122,7 +125,7 @@ export default function TurnComponent({ turn }: { turn: Turn }) {
 
         {!character.compactMode ? (
           <div className="border-line bg-panel rounded-field flex h-8 items-center gap-2 border pr-1 pl-2">
-            <span className={microLabel}>Enemy AC</span>
+            <span className={microLabel}>{t('turn.enemyAc')}</span>
 
             {overridesAc ? (
               <InputNumber
@@ -137,7 +140,7 @@ export default function TurnComponent({ turn }: { turn: Turn }) {
               />
             ) : (
               <span className="text-ink-4 flex-grow text-right font-mono text-[12px]">
-                inherit {scenario.enemyAc}
+                {t('turn.inherit', { ac: scenario.enemyAc })}
               </span>
             )}
 
@@ -146,7 +149,9 @@ export default function TurnComponent({ turn }: { turn: Turn }) {
                 'flex h-[17px] w-[30px] shrink-0 cursor-pointer items-center rounded-full border-0 p-[2px] transition-colors',
                 overridesAc ? 'bg-accent justify-end' : 'bg-line justify-start'
               )}
-              title={overridesAc ? 'Use the scenario AC' : 'Override the AC for this turn'}
+              title={
+                overridesAc ? t('turn.useScenarioAc') : t('turn.overrideAc')
+              }
               onClick={() =>
                 updateTurn(character.id, turn.id, {
                   enemyAc: overridesAc ? undefined : scenario.enemyAc,
@@ -164,7 +169,7 @@ export default function TurnComponent({ turn }: { turn: Turn }) {
         ) : (
           overridesAc && (
             <span className="border-accent/40 bg-accent/10 text-accent rounded-field self-start border px-1.5 py-1 font-mono text-[10px] leading-none font-bold">
-              AC {turn.enemyAc}
+              {t('turn.acBadge', { ac: turn.enemyAc })}
             </span>
           )
         )}
@@ -179,7 +184,7 @@ export default function TurnComponent({ turn }: { turn: Turn }) {
               'pb-[3px] tracking-[0.14em] whitespace-nowrap'
             )}
           >
-            avg dmg
+            {t('turn.avgDmg')}
           </span>
 
           {isBaseline ? (
@@ -189,7 +194,7 @@ export default function TurnComponent({ turn }: { turn: Turn }) {
                 'border-edge rounded-field ml-auto border border-dashed px-1.5 py-1 tracking-[0.12em]'
               )}
             >
-              baseline
+              {t('turn.baseline')}
             </span>
           ) : (
             baselineTotal !== undefined && (
@@ -206,7 +211,7 @@ export default function TurnComponent({ turn }: { turn: Turn }) {
         {ranked && (
           <div
             className="bg-panel rounded-chip relative h-1.5 w-full"
-            title={`${shareOfBest.toFixed(0)}% of the best turn in the scenario`}
+            title={t('turn.shareOfBest', { percent: shareOfBest.toFixed(0) })}
           >
             <div
               className={cn(
@@ -219,7 +224,7 @@ export default function TurnComponent({ turn }: { turn: Turn }) {
               <span
                 className="bg-ink-2 absolute top-[-3px] h-3 w-px"
                 style={{ left: `${baselineShare}%` }}
-                title="Baseline"
+                title={t('turn.baselineMarker')}
               />
             )}
           </div>
@@ -228,18 +233,21 @@ export default function TurnComponent({ turn }: { turn: Turn }) {
         {!character.compactMode && breakdown.attacks.length > 0 && (
           <div className="border-line bg-line rounded-field grid grid-cols-4 gap-px overflow-hidden border">
             <Stat
-              label="Hit"
+              label={t('turn.hit')}
               value={spread(breakdown.attacks.map((a) => a.hitChance), percent)}
             />
             <Stat
-              label="Crit"
+              label={t('turn.crit')}
               value={spread(breakdown.attacks.map((a) => a.critChance), percent)}
             />
             <Stat
-              label="Atk"
+              label={t('turn.atk')}
               value={spread(breakdown.attacks.map((a) => a.attackBonus), signed)}
             />
-            <Stat label="Atks" value={String(breakdown.attacks.length)} />
+            <Stat
+              label={t('turn.atks')}
+              value={String(breakdown.attacks.length)}
+            />
           </div>
         )}
 

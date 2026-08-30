@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useAnalysis } from '../context/AnalysisContext'
 import { useScenario } from '../context/ScenarioContext'
 import { AC_MAX, AC_MIN, AC_RANGE, type TurnRow } from '../lib/analysis'
@@ -27,6 +28,7 @@ const niceCeiling = (value: number) => {
 }
 
 export default function DprCurve() {
+  const { t } = useTranslation()
   const analysis = useAnalysis()
   const scenario = useScenario()
   const svg = useRef<SVGSVGElement>(null)
@@ -49,9 +51,9 @@ export default function DprCurve() {
   return (
     <div className="border-rule bg-panel rounded-panel flex min-w-0 flex-col gap-2 p-3">
       <div className="flex items-baseline justify-between gap-3">
-        <span className={sectionLabel}>Damage vs enemy AC</span>
+        <span className={sectionLabel}>{t('analysis.curveTitle')}</span>
         <span className="text-ink-4 font-mono text-[10px]">
-          AC {AC_MIN}–{AC_MAX}
+          {t('analysis.acRange', { min: AC_MIN, max: AC_MAX })}
         </span>
       </div>
 
@@ -127,7 +129,7 @@ export default function DprCurve() {
           fontWeight="500"
           letterSpacing="1.6"
         >
-          ENEMY AC
+          {t('analysis.enemyAcAxis')}
         </text>
 
         {analysis.rows.map((row) => (
@@ -223,6 +225,7 @@ function DirectLabels({
   rows: TurnRow[]
   yFor: (value: number) => number
 }) {
+  const { t } = useTranslation()
   const last = AC_RANGE.length - 1
   const labelled = [...rows]
     .sort((a, b) => b.curve[last] - a.curve[last])
@@ -256,7 +259,7 @@ function DirectLabels({
             fontSize="10"
             fontWeight="500"
           >
-            {truncate(row.turnName || 'Unnamed turn', 15)}
+            {truncate(row.turnName || t('turn.unnamed'), 15)}
           </text>
         </g>
       ))}
@@ -275,6 +278,7 @@ function Crosshair({
   yFor: (value: number) => number
   ceiling: number
 }) {
+  const { t } = useTranslation()
   const x = xFor(index)
   const listed = [...rows]
     .sort((a, b) => b.curve[index] - a.curve[index])
@@ -320,7 +324,7 @@ function Crosshair({
         fontWeight="600"
         letterSpacing="1.4"
       >
-        ENEMY AC {AC_RANGE[index]}
+        {t('analysis.enemyAcAt', { ac: AC_RANGE[index] })}
       </text>
 
       {listed.map((row, order) => {
@@ -342,7 +346,7 @@ function Crosshair({
               fontFamily="'Space Grotesk', sans-serif"
               fontSize="10"
             >
-              {truncate(row.turnName || 'Unnamed turn', 16)}
+              {truncate(row.turnName || t('turn.unnamed'), 16)}
             </text>
             <text
               x={boxX + width - 10}

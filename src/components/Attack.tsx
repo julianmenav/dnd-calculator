@@ -1,9 +1,10 @@
+import { useTranslation } from 'react-i18next'
 import { useCharacter } from '../context/CharacterContext'
 import { useTurn } from '../context/TurnContext'
 import type { AbilityType, Attack, Dice } from '../models'
 import { useScenarioStore } from '../store/scenarioStore'
 import { ABILITIES } from '../models'
-import { FEATS, FEAT_EFFECTS } from '../models'
+import { FEATS } from '../models'
 import X from '../icons/X'
 import Chevron from '../icons/Chevron'
 import Confirm from '../icons/Confirm'
@@ -23,6 +24,7 @@ export default function AttackComponent({
   attack: Attack
   breakdown: AttackBreakdown
 }) {
+  const { t } = useTranslation()
   const { updateAttack, removeAttack, copyAttack } = useScenarioStore(
     (state) => state.actions
   )
@@ -51,7 +53,7 @@ export default function AttackComponent({
       <div className="flex items-start gap-2">
         <div className="flex min-w-0 flex-1 flex-col gap-1">
           <BonusRow
-            label="Attack"
+            label={t('attack.attack')}
             ability={attack.attackBonusAbility}
             onAbilityChange={(value) => {
               /* A weapon is almost always swung with the stat it is aimed
@@ -63,30 +65,30 @@ export default function AttackComponent({
             }}
             flat={attack.attackBonusFlat ?? 0}
             onFlatChange={(value) => update({ attackBonusFlat: value ?? 0 })}
-            flatTitle="Flat bonus to the attack roll, e.g. a +1 weapon"
+            flatTitle={t('attack.attackFlatTitle')}
           />
 
           <BonusRow
-            label="Damage"
+            label={t('attack.damage')}
             ability={attack.damageBonusAbility}
             onAbilityChange={(value) => update({ damageBonusAbility: value })}
             flat={attack.damageBonusFlat ?? 0}
             onFlatChange={(value) => update({ damageBonusFlat: value ?? 0 })}
-            flatTitle="Flat bonus to damage on a hit, e.g. a +1 weapon"
+            flatTitle={t('attack.damageFlatTitle')}
           />
         </div>
 
         <div className="mt-[3px] flex flex-col gap-1">
           <button
             className={iconBtnDangerSm}
-            title="Remove attack"
+            title={t('attack.remove')}
             onClick={() => removeAttack(character.id, turn.id, attack.id)}
           >
             <X />
           </button>
           <button
             className={iconBtnSm}
-            title="Duplicate attack"
+            title={t('attack.duplicate')}
             onClick={() => copyAttack(character.id, turn.id, attack.id)}
           >
             <Copy />
@@ -104,7 +106,7 @@ export default function AttackComponent({
           )}
           onClick={() => setShowFeats((prev) => !prev)}
         >
-          Feats
+          {t('attack.feats')}
           {attack.feats.length > 0 && (
             <span className="bg-accent text-accent-ink inline-flex h-4 min-w-4 items-center justify-center rounded-full px-1 font-mono text-[9px] font-bold">
               {attack.feats.length}
@@ -140,7 +142,7 @@ export default function AttackComponent({
                   }}
                 >
                   <span className="text-[10px] leading-none font-medium">
-                    {feat}
+                    {t(`feats.${feat}`)}
                   </span>
                   <span
                     className={cn(
@@ -148,7 +150,7 @@ export default function AttackComponent({
                       isSelected ? 'text-accent/70' : 'text-ink-4'
                     )}
                   >
-                    {FEAT_EFFECTS[feat]}
+                    {t(`featEffects.${feat}`)}
                   </span>
                 </button>
               )
@@ -160,11 +162,11 @@ export default function AttackComponent({
       {editDices ? (
         <div className="border-accent bg-card rounded-field flex flex-col gap-2 border p-2">
           <div className="flex items-center gap-2">
-            <span className={microLabel}>Edit dice</span>
+            <span className={microLabel}>{t('attack.editDice')}</span>
             <div className="bg-rule ml-auto h-px flex-grow" />
             <button
               className="bg-gain text-accent-ink rounded-field inline-flex h-6 w-6 cursor-pointer items-center justify-center border-0 p-0 transition-opacity hover:opacity-85"
-              title="Done"
+              title={t('attack.done')}
               onClick={() => setEditDices(false)}
             >
               <Confirm />
@@ -177,7 +179,7 @@ export default function AttackComponent({
             <DiceSelection dices={attack.dices} onDiceClick={removeDie} />
             {attack.dices.length === 0 && (
               <span className="text-ink-4 text-[10px] leading-none">
-                no dice
+                {t('attack.noDice')}
               </span>
             )}
             <HitAndTotal breakdown={breakdown} />
@@ -187,13 +189,13 @@ export default function AttackComponent({
         <div className="flex items-center gap-2">
           <button
             className="cursor-pointer transition-opacity hover:opacity-70"
-            title="Edit dice"
+            title={t('attack.editDice')}
             onClick={() => setEditDices(true)}
           >
             <DiceSelection dices={attack.dices} />
             {attack.dices.length === 0 && (
               <span className="text-ink-4 text-[10px] leading-none">
-                no dice
+                {t('attack.noDice')}
               </span>
             )}
           </button>
@@ -205,10 +207,13 @@ export default function AttackComponent({
 }
 
 function HitAndTotal({ breakdown }: { breakdown: AttackBreakdown }) {
+  const { t } = useTranslation()
   return (
     <>
       <span className="text-ink-3 ml-auto shrink-0 font-mono text-[9px] leading-none tabular-nums">
-        hit {(breakdown.hitChance * 100).toFixed(1)}%
+        {t('attack.hitPct', {
+          percent: (breakdown.hitChance * 100).toFixed(1),
+        })}
       </span>
       <span className="text-ink shrink-0 font-mono text-[13px] leading-none font-bold tabular-nums">
         {breakdown.total.toFixed(2)}
@@ -237,9 +242,10 @@ function BonusRow({
   onFlatChange: (flat: number | null) => void
   flatTitle: string
 }) {
+  const { t } = useTranslation()
   return (
     <div className="flex items-center gap-1">
-      <span className={cn(microLabel, 'w-[38px] shrink-0')}>{label}</span>
+      <span className={cn(microLabel, 'w-[42px] shrink-0')}>{label}</span>
 
       <div className="relative min-w-0 flex-1">
         <select
@@ -249,10 +255,10 @@ function BonusRow({
             onAbilityChange((e.target.value as AbilityType) || undefined)
           }
         >
-          <option value="">None</option>
+          <option value="">{t('attack.none')}</option>
           {ABILITIES.map((option) => (
             <option key={option} value={option}>
-              {option}
+              {t(`abilities.${option}`)}
             </option>
           ))}
         </select>

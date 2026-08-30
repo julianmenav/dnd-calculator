@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { ScenarioProvider } from '../context/ScenarioContext'
 import { AnalysisProvider } from '../context/AnalysisContext'
 import { analyseScenario } from '../lib/analysis'
@@ -11,8 +12,11 @@ import InputNumber from './InputNumber'
 import ScenarioSummary from './ScenarioSummary'
 import AnalysisSection from './AnalysisSection'
 import { btnPrimary, iconBtn, microLabel } from '../lib/ui'
+import { LANGUAGES } from '../i18n'
+import { cn } from '../lib/utils'
 
 function Scenario() {
+  const { t } = useTranslation()
   const scenario = useScenarioStore((state) => state.scenario)
 
   const { addCharacter, updateEnemyAc } = useScenarioStore(
@@ -39,21 +43,23 @@ function Scenario() {
               <D20 className="text-accent h-[26px] w-[26px]" />
               <div className="flex flex-col gap-[3px]">
                 <h1 className="text-ink text-sm leading-none font-bold tracking-[0.16em]">
-                  D&D CALCULATOR
+                  {t('app.title')}
                 </h1>
                 <span className="text-ink-3 text-[9px] leading-none tracking-[0.14em] uppercase">
-                  average damage · build comparison
+                  {t('app.tagline')}
                 </span>
               </div>
             </div>
 
             <div className="flex items-center gap-2.5">
+              <LanguageToggle />
+
               <div className="border-edge bg-raised/60 rounded-field flex items-center gap-2.5 border py-1 pr-1 pl-2.5">
-                <span className={microLabel}>Default enemy AC</span>
+                <span className={microLabel}>{t('app.defaultEnemyAc')}</span>
                 <div className="flex items-center gap-0.5">
                   <button
                     className={iconBtn}
-                    title="Lower the target AC"
+                    title={t('app.lowerAc')}
                     onClick={() => stepAc(-1)}
                   >
                     <Minus />
@@ -66,7 +72,7 @@ function Scenario() {
                   />
                   <button
                     className={iconBtn}
-                    title="Raise the target AC"
+                    title={t('app.raiseAc')}
                     onClick={() => stepAc(1)}
                   >
                     <Plus />
@@ -76,7 +82,7 @@ function Scenario() {
 
               <button className={btnPrimary} onClick={() => addCharacter()}>
                 <Plus />
-                Add character
+                {t('app.addCharacter')}
               </button>
             </div>
           </header>
@@ -100,6 +106,30 @@ function Scenario() {
         </div>
       </AnalysisProvider>
     </ScenarioProvider>
+  )
+}
+
+/** ES/EN switch; the choice persists via the i18n module's localStorage sync. */
+function LanguageToggle() {
+  const { i18n } = useTranslation()
+
+  return (
+    <div className="border-edge bg-raised/60 rounded-field flex items-center gap-0.5 border p-0.5">
+      {LANGUAGES.map((language) => (
+        <button
+          key={language}
+          className={cn(
+            'rounded-chip h-6 cursor-pointer border-0 px-2 font-mono text-[10px] font-bold uppercase transition-colors',
+            i18n.resolvedLanguage === language
+              ? 'bg-accent text-accent-ink'
+              : 'text-ink-3 hover:text-ink bg-transparent'
+          )}
+          onClick={() => i18n.changeLanguage(language)}
+        >
+          {language}
+        </button>
+      ))}
+    </div>
   )
 }
 
