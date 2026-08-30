@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { CharacterProvider } from '../context/CharacterContext'
 import type { Character } from '../models'
 import { useScenarioStore } from '../store/scenarioStore'
@@ -25,6 +26,7 @@ export default function CharacterComponent({
   character: Character
   index: number
 }) {
+  const { t } = useTranslation()
   const { updateCharacter, copyCharacter, removeCharacter, addTurn } =
     useScenarioStore((state) => state.actions)
 
@@ -46,7 +48,7 @@ export default function CharacterComponent({
 
             <input
               className={cn(field, 'min-w-0 flex-grow font-semibold')}
-              placeholder="Character name"
+              placeholder={t('character.namePlaceholder')}
               value={character.name}
               onChange={(e) =>
                 updateCharacter(character.id, { name: e.target.value })
@@ -54,7 +56,7 @@ export default function CharacterComponent({
             />
 
             <label className="border-line bg-panel rounded-field flex h-8 shrink-0 items-center gap-1 border pr-1 pl-2">
-              <span className={microLabel}>LvL</span>
+              <span className={microLabel}>{t('character.level')}</span>
               <InputNumber
                 className="text-ink h-6 w-8 border-transparent bg-transparent text-center font-semibold hover:border-transparent"
                 value={character.lvl}
@@ -71,7 +73,11 @@ export default function CharacterComponent({
                 character.compactMode &&
                   'border-accent bg-accent/12 text-accent hover:border-accent hover:text-accent'
               )}
-              title={character.compactMode ? 'Expand' : 'Compact'}
+              title={
+                character.compactMode
+                  ? t('character.expand')
+                  : t('character.compact')
+              }
               onClick={() =>
                 updateCharacter(character.id, {
                   compactMode: !character.compactMode,
@@ -83,7 +89,7 @@ export default function CharacterComponent({
 
             <button
               className={iconBtn}
-              title="Duplicate character"
+              title={t('character.duplicate')}
               onClick={() => copyCharacter(character.id)}
             >
               <Copy />
@@ -91,7 +97,7 @@ export default function CharacterComponent({
 
             <button
               className={iconBtnDanger}
-              title="Remove character"
+              title={t('character.remove')}
               onClick={() => removeCharacter(character.id)}
             >
               <X />
@@ -104,9 +110,11 @@ export default function CharacterComponent({
                 <label
                   key={ability}
                   className="border-rule bg-card rounded-field flex flex-col items-center gap-1 border py-1"
-                  title={ability}
+                  title={t(`abilities.${ability}`)}
                 >
-                  <span className={microLabel}>{ability.slice(0, 3)}</span>
+                  <span className={microLabel}>
+                    {t(`abilitiesShort.${ability}`)}
+                  </span>
                   <InputNumber
                     className="text-ink h-5 w-full border-transparent bg-transparent px-0 text-center text-[13px] font-bold hover:border-transparent"
                     value={character.abilities[ability]}
@@ -146,7 +154,7 @@ export default function CharacterComponent({
               onClick={() => addTurn(character.id)}
             >
               <Plus />
-              Add turn
+              {t('character.addTurn')}
             </button>
           )}
         </div>

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import type { Dice } from '../models'
 import { DICE_COLORS } from '../models'
 import { cn } from '../lib/utils'
@@ -13,6 +14,7 @@ export default function DiceSelection({
   /** When set, chips become buttons — clicking one hands back its die. */
   onDiceClick?: (dice: Dice) => void
 }) {
+  const { t } = useTranslation()
   const groupedDices = groupDices(dices)
 
   return (
@@ -26,7 +28,7 @@ export default function DiceSelection({
               chip,
               'cursor-pointer transition-opacity hover:opacity-60'
             )}
-            title={`Remove a d${dice}`}
+            title={t('attack.removeDie', { dice })}
             onClick={() => onDiceClick(dice)}
           >
             {count}d{dice}

@@ -1,8 +1,10 @@
+import { useTranslation } from 'react-i18next'
 import { useAnalysis } from '../context/AnalysisContext'
 import { cn } from '../lib/utils'
 import { microLabel } from '../lib/ui'
 
 export default function ScenarioSummary() {
+  const { t } = useTranslation()
   const analysis = useAnalysis()
 
   if (analysis.turnCount === 0) return null
@@ -11,20 +13,20 @@ export default function ScenarioSummary() {
 
   return (
     <div className="border-rule bg-chrome/60 flex h-12 shrink-0 items-center gap-4 border-b px-4">
-      <Figure label="Builds" value={String(analysis.characterCount)} />
+      <Figure label={t('summary.builds')} value={String(analysis.characterCount)} />
       <Divider />
-      <Figure label="Turns" value={String(analysis.turnCount)} />
+      <Figure label={t('summary.turns')} value={String(analysis.turnCount)} />
       <Divider />
       <Figure
-        label="Best"
+        label={t('summary.best')}
         value={analysis.best.toFixed(2)}
-        note={best.turnName || best.characterName || 'unnamed turn'}
+        note={best.turnName || best.characterName || t('turn.unnamedLower')}
         accent
       />
       <Divider />
-      <Figure label="Spread" value={analysis.spread.toFixed(2)} />
+      <Figure label={t('summary.spread')} value={analysis.spread.toFixed(2)} />
       <Divider />
-      <Figure label="Median" value={analysis.median.toFixed(2)} />
+      <Figure label={t('summary.median')} value={analysis.median.toFixed(2)} />
     </div>
   )
 }

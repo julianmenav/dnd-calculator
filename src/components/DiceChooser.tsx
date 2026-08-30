@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import type { Dice } from '../models'
 import { useScenarioStore } from '../store/scenarioStore'
 import { useCharacter } from '../context/CharacterContext'
@@ -12,6 +13,7 @@ import { cn } from '../lib/utils'
 import { btnDashed, microLabel } from '../lib/ui'
 
 export default function DiceChooser() {
+  const { t } = useTranslation()
   const [showDiceChooser, setShowDiceChooser] = useState(false)
   const [dices, setDices] = useState<Dice[]>([])
   const { addAttack } = useScenarioStore((state) => state.actions)
@@ -25,7 +27,7 @@ export default function DiceChooser() {
         onClick={() => setShowDiceChooser(true)}
       >
         <Plus />
-        Add attack
+        {t('attack.add')}
       </button>
     )
   }
@@ -33,11 +35,11 @@ export default function DiceChooser() {
   return (
     <div className="border-accent bg-panel rounded-field flex w-full flex-col gap-2 border p-2">
       <div className="flex items-center gap-2">
-        <span className={microLabel}>New attack</span>
+        <span className={microLabel}>{t('attack.new')}</span>
         <div className="bg-rule ml-auto h-px flex-grow" />
         <button
           className="bg-gain text-accent-ink rounded-field inline-flex h-6 w-6 cursor-pointer items-center justify-center border-0 p-0 transition-opacity hover:opacity-85"
-          title="Add attack"
+          title={t('attack.add')}
           onClick={() => {
             addAttack(character.id, turn.id, dices)
             setDices([])
@@ -48,7 +50,7 @@ export default function DiceChooser() {
         </button>
         <button
           className="border-loss/30 bg-loss/10 text-loss rounded-field hover:bg-loss/20 inline-flex h-6 w-6 cursor-pointer items-center justify-center border p-0 transition-colors"
-          title="Cancel"
+          title={t('attack.cancel')}
           onClick={() => {
             setDices([])
             setShowDiceChooser(false)
@@ -67,7 +69,7 @@ export default function DiceChooser() {
 
       {dices.length > 0 && (
         <div className="border-rule flex items-center gap-2 border-t pt-2">
-          <span className={microLabel}>Picked</span>
+          <span className={microLabel}>{t('attack.picked')}</span>
           <DiceSelection
             dices={dices}
             onDiceClick={(dice) =>

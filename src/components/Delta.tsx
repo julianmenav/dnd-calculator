@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { cn } from '../lib/utils'
 
 /**
@@ -17,6 +18,7 @@ export default function Delta({
   compact?: boolean
   className?: string
 }) {
+  const { t } = useTranslation()
   const difference = value - baseline
   const percent = baseline > 0 ? (difference / baseline) * 100 : 0
   const up = difference >= 0
@@ -31,7 +33,11 @@ export default function Delta({
           : 'border-loss/30 bg-loss/10 text-loss',
         className
       )}
-      title={`${sign}${Math.abs(difference).toFixed(2)} (${sign}${Math.abs(percent).toFixed(1)}%) against the baseline`}
+      title={t('analysis.deltaTitle', {
+        sign,
+        difference: Math.abs(difference).toFixed(2),
+        percent: Math.abs(percent).toFixed(1),
+      })}
     >
       <svg width="7" height="7" viewBox="0 0 8 8" fill="currentColor">
         {up ? <path d="M4 0.6 7.4 7H0.6z" /> : <path d="M4 7.4 0.6 1h6.8z" />}

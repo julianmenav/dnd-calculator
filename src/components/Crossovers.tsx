@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { useAnalysis } from '../context/AnalysisContext'
 import { sectionLabel } from '../lib/ui'
 
@@ -5,6 +6,7 @@ import { sectionLabel } from '../lib/ui'
 export const CROSSOVER_LIMIT = 6
 
 export default function Crossovers() {
+  const { t } = useTranslation()
   const analysis = useAnalysis()
 
   if (analysis.crossovers.length === 0) return null
@@ -15,9 +17,9 @@ export default function Crossovers() {
   return (
     <div className="border-rule bg-panel rounded-panel flex flex-col gap-2 p-3">
       <div className="flex items-baseline justify-between gap-3">
-        <span className={sectionLabel}>Break-even points</span>
+        <span className={sectionLabel}>{t('analysis.crossovers')}</span>
         <span className="text-ink-4 text-[10px]">
-          where two of a character's turns swap places
+          {t('analysis.crossoversHint')}
         </span>
       </div>
 
@@ -29,17 +31,21 @@ export default function Crossovers() {
           >
             <div className="flex min-w-0 flex-col gap-1">
               <span className="text-ink text-[11px] leading-snug font-medium">
-                {crossover.fallsBehind || 'Unnamed turn'} falls behind{' '}
-                {crossover.overtakenBy || 'unnamed turn'}
+                {t('analysis.fallsBehind', {
+                  loser: crossover.fallsBehind || t('turn.unnamed'),
+                  winner: crossover.overtakenBy || t('turn.unnamedLower'),
+                })}
               </span>
               <span className="text-ink-3 text-[10px] leading-snug">
-                {crossover.characterName || 'Unnamed'} · both land{' '}
-                {crossover.damage.toFixed(2)} here
+                {t('analysis.bothLand', {
+                  name: crossover.characterName || t('character.unnamed'),
+                  damage: crossover.damage.toFixed(2),
+                })}
               </span>
             </div>
 
             <span className="text-ink ml-auto shrink-0 font-mono text-[12px] font-bold tabular-nums">
-              AC {crossover.ac.toFixed(1)}
+              {t('analysis.crossoverAc', { ac: crossover.ac.toFixed(1) })}
             </span>
           </div>
         ))}
@@ -47,7 +53,7 @@ export default function Crossovers() {
 
       {hidden > 0 && (
         <span className="text-ink-4 text-[10px]">
-          {hidden} more crossing{hidden === 1 ? '' : 's'} not shown.
+          {t('analysis.moreCrossings', { count: hidden })}
         </span>
       )}
     </div>

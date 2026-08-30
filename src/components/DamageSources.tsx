@@ -1,10 +1,11 @@
+import { useTranslation } from 'react-i18next'
 import type { TurnBreakdown } from '../lib/calculator'
 import { cn } from '../lib/utils'
 import { microLabel } from '../lib/ui'
 
 type Source = {
+  /** Doubles as the `sources.*` translation key for the legend label. */
   key: keyof Pick<TurnBreakdown, 'dice' | 'crit' | 'ability' | 'bonus' | 'feat'>
-  label: string
   bar: string
   swatch: string
   text: string
@@ -18,35 +19,30 @@ type Source = {
 const SOURCES: Source[] = [
   {
     key: 'dice',
-    label: 'Dice',
     bar: 'bg-src-dice',
     swatch: 'bg-src-dice',
     text: 'text-ink-2',
   },
   {
     key: 'crit',
-    label: 'Crit',
     bar: 'bg-src-crit',
     swatch: 'bg-src-crit',
     text: 'text-ink-2',
   },
   {
     key: 'ability',
-    label: 'Abil',
     bar: 'bg-src-ability',
     swatch: 'bg-src-ability',
     text: 'text-ink-2',
   },
   {
     key: 'bonus',
-    label: 'Bonus',
     bar: 'bg-src-bonus',
     swatch: 'bg-src-bonus',
     text: 'text-ink-2',
   },
   {
     key: 'feat',
-    label: 'Feat',
     bar: 'bg-src-feat',
     swatch: 'bg-src-feat',
     text: 'text-src-feat',
@@ -58,6 +54,7 @@ export default function DamageSources({
 }: {
   breakdown: TurnBreakdown
 }) {
+  const { t } = useTranslation()
   if (breakdown.total <= 0) return null
 
   return (
@@ -71,7 +68,7 @@ export default function DamageSources({
               key={source.key}
               className={cn('rounded-chip', source.bar)}
               style={{ flexGrow: value }}
-              title={`${source.label} ${value.toFixed(2)}`}
+              title={`${t(`sources.${source.key}`)} ${value.toFixed(2)}`}
             />
           )
         })}
@@ -96,7 +93,7 @@ export default function DamageSources({
                   empty && 'text-ink-5'
                 )}
               >
-                {source.label}
+                {t(`sources.${source.key}`)}
               </span>
               <span
                 className={cn(
