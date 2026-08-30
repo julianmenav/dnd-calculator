@@ -5,15 +5,23 @@ import { fieldSm } from '../lib/ui'
 export default function InputNumber({
   value,
   className,
+  title,
   onChange,
   regex,
+  format,
 }: {
   value: number | null
   className?: string
+  title?: string
   onChange?: (value: number | null) => void
   regex?: RegExp
+  /** How a settled value is displayed (e.g. signed). Typing stays raw. */
+  format?: (value: number) => string
 }) {
-  const [localValue, setLocalValue] = useState(value?.toString() ?? '')
+  const toText = (v: number | null) =>
+    v === null ? '' : format ? format(v) : v.toString()
+
+  const [localValue, setLocalValue] = useState(() => toText(value))
 
   /**
    * What we last handed to onChange. Anything else arriving in `value` came
@@ -25,15 +33,18 @@ export default function InputNumber({
   useEffect(() => {
     if (value === emitted.current) return
     emitted.current = value
-    setLocalValue(value?.toString() ?? '')
-  }, [value])
+    setLocalValue(value === null ? '' : format ? format(value) : String(value))
+  }, [value, format])
 
   return (
     <input
       className={cn(fieldSm, 'font-mono', className)}
       type="text"
+      title={title}
       inputMode="numeric"
       value={localValue}
+      // Settle back to the formatted value, clearing half-typed "-" or "+".
+      onBlur={() => setLocalValue(toText(emitted.current))}
       onChange={(e) => {
         const raw = e.target.value
         if (!regex?.test(raw)) return

@@ -1,16 +1,20 @@
 import { useCharacter } from '../context/CharacterContext'
 import { useTurn } from '../context/TurnContext'
-import type { AbilityType, Attack } from '../models'
+import type { AbilityType, Attack, Dice } from '../models'
 import { useScenarioStore } from '../store/scenarioStore'
 import { ABILITIES } from '../models'
 import { FEATS, FEAT_EFFECTS } from '../models'
 import X from '../icons/X'
 import Chevron from '../icons/Chevron'
+import Confirm from '../icons/Confirm'
+import Copy from '../icons/Copy'
 import { useState } from 'react'
+import DiceButtons from './DiceButtons'
 import DiceSelection from './DiceSelection'
 import type { AttackBreakdown } from '../lib/calculator'
+import InputNumber from './InputNumber'
 import { cn } from '../lib/utils'
-import { iconBtnDangerSm, microLabel, selectField } from '../lib/ui'
+import { iconBtnDangerSm, iconBtnSm, microLabel, selectField } from '../lib/ui'
 
 export default function AttackComponent({
   attack,
@@ -19,77 +23,75 @@ export default function AttackComponent({
   attack: Attack
   breakdown: AttackBreakdown
 }) {
-  const { updateAttack, removeAttack } = useScenarioStore(
+  const { updateAttack, removeAttack, copyAttack } = useScenarioStore(
     (state) => state.actions
   )
   const character = useCharacter()
   const turn = useTurn()
 
   const [showFeats, setShowFeats] = useState(false)
+  const [editDices, setEditDices] = useState(false)
+
+  const update = (partial: Partial<Attack>) =>
+    updateAttack(character.id, turn.id, attack.id, partial)
+
+  const addDie = (dice: Dice) => {
+    if (attack.dices.length > 20) return
+    update({ dices: [...attack.dices, dice] })
+  }
+
+  const removeDie = (dice: Dice) => {
+    const index = attack.dices.indexOf(dice)
+    if (index === -1) return
+    update({ dices: attack.dices.filter((_, i) => i !== index) })
+  }
 
   return (
     <div className="border-rule bg-panel rounded-field flex flex-col gap-2 border p-2">
       <div className="flex items-start gap-2">
-        <label className="flex min-w-0 flex-1 flex-col gap-1">
-          <span className={microLabel}>Attack bonus</span>
-          <div className="relative">
-            <select
-              className={selectField}
-              value={attack.attackBonusAbility ?? ''}
-              onChange={(e) => {
-                const value = (e.target.value as AbilityType) || undefined
-                const partialUpdate: Partial<Attack> = {
-                  attackBonusAbility: value,
-                  damageBonusAbility: attack.damageBonusAbility
-                    ? attack.damageBonusAbility
-                    : value,
-                }
+        <div className="flex min-w-0 flex-1 flex-col gap-1">
+          <BonusRow
+            label="Attack"
+            ability={attack.attackBonusAbility}
+            onAbilityChange={(value) => {
+              /* A weapon is almost always swung with the stat it is aimed
+                 with, so the damage ability follows until it is set apart. */
+              update({
+                attackBonusAbility: value,
+                damageBonusAbility: attack.damageBonusAbility ?? value,
+              })
+            }}
+            flat={attack.attackBonusFlat ?? 0}
+            onFlatChange={(value) => update({ attackBonusFlat: value ?? 0 })}
+            flatTitle="Flat bonus to the attack roll, e.g. a +1 weapon"
+          />
 
-                updateAttack(character.id, turn.id, attack.id, partialUpdate)
-              }}
-            >
-              <option value="">None</option>
-              {ABILITIES.map((ability) => (
-                <option key={ability} value={ability}>
-                  {ability}
-                </option>
-              ))}
-            </select>
-            <Chevron className="text-ink-3 pointer-events-none absolute top-1/2 right-1.5 h-3 w-3 -translate-y-1/2" />
-          </div>
-        </label>
+          <BonusRow
+            label="Damage"
+            ability={attack.damageBonusAbility}
+            onAbilityChange={(value) => update({ damageBonusAbility: value })}
+            flat={attack.damageBonusFlat ?? 0}
+            onFlatChange={(value) => update({ damageBonusFlat: value ?? 0 })}
+            flatTitle="Flat bonus to damage on a hit, e.g. a +1 weapon"
+          />
+        </div>
 
-        <label className="flex min-w-0 flex-1 flex-col gap-1">
-          <span className={microLabel}>Damage bonus</span>
-          <div className="relative">
-            <select
-              className={selectField}
-              value={attack.damageBonusAbility ?? ''}
-              onChange={(e) => {
-                updateAttack(character.id, turn.id, attack.id, {
-                  damageBonusAbility:
-                    (e.target.value as AbilityType) || undefined,
-                })
-              }}
-            >
-              <option value="">None</option>
-              {ABILITIES.map((ability) => (
-                <option key={ability} value={ability}>
-                  {ability}
-                </option>
-              ))}
-            </select>
-            <Chevron className="text-ink-3 pointer-events-none absolute top-1/2 right-1.5 h-3 w-3 -translate-y-1/2" />
-          </div>
-        </label>
-
-        <button
-          className={cn(iconBtnDangerSm, 'mt-[13px]')}
-          title="Remove attack"
-          onClick={() => removeAttack(character.id, turn.id, attack.id)}
-        >
-          <X />
-        </button>
+        <div className="mt-[3px] flex flex-col gap-1">
+          <button
+            className={iconBtnDangerSm}
+            title="Remove attack"
+            onClick={() => removeAttack(character.id, turn.id, attack.id)}
+          >
+            <X />
+          </button>
+          <button
+            className={iconBtnSm}
+            title="Duplicate attack"
+            onClick={() => copyAttack(character.id, turn.id, attack.id)}
+          >
+            <Copy />
+          </button>
+        </div>
       </div>
 
       <div className="flex flex-col gap-1.5">
@@ -109,7 +111,10 @@ export default function AttackComponent({
             </span>
           )}
           <Chevron
-            className={cn('h-3 w-3 transition-transform', showFeats && 'rotate-180')}
+            className={cn(
+              'h-3 w-3 transition-transform',
+              showFeats && 'rotate-180'
+            )}
           />
         </button>
 
@@ -127,7 +132,7 @@ export default function AttackComponent({
                       : 'border-edge bg-raised text-ink-2 hover:border-ink-4 hover:text-ink'
                   )}
                   onClick={() => {
-                    updateAttack(character.id, turn.id, attack.id, {
+                    update({
                       feats: isSelected
                         ? attack.feats.filter((f) => f !== feat)
                         : [...attack.feats, feat],
@@ -152,15 +157,119 @@ export default function AttackComponent({
         )}
       </div>
 
-      <div className="flex items-center gap-2">
-        <DiceSelection dices={attack.dices} />
-        <span className="text-ink-3 ml-auto shrink-0 font-mono text-[9px] leading-none tabular-nums">
-          hit {(breakdown.hitChance * 100).toFixed(1)}%
-        </span>
-        <span className="text-ink shrink-0 font-mono text-[13px] leading-none font-bold tabular-nums">
-          {breakdown.total.toFixed(2)}
-        </span>
+      {editDices ? (
+        <div className="border-accent bg-card rounded-field flex flex-col gap-2 border p-2">
+          <div className="flex items-center gap-2">
+            <span className={microLabel}>Edit dice</span>
+            <div className="bg-rule ml-auto h-px flex-grow" />
+            <button
+              className="bg-gain text-accent-ink rounded-field inline-flex h-6 w-6 cursor-pointer items-center justify-center border-0 p-0 transition-opacity hover:opacity-85"
+              title="Done"
+              onClick={() => setEditDices(false)}
+            >
+              <Confirm />
+            </button>
+          </div>
+
+          <DiceButtons onPick={addDie} />
+
+          <div className="border-rule flex items-center gap-2 border-t pt-2">
+            <DiceSelection dices={attack.dices} onDiceClick={removeDie} />
+            {attack.dices.length === 0 && (
+              <span className="text-ink-4 text-[10px] leading-none">
+                no dice
+              </span>
+            )}
+            <HitAndTotal breakdown={breakdown} />
+          </div>
+        </div>
+      ) : (
+        <div className="flex items-center gap-2">
+          <button
+            className="cursor-pointer transition-opacity hover:opacity-70"
+            title="Edit dice"
+            onClick={() => setEditDices(true)}
+          >
+            <DiceSelection dices={attack.dices} />
+            {attack.dices.length === 0 && (
+              <span className="text-ink-4 text-[10px] leading-none">
+                no dice
+              </span>
+            )}
+          </button>
+          <HitAndTotal breakdown={breakdown} />
+        </div>
+      )}
+    </div>
+  )
+}
+
+function HitAndTotal({ breakdown }: { breakdown: AttackBreakdown }) {
+  return (
+    <>
+      <span className="text-ink-3 ml-auto shrink-0 font-mono text-[9px] leading-none tabular-nums">
+        hit {(breakdown.hitChance * 100).toFixed(1)}%
+      </span>
+      <span className="text-ink shrink-0 font-mono text-[13px] leading-none font-bold tabular-nums">
+        {breakdown.total.toFixed(2)}
+      </span>
+    </>
+  )
+}
+
+/**
+ * One "where does this number come from" line: an ability the character
+ * already has, plus a flat top-up for everything the calculator does not
+ * model itself — a +1 weapon, a fighting style, a blessing.
+ */
+function BonusRow({
+  label,
+  ability,
+  onAbilityChange,
+  flat,
+  onFlatChange,
+  flatTitle,
+}: {
+  label: string
+  ability?: AbilityType
+  onAbilityChange: (ability: AbilityType | undefined) => void
+  flat: number
+  onFlatChange: (flat: number | null) => void
+  flatTitle: string
+}) {
+  return (
+    <div className="flex items-center gap-1">
+      <span className={cn(microLabel, 'w-[38px] shrink-0')}>{label}</span>
+
+      <div className="relative min-w-0 flex-1">
+        <select
+          className={cn(selectField, 'h-6')}
+          value={ability ?? ''}
+          onChange={(e) =>
+            onAbilityChange((e.target.value as AbilityType) || undefined)
+          }
+        >
+          <option value="">None</option>
+          {ABILITIES.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
+        <Chevron className="text-ink-3 pointer-events-none absolute top-1/2 right-1.5 h-3 w-3 -translate-y-1/2" />
       </div>
+
+      <InputNumber
+        className={cn(
+          'h-6 w-9 shrink-0 px-0 text-center text-[12px]',
+          flat === 0 && 'text-ink-3'
+        )}
+        title={flatTitle}
+        value={flat}
+        regex={/^$|^[+-]$|^[+-]?\d{1,2}$/}
+        format={(value) => (value > 0 ? `+${value}` : String(value))}
+        onChange={onFlatChange}
+      />
     </div>
   )
 }

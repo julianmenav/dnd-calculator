@@ -3,7 +3,7 @@ import type { Attack, Character, Feat, Scenario, Turn } from '../models'
 const totalOutcomes = 20 // A d20 attack roll.
 
 /**
- * Where a single attack's average damage comes from. The four damage
+ * Where a single attack's average damage comes from. The five damage
  * components are disjoint and sum to `total`, so they can be stacked.
  */
 export type AttackBreakdown = {
@@ -18,8 +18,10 @@ export type AttackBreakdown = {
   crit: number
   /** Ability modifier applied on a hit. */
   ability: number
-  /** Flat feat damage (GW Master, Duelist) applied on a hit. */
+  /** Flat feat damage (GW Master, Duelist, Proficiency) applied on a hit. */
   feat: number
+  /** A weapon or feature's flat +N to damage on a hit. */
+  bonus: number
   total: number
 }
 
@@ -29,6 +31,7 @@ export type TurnBreakdown = {
   crit: number
   ability: number
   feat: number
+  bonus: number
   attacks: AttackBreakdown[]
 }
 
@@ -49,8 +52,9 @@ export const calculateTurnBreakdown = (
       crit: turnTotal.crit + attack.crit,
       ability: turnTotal.ability + attack.ability,
       feat: turnTotal.feat + attack.feat,
+      bonus: turnTotal.bonus + attack.bonus,
     }),
-    { total: 0, dice: 0, crit: 0, ability: 0, feat: 0, attacks }
+    { total: 0, dice: 0, crit: 0, ability: 0, feat: 0, bonus: 0, attacks }
   )
 }
 
@@ -81,7 +85,8 @@ const calculateAttackBreakdown = (
 
   // Flat bonuses ride on the hit, and are not multiplied by a crit.
   const ability = getAbilityDamageBonus(attack, character) * hitChance
-  const feat = getFeatDamageBonus(attack) * hitChance
+  const feat = getFeatDamageBonus(attack, character) * hitChance
+  const bonus = (attack.damageBonusFlat ?? 0) * hitChance
 
   return {
     attackBonus,
@@ -91,7 +96,8 @@ const calculateAttackBreakdown = (
     crit,
     ability,
     feat,
-    total: dice + crit + ability + feat,
+    bonus,
+    total: dice + crit + ability + feat + bonus,
   }
 }
 
@@ -206,7 +212,11 @@ const getAttackBonus = (attack: Attack, character: Character): number => {
   if (attack.attackBonusAbility) {
     abilityScore = character.abilities[attack.attackBonusAbility] ?? 0
   }
-  let attackBonus = abilityScore + getProfienciencyBonus(character.lvl)
+  // Gear and features that hand out a flat "+N to hit", like a magic weapon.
+  const flatBonus = attack.attackBonusFlat ?? 0
+
+  let attackBonus =
+    abilityScore + flatBonus + getProficiencyBonus(character.lvl)
 
   // Add feats bonuses.
   if (attackIncludesFeat(attack, 'Precision')) {
@@ -232,10 +242,14 @@ const getAbilityDamageBonus = (
 /**
  *  Flat damage granted by feats on a hit.
  */
-const getFeatDamageBonus = (attack: Attack): number => {
+const getFeatDamageBonus = (attack: Attack, character: Character): number => {
   let featBonus = 0
   if (attackIncludesFeat(attack, 'GW Master')) featBonus += 10
   if (attackIncludesFeat(attack, 'Duelist')) featBonus += 2
+  // Class features like Hexblade's Curse add the proficiency bonus to damage.
+  if (attackIncludesFeat(attack, 'Proficiency')) {
+    featBonus += getProficiencyBonus(character.lvl)
+  }
 
   return featBonus
 }
@@ -276,7 +290,7 @@ const averageRollWithGWF = (sides: number): number => {
   return rerollChance * rerollAverage + keepChance * keepAverage
 }
 
-const getProfienciencyBonus = (level: number): number => {
+export const getProficiencyBonus = (level: number): number => {
   if (level < 5) return 2
   if (level < 9) return 3
   if (level < 13) return 4

@@ -35,6 +35,7 @@ export type Feat =
   | 'Champion'
   | 'Piercer'
   | 'Duelist'
+  | 'Proficiency'
 export const FEATS: Feat[] = [
   'GW Master',
   'GW Fighter',
@@ -44,6 +45,7 @@ export const FEATS: Feat[] = [
   'Champion',
   'Piercer',
   'Duelist',
+  'Proficiency',
 ]
 
 /** What each toggle does to the maths, in the calculator's own terms. */
@@ -56,6 +58,7 @@ export const FEAT_EFFECTS: Record<Feat, string> = {
   Champion: 'crit on 19+',
   Piercer: 'reroll a die · ×3 crit',
   Duelist: '+2 dmg',
+  Proficiency: '+prof dmg',
 }
 
 export type Attack = {
@@ -64,6 +67,10 @@ export type Attack = {
   feats: string[]
   attackBonusAbility?: AbilityType
   damageBonusAbility?: AbilityType
+  /** Flat bonus to the attack roll on top of the ability, e.g. a +1 weapon. */
+  attackBonusFlat?: number
+  /** Flat bonus to damage on a hit on top of the ability, e.g. a +1 weapon. */
+  damageBonusFlat?: number
 }
 
 export type Turn = {

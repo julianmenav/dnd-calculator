@@ -46,6 +46,7 @@ interface ScenarioState {
 
     copyCharacter: (characterId: string) => void
     copyTurn: (characterId: string, turnId: string) => void
+    copyAttack: (characterId: string, turnId: string, attackId: string) => void
   }
 }
 
@@ -289,6 +290,35 @@ export const useScenarioStore = create<ScenarioState>()(
               },
             }
           }),
+
+        copyAttack: (characterId: string, turnId: string, attackId: string) =>
+          set((state) => ({
+            scenario: {
+              ...state.scenario,
+              characters: state.scenario.characters.map((character) => {
+                if (character.id !== characterId) return character
+                return {
+                  ...character,
+                  turns: character.turns.map((turn) => {
+                    if (turn.id !== turnId) return turn
+                    const index = turn.attacks.findIndex(
+                      (attack) => attack.id === attackId
+                    )
+                    if (index === -1) return turn
+                    const attackToCopy = turn.attacks[index]
+                    return {
+                      ...turn,
+                      attacks: [
+                        ...turn.attacks.slice(0, index + 1),
+                        createAttack(attackToCopy.dices, attackToCopy),
+                        ...turn.attacks.slice(index + 1),
+                      ],
+                    }
+                  }),
+                }
+              }),
+            },
+          })),
       },
     }),
     {
@@ -328,12 +358,14 @@ const createTurn = (turn?: Turn): Turn => {
   }
 }
 
-const createAttack = (dices: Dice[]): Attack => {
+const createAttack = (dices: Dice[], attack?: Attack): Attack => {
   return {
     id: uuidv4(),
     dices: dices,
-    feats: [],
-    attackBonusAbility: undefined,
-    damageBonusAbility: undefined,
+    feats: attack?.feats || [],
+    attackBonusAbility: attack?.attackBonusAbility,
+    damageBonusAbility: attack?.damageBonusAbility,
+    attackBonusFlat: attack?.attackBonusFlat ?? 0,
+    damageBonusFlat: attack?.damageBonusFlat ?? 0,
   }
 }

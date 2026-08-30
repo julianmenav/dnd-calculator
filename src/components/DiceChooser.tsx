@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import type { Dice } from '../models'
 import { useScenarioStore } from '../store/scenarioStore'
-import { DICE_SIDES, DICE_COLORS } from '../models'
 import { useCharacter } from '../context/CharacterContext'
 import { useTurn } from '../context/TurnContext'
 import Plus from '../icons/Plus'
+import DiceButtons from './DiceButtons'
 import DiceSelection from './DiceSelection'
 import Confirm from '../icons/Confirm'
 import X from '../icons/X'
@@ -47,7 +47,7 @@ export default function DiceChooser() {
           <Confirm />
         </button>
         <button
-          className="border-loss/30 bg-loss/10 text-loss rounded-field inline-flex h-6 w-6 cursor-pointer items-center justify-center border p-0 transition-colors hover:bg-loss/20"
+          className="border-loss/30 bg-loss/10 text-loss rounded-field hover:bg-loss/20 inline-flex h-6 w-6 cursor-pointer items-center justify-center border p-0 transition-colors"
           title="Cancel"
           onClick={() => {
             setDices([])
@@ -58,28 +58,25 @@ export default function DiceChooser() {
         </button>
       </div>
 
-      <div className="flex gap-1">
-        {DICE_SIDES.filter((dice) => dice !== 20).map((dice) => (
-          <button
-            key={dice}
-            className={cn(
-              'rounded-field flex h-8 flex-1 cursor-pointer items-center justify-center border font-mono text-[13px] font-bold transition-opacity hover:opacity-70',
-              DICE_COLORS[dice]
-            )}
-            onClick={() => {
-              if (dices.length > 20) return
-              setDices((prev) => [...prev, dice])
-            }}
-          >
-            d{dice}
-          </button>
-        ))}
-      </div>
+      <DiceButtons
+        onPick={(dice) => {
+          if (dices.length > 20) return
+          setDices((prev) => [...prev, dice])
+        }}
+      />
 
       {dices.length > 0 && (
         <div className="border-rule flex items-center gap-2 border-t pt-2">
           <span className={microLabel}>Picked</span>
-          <DiceSelection dices={dices} />
+          <DiceSelection
+            dices={dices}
+            onDiceClick={(dice) =>
+              setDices((prev) => {
+                const index = prev.indexOf(dice)
+                return index === -1 ? prev : prev.filter((_, i) => i !== index)
+              })
+            }
+          />
         </div>
       )}
     </div>

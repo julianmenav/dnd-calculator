@@ -3,7 +3,7 @@ import { cn } from '../lib/utils'
 import { microLabel } from '../lib/ui'
 
 type Source = {
-  key: keyof Pick<TurnBreakdown, 'dice' | 'crit' | 'ability' | 'feat'>
+  key: keyof Pick<TurnBreakdown, 'dice' | 'crit' | 'ability' | 'bonus' | 'feat'>
   label: string
   bar: string
   swatch: string
@@ -35,6 +35,13 @@ const SOURCES: Source[] = [
     label: 'Abil',
     bar: 'bg-src-ability',
     swatch: 'bg-src-ability',
+    text: 'text-ink-2',
+  },
+  {
+    key: 'bonus',
+    label: 'Bonus',
+    bar: 'bg-src-bonus',
+    swatch: 'bg-src-bonus',
     text: 'text-ink-2',
   },
   {
@@ -70,12 +77,12 @@ export default function DamageSources({
         })}
       </div>
 
-      <div className="flex gap-1">
+      <div className="grid grid-cols-3 gap-x-1.5 gap-y-1">
         {SOURCES.map((source) => {
           const value = breakdown[source.key]
           const empty = value <= 0
           return (
-            <div key={source.key} className="flex flex-1 items-center gap-1">
+            <div key={source.key} className="flex items-center gap-1">
               <span
                 className={cn(
                   'rounded-chip h-1.5 w-1.5 shrink-0',
